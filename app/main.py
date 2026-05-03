@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from .schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
-from .schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
-from .schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
+from schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
+from schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
+from schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 
 app = FastAPI()
 
@@ -28,7 +28,7 @@ def get_user(user_id: str):
     return UserSchema(userid=user_id, user_name="山田太郎", department_code=1)  
 
 #ログイン
-@app.post("/login/", response_model=UserResponseSchema)　
+@app.post("/login/", response_model=UserResponseSchema)
 def login(login_data: LoginSchema):
     # ここでログインのロジックを実装
     return UserResponseSchema(message="ログインが正常に処理されました。")   

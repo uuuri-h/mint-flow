@@ -12,7 +12,7 @@ class InsertAndUpdateOrderDetailSchema(BaseModel):
     item_partsnum: str = Field(..., example="sk_12345")
     quantity: int = Field(..., example=20)
     price: int = Field(..., example=1000)
-    supplier_id: int = Field(..., example=0001)
+    supplier_id: str = Field(..., example="0001")
     status: int = Field(..., example=1)
     
 
