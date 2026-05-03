@@ -3,6 +3,11 @@ from datetime import date
 
 # ===OrderSchema定義===
 # 登録・更新で使用するスキーマ    
+
+class InsertAndUpdateOrderSchema(BaseModel):
+    order_userid: str = Field(..., example=26011)
+    order_date: date = Field(..., example="2024-12-31")
+
 class InsertAndUpdateOrderDetailSchema(BaseModel):
     item_partsnum: str = Field(..., example="sk_12345")
     quantity: int = Field(..., example=20)
@@ -13,7 +18,7 @@ class InsertAndUpdateOrderDetailSchema(BaseModel):
 
 # リクエスト情報を表すスキーマ    
 class OrderSchema(BaseModel):
-    order_userid: int = Field(..., example=26011)
+    order_userid: str = Field(..., example=26011)
     order_id: str = Field(..., example="ORD26-0001")
     order_date: date = Field(..., example="2024-12-31")
     
@@ -30,3 +35,7 @@ class ResponseSchema(BaseModel):
                     example="発注が正常に処理されました。") 
         
         
+#ヘッダと詳細をひとまとめにしたスキーマ
+class OrderCreateSchema(BaseModel):
+    header: InsertAndUpdateOrderSchema
+    details: list[InsertAndUpdateOrderDetailSchema]

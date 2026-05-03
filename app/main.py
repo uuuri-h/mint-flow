@@ -1,25 +1,25 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from .schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema, LoginSchema
-from .schemas.request import InsertAndUpdateRequestSchema, InsertAndUpdateRequestDetailSchema, RequestSchema, ResponseSchema as RequestResponseSchema
-from .schemas.order import InsertAndUpdateOrderSchema, InsertAndUpdateOrderDetailSchema, OrderSchema, ResponseSchema as Order
+from .schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
+from .schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
+from .schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 
 app = FastAPI()
 
 #===ユーザー用のエンドポイント===
 
 # ユーザー登録
-@app.post("/users/", response_model=ResponseSchema)
+@app.post("/users/", response_model=UserResponseSchema)
 def create_user(user: InsertAndUpdateUserSchema):
     # ここでユーザー登録のロジックを実装
-    return ResponseSchema(message="ユーザー登録が正常に処理されました。")
+    return UserResponseSchema(message="ユーザー登録が正常に処理されました。")
 
 # ユーザー更新
-@app.put("/users/{user_id}", response_model=ResponseSchema)
+@app.put("/users/{user_id}", response_model=UserResponseSchema)
 def update_user(user_id: str, user: InsertAndUpdateUserSchema):
     # ここでユーザー更新のロジックを実装
-    return ResponseSchema(message="ユーザー情報が正常に更新されました。")
+    return UserResponseSchema(message="ユーザー情報が正常に更新されました。")
 
 #ユーザー情報取得
 @app.get("/users/{user_id}", response_model=UserSchema)
@@ -28,17 +28,16 @@ def get_user(user_id: str):
     return UserSchema(userid=user_id, user_name="山田太郎", department_code=1)  
 
 #ログイン
-@app.post("/login/", response_model=ResponseSchema)
+@app.post("/login/", response_model=UserResponseSchema)　
 def login(login_data: LoginSchema):
     # ここでログインのロジックを実装
-    return ResponseSchema(message="ログインが正常に処理されました。")   
+    return UserResponseSchema(message="ログインが正常に処理されました。")   
 
 #===依頼用のエンドポイント===
 # 依頼登録
 @app.post("/requests/", response_model=RequestResponseSchema)
 def create_request(
-        header: InsertAndUpdateRequestSchema,
-        detail: list[InsertAndUpdateRequestDetailSchema]
+        request_data: RequestCreateSchema
     ):
     # ここで依頼登録のロジックを実装
     return RequestResponseSchema(message="依頼登録が正常に処理されました。") 
@@ -47,8 +46,7 @@ def create_request(
 @app.put("/requests/{request_id}", response_model=RequestResponseSchema)
 def update_request(
         request_id: str, 
-        header: InsertAndUpdateRequestSchema,
-        detail: list[InsertAndUpdateRequestDetailSchema]
+        request_data: RequestCreateSchema
     ):
     # ここで依頼更新のロジックを実装
     return RequestResponseSchema(message="依頼情報が正常に更新されました。")    
@@ -67,23 +65,21 @@ def delete_request(request_id: str):
 
 #===発注用のエンドポイント===
 # 発注登録
-@app.post("/orders/", response_model=Order)
+@app.post("/orders/", response_model=OrderResponseSchema)
 def create_order(
-        header: InsertAndUpdateOrderSchema,
-        detail: list[InsertAndUpdateOrderDetailSchema]
+        order_data: OrderCreateSchema
     ):
     # ここで発注登録のロジックを実装
-    return Order(message="発注が正常に処理されました。")    
+    return OrderResponseSchema(message="発注が正常に処理されました。")    
 
 # 発注更新
-@app.put("/orders/{order_id}", response_model=Order)
+@app.put("/orders/{order_id}", response_model=OrderResponseSchema)
 def update_order(
         order_id: str, 
-        header: InsertAndUpdateOrderSchema, 
-        detail: list[InsertAndUpdateOrderDetailSchema]
+        order_data: OrderCreateSchema
     ):
     # ここで発注更新のロジックを実装
-    return Order(message="発注情報が正常に更新されました。") 
+    return OrderResponseSchema(message="発注情報が正常に更新されました。") 
 
 # 発注情報取得
 @app.get("/orders/{order_id}", response_model=OrderSchema)
@@ -98,7 +94,7 @@ def validation_exception_handler(request, exc):
         status_code=422,
         content={
                 "details": exc.errors(),
-                "body": exc.model()
+                "body": exc.body
         }
     )   
 
