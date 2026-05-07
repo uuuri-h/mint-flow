@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function MyComponent() {
+function Login() {
     const [data, setData] = useState('');
 
     useEffect(() => {
@@ -22,4 +22,4 @@ function MyComponent() {
     );
 }
 
-export default MyComponent;
+export default Login;

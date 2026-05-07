@@ -4,8 +4,27 @@ from pydantic import ValidationError
 from schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
 from schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
 from schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+#CORSの設定
+origins = [
+    "http://localhost:5173",  # フロントエンドのURLを指定 5173はViteのデフォルトポート
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True, 
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/api/data")
+def read_data():
+    return {"message": "Hello from FastAPI!"}
 
 #===ユーザー用のエンドポイント===
 
