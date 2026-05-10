@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
-from schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
-from schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
+from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
+from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
+from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
@@ -22,9 +23,9 @@ app.add_middleware(
 )
 
 
-@app.get("/api/data")
-def read_data():
-    return {"message": "Hello from FastAPI!"}
+# @app.get("/api/data")
+# def read_data():
+#     return {"message": "Hello from FastAPI!"}
 
 #===ユーザー用のエンドポイント===
 
