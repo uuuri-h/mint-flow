@@ -1,4 +1,13 @@
-.counter {
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* .counter {
   font-size: 16px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -181,4 +190,4 @@
     right: 0;
     border-right-color: var(--border);
   }
-}
+} */
