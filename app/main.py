@@ -1,13 +1,23 @@
-from fastapi import FastAPI
+from datetime import datetime, timedelta, timezone
+from typing import Annotated
+
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jwt.exceptions import InvalidTokenError
+
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema
+from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema
 from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+# ここではOAuth2PasswordBearerを使用して、トークンベースの認証を行うためのエンドポイントを定義しています。
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 #CORSの設定
 origins = [
@@ -21,7 +31,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # @app.get("/api/data")
 # def read_data():
@@ -47,11 +56,36 @@ def get_user(user_id: str):
     # ここでユーザー情報取得のロジックを実装
     return UserSchema(userid=user_id, user_name="山田太郎", department_code=1)  
 
-#ログイン
-@app.post("/login/", response_model=UserResponseSchema)
+
+#-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
+#ログイン(パスワードとIDを受け取る→トークンを返す)
+@app.post("/login/", response_model=TokenResponseSchema)
 def login(login_data: LoginSchema):
-    # ここでログインのロジックを実装
-    return UserResponseSchema(message="ログインが正常に処理されました。")   
+    
+    # ユーザーの存在確認
+    user = get_user(login_data.userid)  # ユーザー情報を取得する関数を呼び出す
+    
+    if not user:
+        raise HTTPException(status_code=400, detail="ユーザーが見つかりません")
+    if login_data.password != verify_password(login_data.password, user.hashed_password) :  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
+        raise HTTPException(status_code=400, detail="パスワードが正しくありません")
+    
+    #JWT作成
+    access_token = create_access_token(
+        data={"sub": user.userid} #JWTの中にuseridを入れている
+    )
+    
+    #JWTを返す
+    return TokenResponseSchema(
+        message="ログインが正常に処理されました。",
+        access_token=access_token,
+        token_type="bearer"
+    )
+
+#ログイン後のトークン取得,ログイン済確認
+@app.get("/users/me/")
+async def login(token: Annotated[str, Depends(oauth2_scheme)]):
+    return {"token": token}
 
 #===依頼用のエンドポイント===
 # 依頼登録
