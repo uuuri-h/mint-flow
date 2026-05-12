@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
+import jwt #JWTライブラリをインポート
 
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jwt.exceptions import InvalidTokenError
+#from jwt.exceptions import InvalidTokenError
 
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
@@ -16,7 +17,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 # ここではOAuth2PasswordBearerを使用して、トークンベースの認証を行うためのエンドポイントを定義しています。
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/login/" #JWTを取得するためのエンドポイントURLを指定 
+)
 
 
 #CORSの設定
@@ -50,11 +53,27 @@ def update_user(user_id: str, user: InsertAndUpdateUserSchema):
     # ここでユーザー更新のロジックを実装
     return UserResponseSchema(message="ユーザー情報が正常に更新されました。")
 
-#ユーザー情報取得
 @app.get("/users/{user_id}", response_model=UserSchema)
 def get_user(user_id: str):
-    # ここでユーザー情報取得のロジックを実装
-    return UserSchema(userid=user_id, user_name="山田太郎", department_code=1)  
+    return UserSchema(
+        userid=user_id,
+        user_name="山田太郎",
+        department_code="001"
+    )
+#ユーザー認証
+# def authenticate_user(fake_db, userid: str, password: str):
+#     user = get_user(userid)  # ユーザー情報を取得する関数を呼び出す
+#     if not user:
+#         return False
+#     if not verify_password(password, user.hashed_password):  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
+#         return False
+#     return user
+
+# def verify_password(
+#     plain_password,
+#     hashed_password
+# ):
+#     return plain_password == hashed_password
 
 
 #-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
@@ -67,8 +86,12 @@ def login(login_data: LoginSchema):
     
     if not user:
         raise HTTPException(status_code=400, detail="ユーザーが見つかりません")
-    if login_data.password != verify_password(login_data.password, user.hashed_password) :  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
-        raise HTTPException(status_code=400, detail="パスワードが正しくありません")
+    #if login_data.password != verify_password(login_data.password, user.hashed_password) :  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
+    if login_data.password != "Mint1234":  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
+        raise HTTPException(
+            status_code=400, 
+            detail="パスワードが正しくありません"
+        )
     
     #JWT作成
     access_token = create_access_token(
@@ -82,9 +105,32 @@ def login(login_data: LoginSchema):
         token_type="bearer"
     )
 
+
+SECRET_KEY = "secret"
+ALGORITHM = "HS256"
+
+
+#JWTを作成する関数
+def create_access_token(data: dict):
+
+    to_encode = data.copy()
+
+    expire = datetime.now(timezone.utc) + timedelta(minutes=30)
+
+    to_encode.update({"exp": expire})
+
+    encoded_jwt = jwt.encode(
+        to_encode,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
+
+    return encoded_jwt
+
+
 #ログイン後のトークン取得,ログイン済確認
 @app.get("/users/me/")
-async def login(token: Annotated[str, Depends(oauth2_scheme)]):
+async def login(token: Annotated[str, Depends(oauth2_scheme)]): #Authorizationヘッダーから WT自動取得
     return {"token": token}
 
 #===依頼用のエンドポイント===
