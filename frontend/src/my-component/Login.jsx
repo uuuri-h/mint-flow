@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../my-styles/Login.css'
+import { useNavigate } from 'react-router-dom'; // 追加: useNavigateをインポート
 
 function Login() {
+    const navigate = useNavigate(); // useNavigateフックを初期化
+
     //データの取得と状態管理
     const [data, setData] = useState('');
     const [userid, setUserid] = useState('');
@@ -38,6 +41,14 @@ function Login() {
 
             //setData(response.data.message);
             alert(response.data.message);
+            //ログインに成功したらローカルストーレッジにtokenを保存
+            localStorage.setItem(
+                'token',
+                response.data.token
+            );
+            
+            //ホームページにリダイレクト
+            navigate('/home');
 
         } catch (error) {
             console.error('There was an error!', error);

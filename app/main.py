@@ -2,9 +2,9 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated
 import jwt #JWTライブラリをインポート
 
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-#from jwt.exceptions import InvalidTokenError
+from jwt.exceptions import InvalidTokenError
 
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
@@ -13,14 +13,12 @@ from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSche
 from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 from fastapi.middleware.cors import CORSMiddleware
 
-
 app = FastAPI()
 
 # ここではOAuth2PasswordBearerを使用して、トークンベースの認証を行うためのエンドポイントを定義しています。
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login/" #JWTを取得するためのエンドポイントURLを指定 
 )
-
 
 #CORSの設定
 origins = [
@@ -53,6 +51,7 @@ def update_user(user_id: str, user: InsertAndUpdateUserSchema):
     # ここでユーザー更新のロジックを実装
     return UserResponseSchema(message="ユーザー情報が正常に更新されました。")
 
+# ユーザー情報取得
 @app.get("/users/{user_id}", response_model=UserSchema)
 def get_user(user_id: str):
     return UserSchema(
@@ -60,6 +59,7 @@ def get_user(user_id: str):
         user_name="山田太郎",
         department_code="001"
     )
+    
 #ユーザー認証
 # def authenticate_user(fake_db, userid: str, password: str):
 #     user = get_user(userid)  # ユーザー情報を取得する関数を呼び出す
@@ -95,7 +95,7 @@ def login(login_data: LoginSchema):
     
     #JWT作成
     access_token = create_access_token(
-        data={"sub": user.userid} #JWTの中にuseridを入れている
+        data={"sub": user.userid} #JWTの中にuseridを入れている　subはトークンの持ち主を表す(JWT標準項目)
     )
     
     #JWTを返す
@@ -113,16 +113,17 @@ ALGORITHM = "HS256"
 #JWTを作成する関数
 def create_access_token(data: dict):
 
-    to_encode = data.copy()
+    to_encode = data.copy() #to_encode = dict(data)/ to_encode = {**data}
 
-    expire = datetime.now(timezone.utc) + timedelta(minutes=30)
+    expire = datetime.now(timezone.utc) + timedelta(minutes=30) #30分後の時刻をつくる
 
     to_encode.update({"exp": expire})
 
+    #JWT文字列の作成
     encoded_jwt = jwt.encode(
-        to_encode,
-        SECRET_KEY,
-        algorithm=ALGORITHM
+        to_encode, #JWTに入れるデータ
+        SECRET_KEY, #JWTを署名するための秘密鍵（改竄されていない証明）
+        algorithm=ALGORITHM #どうやって署名するか
     )
 
     return encoded_jwt
@@ -130,8 +131,42 @@ def create_access_token(data: dict):
 
 #ログイン後のトークン取得,ログイン済確認
 @app.get("/users/me/")
-async def login(token: Annotated[str, Depends(oauth2_scheme)]): #Authorizationヘッダーから WT自動取得
-    return {"token": token}
+async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authorizationヘッダーから WT自動取得
+    #JWTをデコードしてペイロードを取得 (payloadはJWTの中に入っているデータ (ユーザーIDなど)を表す)
+    
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+    except jwt.ExpiredSignatureError: #JWTの有効期限が切れている場合の例外をキャッチ
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="トークンの有効期限が切れています",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except InvalidTokenError: #JWTのデコードに失敗した場合の例外をキャッチ
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="無効なトークンです",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    userid: str = payload.get("sub") #ペイロードからユーザーIDを取得　subはJWTの持ち主を表す(JWT標準項目)
+    
+    #useridが存在しない場合
+    if userid is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="ユーザーIDが見つかりません",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user = get_user(userid) #ここでユーザー情報を取得する関数を呼び出すこともできる
+
+    return user
+
 
 #===依頼用のエンドポイント===
 # 依頼登録
@@ -189,12 +224,11 @@ def get_order(order_id: str):
 
 #バリデーションエラーのカスタムハンドラ
 @app.exception_handler(ValidationError)
-def validation_exception_handler(request, exc):
+def validation_exception_handler(request : Request, ex : ValidationError):
     return JSONResponse(
         status_code=422,
         content={
-                "details": exc.errors(),
-                "body": exc.body
+                "details": ex.errors(),
         }
     )   
 
