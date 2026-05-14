@@ -98,7 +98,7 @@ def login(login_data: LoginSchema):
         data={"sub": user.userid} #JWTの中にuseridを入れている　subはトークンの持ち主を表す(JWT標準項目)
     )
     
-    #JWTを返す
+    #JWTを返す(Reactへ返す)
     return TokenResponseSchema(
         message="ログインが正常に処理されました。",
         access_token=access_token,
@@ -133,6 +133,7 @@ def create_access_token(data: dict):
 @app.get("/users/me/")
 async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authorizationヘッダーから WT自動取得
     #JWTをデコードしてペイロードを取得 (payloadはJWTの中に入っているデータ (ユーザーIDなど)を表す)
+    #oath2_schemeはAuthorizationヘッダーからJWTを自動的に取得してくれる　例: Authorization: Bearer <JWTトークン>
     
     try:
         payload = jwt.decode(
