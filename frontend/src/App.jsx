@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./my-component/Login";
 import Home from "./my-component/Home";
+import PurchasingList from "./my-component/purchasing-list";
 import Layout from "./my-component/Layout";
 
 
@@ -13,9 +14,14 @@ function App() {
 
         <Route element={<Layout />}>
 
-            <Route
+            {/*Layoutの子Routeが Outletに表示される　*/}
+            <Route 
                 path="/home"
                 element={<Home />}
+            />
+            <Route 
+                path="/purchasing-list"
+                element={<PurchasingList />}
             />
 
         </Route>

@@ -12,7 +12,7 @@ function Layout() {
 
             <div className="main-content">
 
-                <Outlet />
+                <Outlet /> {/* この Outlet の位置に、ルーティングされたページが入る。 */}
 
             </div>
 
