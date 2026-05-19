@@ -1,21 +1,30 @@
 
 import { Outlet } from "react-router-dom";
 import "../my-styles/Sidebar.css";
-import { SidebarData } from "./SidebarData";
+
+//名前つきエクスポートされたSidebarDataをインポート
+import { SidebarData } from "./SidebarData"; 
+import SidebarIcon from "./SidebarIcon";
 
 function Sidebar() {
 
     return (
 
-        <div className="sidebar">
-            <ul className="sidebarList"> 
+        <div className="Sidebar">
+            <SidebarIcon />
+            <ul className="SidebarList"> 
                 {SidebarData.map((value, key) => {
                     return (
-                        <li key={key} className="row" onClick={() => {
-                            window.location.href = value.link
-                        }}>
+                        <li 
+                            /*active属性をつける*/
+                            key={key} className="row" 
+                            id={window.location.pathname === value.link ? "active" : ""} 
+                            onClick={() => {
+                                window.location.href = value.link
+                            }}
+                        >
                             <div id="icon">{value.icon}</div>
-                            <div>{value.title}</div>
+                            <div id="title">{value.title}</div>
                         </li>
                     );
                 })}
