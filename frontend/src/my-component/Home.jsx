@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import '../my-syles/Home.css'
+import '../my-styles/Home.css'
 
 function Home() {
     const [user, setUser] = React.useState(null);
