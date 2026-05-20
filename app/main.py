@@ -57,7 +57,8 @@ def get_user(user_id: str):
     return UserSchema(
         userid=user_id,
         user_name="山田太郎",
-        department_code="001"
+        department_code="001",
+        department_name="生産管理部"
     )
     
 #ユーザー認証

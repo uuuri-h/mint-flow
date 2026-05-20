@@ -5,6 +5,7 @@ import "../my-styles/Sidebar.css";
 //名前つきエクスポートされたSidebarDataをインポート
 import { SidebarData } from "./SidebarData"; 
 import SidebarIcon from "./SidebarIcon";
+import SidebarUser from "./SidebarUser";
 
 function Sidebar() {
 
@@ -29,7 +30,7 @@ function Sidebar() {
                         );
                     })}
                 </ul>
-                
+                <SidebarUser />
             </div>
         </div>
     );

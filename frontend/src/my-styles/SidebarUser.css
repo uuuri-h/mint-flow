@@ -1,0 +1,12 @@
+.SidebarUserContainer {
+    bottom: 0;
+    width: 100%;
+     margin-top: auto;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* .SidebarUser {
+
+} */
