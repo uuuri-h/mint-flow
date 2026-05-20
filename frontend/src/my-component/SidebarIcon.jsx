@@ -1,10 +1,12 @@
 import React from 'react'
+import "../my-styles/SidebarIcon.css"
+//import Icon from "../images/icon.png"
 
 function SidebarIcon() {
   return (
     <div className="SidebarIcon">
-        <div id="icon">🍔</div>
-        <div id="title">Order System</div>
+        {/* <img src={icon} ></img> */}
+        <div className="logo">Mint Flow</div>
     </div>
   )
 }

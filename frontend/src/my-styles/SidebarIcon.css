@@ -1,0 +1,16 @@
+.SidebarIcon {
+    padding-top: 20px;
+    height: 86px;
+}
+
+
+.logo {
+    font-family: 'Righteous', cursive;
+    color: #42b4a8;
+    text-align: left;
+    font-size: 25px;
+    letter-spacing: 1px;
+    margin-bottom: 0px;
+    margin-left: 10%;
+    margin-top: 10px;
+}

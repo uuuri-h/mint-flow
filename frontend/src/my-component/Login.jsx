@@ -15,7 +15,7 @@ function Login() {
     //ログインボタンがクリックされたときの処理
     const handleLogin = async (e) => {
         e.preventDefault();
-
+        console.log("login click");
         try {
             const response = await axios.post(
                 'http://localhost:8000/login/',//ReactからFastAPIへ！　HTTP通信（JSONデータを送信）

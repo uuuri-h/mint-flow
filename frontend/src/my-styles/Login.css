@@ -88,6 +88,8 @@ button {
     font-weight: bold;
     display: block;
     margin: 20px auto 0;
+    position: relative;
+    z-index: 10;
 }   
 
 button:hover {
