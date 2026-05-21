@@ -33,9 +33,10 @@ function SidebarUser() {
         <div className="SidebarUserContainer">
             <div className="SidebarUser">
                 <img src={icon} ></img>
-                <p>{user ? user.user_name : 'ゲスト'}</p>
-                <p>{user ? user.userid : '000000'} / {user ? user.department_name : '----'}</p>
-                <p></p>
+                <div className="UserGrp">
+                    <p className="UserName">{user ? user.user_name : 'ゲスト'}</p>
+                    <p className="UserInfo">{user ? user.userid : '000000'} / {user ? user.department_name : '----'}</p>
+                </div>
             </div>
         </div>
     )
