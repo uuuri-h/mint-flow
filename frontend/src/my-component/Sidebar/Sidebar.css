@@ -22,13 +22,20 @@
 
     list-style: none;
     margin: 0;
-    color: rgb(85, 84, 84);
     
 
 }
 
+#title {
+    flex: 70%;
+    font-size: 14px;
+    font-weight: 500;
 
-.SidebarList .row {
+    /* background-color: red; */
+}   
+
+
+.SidebarList .nav-link {
     width : 100%;
     height: 45px;
     display: flex;
@@ -37,27 +44,27 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-
     margin-bottom: 2px;
+
+    color: rgb(85, 84, 84);
+    text-decoration: none;
 }
 
-.SidebarList #active {
-    /* background-color: #42b4a8; */
+.SidebarList .nav-link.active {
     background-color: rgba(66, 180, 168, 0.3);
-    /* color: white; */
     color: #05746c;
 }
 
-.SidebarList #active #title {
+.SidebarList .nav-link.active #title {
     color: #05746c;
 }
 
-.row #title:hover {
+.nav-link #title:hover {
     color: #05746c;
 }
 
 
-.SidebarList .row:hover {
+.SidebarList .nav-link:hover {
     /* background-color: #42b4a8; */
     background-color: rgba(66, 180, 168, 0.3);
     cursor: pointer;
@@ -67,7 +74,7 @@
 
 
 
-.row #icon {
+.nav-link #icon {
     flex: 30%;
 
     /* アイコンを中央に配置 */
@@ -75,9 +82,3 @@
     place-items: center;
 }   
 
-.row #title {
-    flex: 70%;
-    font-size: 15px;
-    color: rgb(85, 84, 84);
-
-}

@@ -1,6 +1,7 @@
 
 import { Outlet } from "react-router-dom";
 import "./Sidebar.css";
+import { NavLink } from "react-router-dom";
 
 //名前つきエクスポートされたSidebarDataをインポート
 import { SidebarData } from "./SidebarData"; 
@@ -17,17 +18,24 @@ function Sidebar() {
                 <ul className="SidebarList"> 
                     {SidebarData.map((value, key) => {
                         return (
-                            <li 
-                                /*active属性をつける*/
-                                key={key} className="row" 
+                            <li key={key} className="row" >
+                                <NavLink 
+                                    to={value.link} 
+                                    className={({ isActive }) =>
+                                        isActive ? "nav-link active" : "nav-link"
+                                    }   
+                                >  
+                                {/* /*active属性をつける*/}
+                                {/* key={key} className="row" 
                                 id={window.location.pathname === value.link ? "active" : ""} 
                                 onClick={() => {
                                     window.location.href = value.link
-                                }}
-                            >
-                                <div id="icon">{value.icon}</div>
-                                <div id="title">{value.title}</div>
-                            </li>
+                                }} */}
+                            
+                                    <div id="icon">{value.icon}</div>
+                                    <div id="title">{value.title}</div>
+                                </NavLink>
+                        </li>
                         );
                     })}
                 </ul>

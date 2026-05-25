@@ -4,7 +4,7 @@ import Home from "./my-pages/Home/Home";
 import OrderList from "./my-pages/OrderList/OrderList";
 import NewOrder from "./my-pages/NewOrder/NewOrder";
 import Layout from "./my-layouts/Layout";
-
+import Setting from "./my-pages/Setting/Setting";
 
 function App() {
   return (
@@ -27,6 +27,11 @@ function App() {
             <Route 
                 path="/order-list"
                 element={<OrderList />}
+            />
+
+            <Route 
+                path="/setting"
+                element={<Setting />}
             />
 
         </Route>

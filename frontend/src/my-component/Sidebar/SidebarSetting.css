@@ -21,10 +21,25 @@
 .LogoutGrp {
     display: flex;
     align-items: center;
-    margin: 0;
+    gap: 5px;
+
+    width: 100%;
     padding: 0;
-    line-height: 0.5;
+
+    text-decoration: none;
+    color: inherit;
 }
+
+
+.SettingGrp:hover, .LogoutGrp:hover {
+    cursor: pointer;
+    color: #42b4a8;
+}
+
+.SettingGrp.active {
+    color: #42b4a8;
+}
+
 
 @media (max-height: 415px) {
     .SidebarSetting{
@@ -39,10 +54,11 @@
 
     .SidebarSetting .icon {
         font-size: 19px;
-        margin-right: 8px;
+        margin-right: 5px;
     }
+
     .SettingGrp {
-        margin-right: 30px;
+        margin-right: -40px;
     }
 
 }

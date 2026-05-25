@@ -29,7 +29,7 @@ class UserSchema(BaseModel):
     userid: str = Field(..., example="260011")
     user_name: str = Field(..., example="山田太郎")
     department_code: str = Field(..., example="001")
-    department_name: str = Field(..., example="営業部")
+    department_name: str = Field(..., example="営業部") #002は購買部
     
 
 #レスポンスで使用するスキーマ

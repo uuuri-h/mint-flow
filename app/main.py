@@ -58,7 +58,7 @@ def get_user(user_id: str):
         userid=user_id,
         user_name="山田太郎",
         department_code="001",
-        department_name="生産管理部"
+        department_name="営業部"
     )
     
 #ユーザー認証

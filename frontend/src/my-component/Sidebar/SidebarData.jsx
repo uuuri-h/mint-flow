@@ -20,4 +20,10 @@ export const SidebarData = [
         icon: <ListAltIcon />,
         link: '/order-list'
     },
+    
+    //         {
+    //     title: "設定",
+    //     icon: <ListAltIcon />,
+    //     link: '/setting'
+    // },
 ];
