@@ -4,10 +4,17 @@ import { NavLink } from "react-router-dom";
 import "./SidebarSetting.css";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ConfirmModal from '../Modal/ConfirmModal';
 
 
 function SidebarSetting() {
-    const [open, setOpen] = React.useState(false);
+    const [showModal, setShowModal] = React.useState(false);
+    const [content, setContent] = React.useState("");
+
+    const ShowModal = () => {
+        setShowModal(true);
+        setContent("ログアウト");
+    };
 
     const logout = async () => {
         try {
@@ -19,23 +26,31 @@ function SidebarSetting() {
     };  
 
     return (
-        <div className="SidebarSettingContainer">
-            <div className="SidebarSetting">
-                <NavLink 
-                    to="/setting" 
-                    className={({ isActive }) =>
-                        isActive ? "SettingGrp active" : "SettingGrp"
-                    }
-                >
-                    <SettingsIcon className='icon'/>
-                    <p>設定</p>
-                </NavLink>
-                <div className='LogoutGrp' onClick={() => setOpen(true)}>
-                    <LogoutIcon className='icon'/>
-                    <p>ログアウト</p>
+        <>
+            <div className="SidebarSettingContainer">
+                <div className="SidebarSetting">
+                    <NavLink 
+                        to="/setting" 
+                        className={({ isActive }) =>
+                            isActive ? "SettingGrp active" : "SettingGrp"
+                        }
+                    >
+                        <SettingsIcon className='icon'/>
+                        <p>設定</p>
+                    </NavLink>
+                    <div className='LogoutGrp' onClick={ShowModal} content={setContent}>
+                        <LogoutIcon className='icon'/>
+                        <p>ログアウト</p>
+                    </div>
+
                 </div>
             </div>
-        </div>
+        <ConfirmModal 
+            showFlag={showModal} 
+            setShowModal={setShowModal} 
+            content={content} 
+            />
+        </>
     )
 };
 
