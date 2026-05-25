@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import "../my-styles/SidebarSetting.css";
+import "./SidebarSetting.css";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 

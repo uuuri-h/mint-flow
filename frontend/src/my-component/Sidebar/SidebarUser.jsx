@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import "../my-styles/SidebarUser.css";
-import icon from "../images/user_icon.png"
+import "./SidebarUser.css";
+import icon from "../../images/user_icon.png"
 
 function SidebarUser() {
     const [user, setUser] = React.useState(null);

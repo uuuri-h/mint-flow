@@ -1,5 +1,5 @@
 import React from 'react'
-import "../my-styles/SidebarIcon.css"
+import "./SidebarIcon.css"
 //import Icon from "../images/icon.png"
 
 function SidebarIcon() {

@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import '../my-styles/Home.css'
+import './OrderList.css'
 
-function Home() {
+function OrderList() {
     const [user, setUser] = React.useState(null);
 
     React.useEffect(() => {
@@ -30,12 +30,12 @@ function Home() {
 
     return (
         <div>
-            <h1>ホームページ</h1>
-            <p>ここはホームページです。</p>
+            <h1>購買リスト</h1>
+            <p>ここは購買リストです。</p>
             <p>ようこそ{user ? user.user_name : 'ゲスト'}さん</p>
         </div>
     );
 }
 
 
-export default Home;
+export default OrderList;

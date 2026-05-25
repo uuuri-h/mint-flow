@@ -1,6 +1,8 @@
 import React from 'react'
 import HomeIcon from "@mui/icons-material/Home";
+import AddIcon from "@mui/icons-material/Add";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+
 
 export const SidebarData = [
     {
@@ -9,13 +11,13 @@ export const SidebarData = [
         link: '/home'
     },
     {
-        title: "依頼一覧",
-        icon: <ListAltIcon />,
-        link: '/purchasing-list'
+        title: "新規依頼",
+        icon: <AddIcon />,
+        link: '/new-order'
     },
         {
         title: "依頼一覧",
         icon: <ListAltIcon />,
-        link: '/purchasing-list'
+        link: '/order-list'
     },
 ];

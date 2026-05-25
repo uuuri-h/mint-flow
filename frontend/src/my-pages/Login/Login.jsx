@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../my-styles/Login.css'
+import './Login.css'
 import { useNavigate } from 'react-router-dom'; // 追加: useNavigateをインポート
 
 function Login() {

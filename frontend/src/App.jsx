@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./my-component/Login";
-import Home from "./my-component/Home";
-import PurchasingList from "./my-component/purchasing-list";
-import Layout from "./my-component/Layout";
+import Login from "./my-pages/Login/Login";
+import Home from "./my-pages/Home/Home";
+import OrderList from "./my-pages/OrderList/OrderList";
+import NewOrder from "./my-pages/NewOrder/NewOrder";
+import Layout from "./my-layouts/Layout";
 
 
 function App() {
@@ -20,8 +21,12 @@ function App() {
                 element={<Home />}
             />
             <Route 
-                path="/purchasing-list"
-                element={<PurchasingList />}
+                path="/new-order"
+                element={<NewOrder />}
+            />
+            <Route 
+                path="/order-list"
+                element={<OrderList />}
             />
 
         </Route>

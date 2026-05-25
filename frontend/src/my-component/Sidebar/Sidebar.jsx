@@ -1,6 +1,6 @@
 
 import { Outlet } from "react-router-dom";
-import "../my-styles/Sidebar.css";
+import "./Sidebar.css";
 
 //名前つきエクスポートされたSidebarDataをインポート
 import { SidebarData } from "./SidebarData"; 
