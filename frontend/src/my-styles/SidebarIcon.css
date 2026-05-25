@@ -1,6 +1,8 @@
 .SidebarIcon {
-    padding-top: 20px;
-    height: 86px;
+    padding-top: auto;
+    height: 65px;
+    display: flex;
+    margin-top: 5px;
 }
 
 
@@ -13,4 +15,7 @@
     margin-bottom: 0px;
     margin-left: 10%;
     margin-top: 10px;
+    justify-content: center; /* 横中央 */
+    align-items: center;     /* 縦中央 */
 }
+

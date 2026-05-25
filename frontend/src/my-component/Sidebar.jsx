@@ -6,6 +6,7 @@ import "../my-styles/Sidebar.css";
 import { SidebarData } from "./SidebarData"; 
 import SidebarIcon from "./SidebarIcon";
 import SidebarUser from "./SidebarUser";
+import SidebarSetting from "./SidebarSetting";
 
 function Sidebar() {
 
@@ -31,6 +32,7 @@ function Sidebar() {
                     })}
                 </ul>
                 <SidebarUser />
+                <SidebarSetting />
             </div>
         </div>
     );

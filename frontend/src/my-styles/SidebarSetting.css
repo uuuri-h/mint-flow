@@ -1,0 +1,48 @@
+.SidebarSettingContainer {
+    margin: 5px 0 5px 0;
+    /* background-color: aqua; */
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.SidebarSetting {
+    margin-left: 20px;
+    font-size: 12px;
+
+}
+
+.SidebarSetting .icon {
+    margin-right: 20px;
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+.SettingGrp,
+.LogoutGrp {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    line-height: 0.5;
+}
+
+@media (max-height: 415px) {
+    .SidebarSetting{
+        display: flex;
+    }
+
+    .SettingGrp,
+    .LogoutGrp {
+        line-height: 0.4;
+
+    }
+
+    .SidebarSetting .icon {
+        font-size: 19px;
+        margin-right: 8px;
+    }
+    .SettingGrp {
+        margin-right: 30px;
+    }
+
+}
