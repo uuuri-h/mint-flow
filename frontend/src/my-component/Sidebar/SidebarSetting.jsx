@@ -9,6 +9,7 @@ import ConfirmModal from '../Modal/ConfirmModal';
 
 function SidebarSetting() {
     const [showModal, setShowModal] = React.useState(false);
+    const [logout, setConfirmStatus] = React.useState(false);
     const [content, setContent] = React.useState("");
 
     const ShowModal = () => {
@@ -16,7 +17,7 @@ function SidebarSetting() {
         setContent("ログアウト");
     };
 
-    const logout = async () => {
+    const Logout = async () => {
         try {
             await axios.post('/api/logout');
             window.location.href = '/login';
@@ -48,7 +49,9 @@ function SidebarSetting() {
         <ConfirmModal 
             showFlag={showModal} 
             setShowModal={setShowModal} 
+            setConfirmStatus={setConfirmStatus}
             content={content} 
+
             />
         </>
     )

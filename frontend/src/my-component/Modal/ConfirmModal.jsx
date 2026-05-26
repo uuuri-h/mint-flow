@@ -6,6 +6,10 @@ function ConfirmModal(props) {
         props.setShowModal(false);
     };
 
+    const confirmStatus = () => {
+        props.setConfirmStatus(true);
+    }
+
     return (
     <>
         {props.showFlag ? ( //showFlagがtrueのときにモーダルを表示
@@ -13,7 +17,7 @@ function ConfirmModal(props) {
                 <div className="ModalContent">
                     <h2>{props.content || "確認"}</h2>
                     <p>本当に{props.content || "この操作"}をしますか？</p>
-                    <button className="ConfirmButton">はい</button>
+                    <button className="ConfirmButton" onClick={confirmStatus}>はい</button>
                     <button className="CancelButton" onClick={closeModal}>いいえ</button>
                 </div>
             </div>
