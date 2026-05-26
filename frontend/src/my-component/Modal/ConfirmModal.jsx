@@ -1,4 +1,5 @@
 import React from 'react'
+import "./ConfirmModal.css";
 
 function ConfirmModal(props) {
     const closeModal = () => {
@@ -8,7 +9,7 @@ function ConfirmModal(props) {
     return (
     <>
         {props.showFlag ? ( //showFlagがtrueのときにモーダルを表示
-            <div className="ModalOverlay">
+            <div className="ModalOverlay" >
                 <div className="ModalContent">
                     <h2>{props.content || "確認"}</h2>
                     <p>本当に{props.content || "この操作"}をしますか？</p>

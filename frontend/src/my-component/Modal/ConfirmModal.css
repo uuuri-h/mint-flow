@@ -1,0 +1,21 @@
+.ModalContent {
+  background: white;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.ModalOverlay {
+  /*親要素じゃなくてブラウザ画面（viewport）基準で配置する*/
+  /* position: fixedで、位置を決める基準が画面になる！！*/
+  position: fixed; 
+  
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
