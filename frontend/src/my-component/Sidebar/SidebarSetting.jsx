@@ -17,14 +17,20 @@ function SidebarSetting() {
         setContent("ログアウト");
     };
 
+
     const Logout = async () => {
-        try {
-            await axios.post('/api/logout');
-            window.location.href = '/login';
-        } catch (error) {
-            console.error('Logout failed:', error);
+        localStorage.removeItem("token");
+
+        alert("ログアウトしました");
+        window.location.href = '/'; // ログアウト後にログインページへリダイレクト
+    };
+    
+
+    React.useEffect(() => { //値が変更されたときに実行される（logoutがtrueになったときにLogout関数を呼び出す）
+        if (logout) {
+            Logout();
         }
-    };  
+    }, [logout]);
 
     return (
         <>
