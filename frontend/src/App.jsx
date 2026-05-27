@@ -10,35 +10,35 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [user, setUser] = React.useState(null);
+    const [user, setUser] = React.useState(null);
 
-  React.useEffect(() => {
-      const fetchUser = async () => {
-          try {
+    React.useEffect(() => {
+        const fetchUser = async () => {
+            try {
               // ローカルストレージからトークンを取得
-              const token = localStorage.getItem('token'); 
+                const token = localStorage.getItem('token'); 
 
               console.log('取得したトークン:', token); // トークンの値を確認
-              
-              const response = await axios.get('http://localhost:8000/users/me/', {
-                  headers: {
+
+                const response = await axios.get('http://localhost:8000/users/me/', {
+                    headers: {
                       Authorization: `Bearer ${token}` // トークンをAuthorizationヘッダーに含める
-                  }
-              });
-              setUser(response.data);
-              console.log("response.data", response.data);
-          } catch (error) {
-              console.error('ユーザー情報の取得に失敗しました', error);
-          }
-      };
+                    }
+                });
+                setUser(response.data);
+                console.log("response.data", response.data);
+            } catch (error) {
+                console.error('ユーザー情報の取得に失敗しました', error);
+            }
+        };
 
-      fetchUser();
+    fetchUser();
 
-  }, []); 
+    }, []); 
 
-  return (
+    return (
     <BrowserRouter>
-      <Routes>
+    <Routes>
 
         <Route path="/" element={<Login />} />
 
@@ -54,9 +54,9 @@ function App() {
             <Route 
                 path="/new-order"
                 element={
-                  user && user.department_code === "001" ? 
-                  <NewOrder /> 
-                  : <Home />
+                    user && user.department_code === "001" ? 
+                    <NewOrder /> 
+                    : <Home />
                 }
             />
 
@@ -73,7 +73,7 @@ function App() {
 
         </Route>
 
-      </Routes>
+    </Routes>
     </BrowserRouter>
     // <BrowserRouter>
     //   <Routes>
@@ -81,7 +81,7 @@ function App() {
     //     <Route path="/home" element={<Home />} />
     //   </Routes>
     // </BrowserRouter>
-  );
+    );  
 }
 
 export default App;

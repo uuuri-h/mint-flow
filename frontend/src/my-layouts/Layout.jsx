@@ -12,8 +12,9 @@ function Layout({user}) {
 
             <div className="main-content">
 
-                <Outlet /> {/* この Outlet の位置に、ルーティングされたページが入る。 */}
-
+                {/* この Outlet の位置に、ルーティングされたページが入る。 */}
+                {/* <Outlet user={user}/>  */} {/* 直接userを渡すのはできない　（普通の props をそのまま子に流してくれない。）→　useOutletContextで受け取る　*/}
+                <Outlet context={{ user }} />
             </div>
 
         </div>
