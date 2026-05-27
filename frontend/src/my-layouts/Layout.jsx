@@ -2,13 +2,13 @@ import Sidebar from "../my-component/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 import "./Layout.css";
 
-function Layout() {
+function Layout({user}) {
 
     return (
 
         <div className="layout">
 
-            <Sidebar />
+            <Sidebar user={user} />
 
             <div className="main-content">
 

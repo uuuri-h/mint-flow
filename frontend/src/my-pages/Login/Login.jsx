@@ -37,6 +37,7 @@ function Login() {
             
             //ホームページにリダイレクト
             navigate('/home');
+            window.location.reload();
 
         } catch (error) {
             console.error('There was an error!', error);

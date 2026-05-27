@@ -28,8 +28,9 @@ class TokenResponseSchema(BaseModel):
 class UserSchema(BaseModel):
     userid: str = Field(..., example="260011")
     user_name: str = Field(..., example="山田太郎")
-    department_code: str = Field(..., example="001")
-    department_name: str = Field(..., example="営業部") #002は購買部
+    department_code: str = Field(..., example="002")
+    department_name: str = Field(..., example="購買部") #002は購買部
+    admin_flag: bool = Field(..., example=False) #管理者フラグ　Trueなら管理者、Falseなら一般ユーザー
     
 
 #レスポンスで使用するスキーマ

@@ -4,6 +4,7 @@ import './Home.css'
 
 function Home() {
     const [user, setUser] = React.useState(null);
+    // localStorage.getItem("token")
 
     React.useEffect(() => {
         const fetchUser = async () => {

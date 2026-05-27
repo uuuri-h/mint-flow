@@ -57,8 +57,9 @@ def get_user(user_id: str):
     return UserSchema(
         userid=user_id,
         user_name="山田太郎",
-        department_code="001",
-        department_name="営業部"
+        department_code="002",
+        department_name="購買部",
+        admin_flag=False
     )
     
 #ユーザー認証
@@ -116,7 +117,7 @@ def create_access_token(data: dict):
 
     to_encode = data.copy() #to_encode = dict(data)/ to_encode = {**data}
 
-    expire = datetime.now(timezone.utc) + timedelta(minutes=30) #30分後の時刻をつくる
+    expire = datetime.now(timezone.utc) + timedelta(minutes=480) #8時間後の時刻をつくる
 
     to_encode.update({"exp": expire})
 

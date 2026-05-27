@@ -9,14 +9,15 @@ import SidebarIcon from "./SidebarIcon";
 import SidebarUser from "./SidebarUser";
 import SidebarSetting from "./SidebarSetting";
 
-function Sidebar() {
-
+function Sidebar({user}) {
+    const menu = SidebarData(user);
+    console.log("Sidebar user:", user);
     return (
         <div className="SidebarContainer">
             <div className="Sidebar">
                 <SidebarIcon />
                 <ul className="SidebarList"> 
-                    {SidebarData.map((value, key) => {
+                    {menu.map((value, key) => {
                         return (
                             <li key={key} className="row" >
                                 <NavLink 
@@ -39,7 +40,7 @@ function Sidebar() {
                         );
                     })}
                 </ul>
-                <SidebarUser />
+                <SidebarUser  user={user}/>
                 <SidebarSetting />
             </div>
         </div>
