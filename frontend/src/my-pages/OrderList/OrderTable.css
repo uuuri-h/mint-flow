@@ -1,0 +1,42 @@
+.order-table-container { 
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th, .order-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.order-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.order-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.order-table .status {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.order-table .status.completed {
+    color: #28a745;
+}
+.order-table .status.pending {
+    color: #ffc107;
+}
+.order-table .status.cancelled {
+    color: #dc3545;
+}
+

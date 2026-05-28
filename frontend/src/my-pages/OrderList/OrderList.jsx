@@ -3,6 +3,7 @@ import axios from 'axios';
 import './OrderList.css'
 import { useOutletContext } from 'react-router-dom' //outletからcontextを受け取る
 
+import OrderTable from "./OrderTable"
 
 function OrderList() {
     const { user } = useOutletContext(); //contextからuserを取得
@@ -12,8 +13,7 @@ function OrderList() {
             <div className="order-list-header">
                 <h1>発注依頼一覧</h1>
             </div>
-            <p>ここは依頼一覧です。</p>
-            <p>ようこそ{user ? user.user_name : 'ゲスト'}さん</p>
+            <OrderTable />
         </div>
     );
 }
