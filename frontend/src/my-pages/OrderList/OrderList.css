@@ -1,5 +1,8 @@
 
 .order-list-container {
+    width: 100%;
+    overflow-x: auto; /* 横スクロールを有効にする */
+    margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -12,4 +15,6 @@
     font-size: 18px;
     color: #5b5b5b;
     text-align:left;
+
+    box-sizing: border-box;
 }
