@@ -21,7 +21,7 @@
 .LogoutGrp {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 1px;
 
     width: 100%;
     padding: 0;
@@ -44,6 +44,7 @@
 @media (max-height: 415px) {
     .SidebarSetting{
         display: flex;
+        font-size: 11px;
     }
 
     .SettingGrp,
@@ -53,12 +54,12 @@
     }
 
     .SidebarSetting .icon {
-        font-size: 19px;
-        margin-right: 5px;
+        font-size: 17px;
+        margin-right: 10px;
     }
 
     .SettingGrp {
-        margin-right: -40px;
+        margin-right: -30px;
     }
 
 }

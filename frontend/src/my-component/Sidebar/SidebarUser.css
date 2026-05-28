@@ -48,4 +48,15 @@
         align-items: center;
         gap: 12px;
     }
+
+    .SidebarUser img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .UserName {
+        font-size: 12px;
+    }
+
+
 }

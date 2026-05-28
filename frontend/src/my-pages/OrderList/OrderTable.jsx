@@ -37,7 +37,7 @@ function OrderTable() {
                         <td className="td3">JOB26-00022</td>
                         <td className="td4">A COMPANY</td>
                         <td className="td5">10</td>
-                        <td className="td6">￥1000</td>
+                        <td className="td6">￥1797300</td>
                         <td className="td7">2023-10-01</td>
                         <td className="td9">処理中</td>
                         <td className="td10">

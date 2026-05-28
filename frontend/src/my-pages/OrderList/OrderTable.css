@@ -1,37 +1,33 @@
 .order-table-container { 
     margin-top: 20px;
     overflow-x: auto; /* 横スクロールを有効にする */
-}
-
-.order-table {
-    width: max-content;
-    min-width: 1000px; /* テーブルの最小幅を設定 */
-    border-collapse: collapse;
 
     border: 1px solid #ddd;
     border-radius: 10px;
+    overflow: hidden; /* テーブルの角を丸くするために必要 */
+        width: max-content;
+}
+
+.order-table {
+    min-width: 1000px; /* テーブルの最小幅を設定 */
+    border-collapse: collapse; /* セルの境界線を重ねる */
 
     /* table-layout: fixed;  */
     /* セルの幅を固定にする */
-
-
     font-size: 14px;
-
-    
 }
 
 .order-table th, .order-table td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left; /* テキストを左揃え */
+    
 
 }
 
 .order-table th {
     background-color: #f2f2f2;
     color: #333;
-
-    
 }
 
 .order-table td {
@@ -54,7 +50,13 @@
 .check-box {
     width: 20px;
     height: 20px;
+
+    /*チェックしたときのスタイル*/
+    accent-color: #2f9e8f;
+
 } 
+
+
 
 .th1,
 .td1,
@@ -63,6 +65,7 @@
   text-align: center;
   vertical-align: middle;
 }
+
 
 .btn {
     width : 46px;
