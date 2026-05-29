@@ -1,11 +1,12 @@
 .order-table-container { 
     margin-top: 20px;
     overflow-x: auto; /* 横スクロールを有効にする */
+    overflow-y: auto; /* 縦スクロールを有効にする */
 
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden; /* テーブルの角を丸くするために必要 */
-        width: max-content;
+    width: max-content;
 }
 
 .order-table {

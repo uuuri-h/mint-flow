@@ -13,6 +13,7 @@ class InsertAndUpdateOrderDetailSchema(BaseModel):
     quantity: int = Field(..., example=20)
     price: int = Field(..., example=1000)
     supplier_id: str = Field(..., example="0001")
+    customer_id: str = Field(..., example="0001") 
     status: int = Field(..., example=1)
     
 
@@ -26,6 +27,7 @@ class OrderDetailSchema(InsertAndUpdateOrderDetailSchema):
     order_id: str = Field(..., example="ORD26-0001")
     item_id: str = Field(..., example="ITM26-0001")
     item_num: int = Field(..., example=1)
+    
 
 
 #レスポンスで使用するスキーマ
@@ -39,3 +41,22 @@ class ResponseSchema(BaseModel):
 class OrderCreateSchema(BaseModel):
     header: InsertAndUpdateOrderSchema
     details: list[InsertAndUpdateOrderDetailSchema]
+    
+#発注情報を取得する際のスキーマ　（詳細画面の取得用で使う）
+class OrderResponseSchema(BaseModel):   
+    header: OrderSchema
+    details: list[OrderDetailSchema]  
+    
+#発注一覧を取得する際のスキーマ　（一覧画面の取得用で使う）
+class OrderListItemSchema(BaseModel):
+    order_id: str
+    order_date: date
+    status: int
+    total_amount: int
+    customer_name: str
+    total_quantity: int
+    delivery_date: date
+
+#発注一覧のレスポンススキーマ
+class OrderListResponseSchema(BaseModel):
+    orders: list[OrderListItemSchema]
