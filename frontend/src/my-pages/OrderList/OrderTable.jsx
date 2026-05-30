@@ -1,7 +1,37 @@
 import React from 'react'
 import './OrderTable.css'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import axios from 'axios'
 
 function OrderTable() {
+    const [orders, setOrders] = useState([]);
+    const statusMap = {
+        0: '依頼中',
+        1: '一部発注済み',
+        2: '発注済み',
+        99: 'キャンセル'
+    };
+    {/* const[状態, 状態を更新する関数] = useState(初期値) */ }
+
+    useEffect(() => {
+        // ここでAPIから発注データを取得して状態に保存する処理を実装
+        const fetchOrders = async () => {
+            try {
+                const response = await axios.get(
+                    'http://localhost:8000/requests/summaries'
+                );
+                console.log('response.data.requests:', response.data.requests)
+
+                setOrders(response.data.requests)
+            } catch (error) {
+                console.error('発注依頼データの取得に失敗しました:', error);
+            }
+        };
+
+        fetchOrders();
+    }, []);
+
     return (
         <div className="order-table-container">
             <table className="order-table">
@@ -17,7 +47,9 @@ function OrderTable() {
                     <col className="col10" style={{ width: '8%' }} />
                 </colgroup> */}
                 <thead>
-                    <tr>
+                    <tr 
+                    >
+
                         <th className="th1"></th>
                         <th className='th2'>依頼日</th>
                         <th className='th3'>依頼ID</th>
@@ -31,6 +63,21 @@ function OrderTable() {
                 </thead>
                 <tbody>
                     {/* ここに発注データをマッピングして表示 */}
+                    {orders.map((order) => (
+                        <tr key={order.id}>
+                            <td className="td1"><input type="checkbox" className="check-box" /></td>
+                            <td className="td2">{order.request_date}</td>
+                            <td className="td3">{order.request_id}</td>
+                            <td className="td4">{order.customer_name}</td>
+                            <td className="td5">{order.item_count}</td>
+                            <td className="td6">￥{order.total_amount}</td>
+                            <td className="td7">{order.delivery_date}</td>
+                            <td className="td9">{statusMap[order.status]}</td>
+                            <td className="td10">
+                                <button className="btn btn-primary">編集</button>
+                            </td>
+                        </tr>
+                    ))}
                     <tr>
                         <td className="td1"><input type="checkbox" className="check-box" /></td>  
                         <td className="td2">2023-10-01</td>

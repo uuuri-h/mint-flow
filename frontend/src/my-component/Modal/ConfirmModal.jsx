@@ -2,7 +2,7 @@ import React from 'react'
 import "./ConfirmModal.css";
 
 function ConfirmModal(props) {
-    console.log(props);
+    // console.log(props);
     const closeModal = () => {
         props.setShowModal(false);
     };

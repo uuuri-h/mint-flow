@@ -9,12 +9,15 @@ export const SidebarData = (user) => {
     {
         title: "ホーム",
         icon: <HomeIcon />,
-        link: '/home'
+        link: '/home',
+        order: 0
     },
         {
         title: "依頼一覧",
         icon: <ListAltIcon />,
-        link: '/order-list'
+        link: '/order-list',
+        order: 2
+
     },
 ];
     
@@ -22,8 +25,12 @@ export const SidebarData = (user) => {
         menu.push({
             title: "新規依頼",
             icon: <AddIcon />,
-            link: '/new-order'
+            link: '/new-order',
+            order: 1
         });
     }
+
+    /*menuをorderの昇順でソート　aをbと比較*/
+    menu.sort((a, b) => a.order - b.order);
     return menu;
 }

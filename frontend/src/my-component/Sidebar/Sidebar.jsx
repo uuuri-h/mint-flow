@@ -11,7 +11,7 @@ import SidebarSetting from "./SidebarSetting";
 
 function Sidebar({user}) {
     const menu = SidebarData(user);
-    console.log("Sidebar user:", user);
+    // console.log("Sidebar user:", user);
     return (
         <div className="SidebarContainer">
             <div className="Sidebar">
