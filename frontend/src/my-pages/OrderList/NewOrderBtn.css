@@ -1,0 +1,12 @@
+。new-order-btn-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px; /* テーブルとの間隔を調整 */
+}
+.new-order-btn {
+    text-align: center;
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+}   

@@ -8,6 +8,7 @@ import Setting from "./my-pages/Setting/Setting";
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import './App.css'
 
 function App() {
     const [user, setUser] = React.useState(null);

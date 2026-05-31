@@ -18,3 +18,16 @@ body,
 }
 
 
+.button {
+  padding: 10px;
+  background-color: #42b4a8;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.button:hover {
+    background-color: #36a39c;
+}
