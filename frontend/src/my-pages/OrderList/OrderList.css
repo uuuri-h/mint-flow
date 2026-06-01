@@ -1,6 +1,7 @@
 
 .order-list-container {
     width: 100%;
+    flex: 1;
     /* overflow-x: auto;  */
     /* 横スクロールを有効にする */
     margin: 0 auto;

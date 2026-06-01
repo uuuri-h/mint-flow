@@ -1,7 +1,12 @@
 .ModalContent {
   background: white;
   padding: 10px;
-  border-radius: 3px;
+  border-radius: 8px;
+
+  width: 300px;
+  height: 200px;
+  text-align: center;
+
 }
 
 .ModalOverlay {
@@ -18,4 +23,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.button-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.CancelButton, .ConfirmButton {
+  width: 80px;
+
+}
+
+.ConfirmButton {
+  margin-right: 40%;
 }

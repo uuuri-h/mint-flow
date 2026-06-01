@@ -1,7 +1,7 @@
 import React from 'react'
-import './NewOrderbtn.css'
+import './NewOrderBtn.css'
 
-function NewOrderbtn() {
+function NewOrderBtn() {
 return (
     <div className='new-order-btn-container'>
         <button className='button new-order-btn'>新規発注</button>
@@ -9,4 +9,4 @@ return (
 )
 }
 
-export default NewOrderbtn
+export default NewOrderBtn

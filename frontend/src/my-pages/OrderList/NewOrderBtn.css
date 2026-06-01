@@ -1,12 +1,13 @@
-。new-order-btn-container {
+.new-order-btn-container {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px; /* テーブルとの間隔を調整 */
+    justify-content: flex-end;
 }
+
 .new-order-btn {
-    text-align: center;
-    width: 100px;
-    height: 40px;
+    width: 130px;
+    height: 44px;
+    padding: 0;
     font-size: 16px;
-}   
+    margin: 0;
+}

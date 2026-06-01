@@ -18,8 +18,10 @@ function ConfirmModal(props) {
                 <div className="ModalContent">
                     <h2>{props.content || "確認"}</h2>
                     <p>本当に{props.content || "この操作"}をしますか？</p>
-                    <button className="button ConfirmButton" onClick={confirmStatus}>はい</button>
-                    <button className="button CancelButton" onClick={closeModal}>いいえ</button>
+                    <div className="button-container">
+                        <button className="button ConfirmButton" onClick={confirmStatus}>はい</button>
+                        <button className="button CancelButton" onClick={closeModal}>いいえ</button>
+                    </div>
                 </div>
             </div>
         ) : ( //showFlagがfalseのときは何も表示しない

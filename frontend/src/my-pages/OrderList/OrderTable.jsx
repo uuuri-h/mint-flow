@@ -82,7 +82,7 @@ function OrderTable() {
                                 <td className="td7">{order.delivery_date}</td>
                                 <td className="td9">{statusMap[order.status]}</td>
                                 <td className="td10">
-                                    <button className="btn btn-primary">編集</button>
+                                    <button className="button btn btn-primary">編集</button>
                                 </td>
                             </tr>
                         ))}
