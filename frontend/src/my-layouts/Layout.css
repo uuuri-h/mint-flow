@@ -8,6 +8,11 @@
     min-width: 0;
     padding: 20px;
     background-color: #eef6f6;
+
+    /* スクロールバーを表示するためのスタイル */
+    /* min-height: 0; は子要素が親からはみ出しても、縮んでいいようにするためのスタイル */
+    min-height: 0;
+    overflow-y: auto;
 }
 
 .page-inner {
@@ -18,4 +23,39 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.button {
+    padding: 10px;
+    background-color: #42b4a8;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: #36a39c;
+}
+
+.pg-container {
+    width: 100%;
+    flex: 1;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #5b5b5b;
+
+}
+
+.pg-header h1{
+    margin: 0;
+    margin-left: 5px;
+    font-size: 18px;
+    color: #5b5b5b;
+    text-align:left;
+    box-sizing: border-box;
 }

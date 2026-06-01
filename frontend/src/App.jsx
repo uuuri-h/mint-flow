@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./my-pages/Login/Login";
 import Home from "./my-pages/Home/Home";
 import OrderList from "./my-pages/OrderList/OrderList";
-import NewOrder from "./my-pages/NewOrder/NewOrder";
+import OrderDetail from "./my-pages/OrderDetail/OrderDetail";
 import Layout from "./my-layouts/Layout";
 import Setting from "./my-pages/Setting/Setting";
 import React from "react";
@@ -53,10 +53,10 @@ function App() {
             />
 
             <Route 
-                path="/new-order"
+                path="/order-detail"
                 element={
                     user && user.department_code === "001" ? 
-                    <NewOrder /> 
+                    <OrderDetail /> 
                     : <Home />
                 }
             />

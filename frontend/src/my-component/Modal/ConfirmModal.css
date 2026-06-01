@@ -7,6 +7,13 @@
   height: 200px;
   text-align: center;
 
+  padding-top: 25px;
+
+}
+
+.ModalContent h2 {
+  color: #36a39c;
+  font-weight: bold;
 }
 
 .ModalOverlay {
@@ -26,16 +33,19 @@
 }
 
 .button-container {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 20px;
+
+  /*小要素同士の間隔を指定*/
+  display: flex;
+  gap: 47px;
+
+  justify-content: center;
 
 }
 
 .CancelButton, .ConfirmButton {
-  width: 80px;
-
-}
-
-.ConfirmButton {
-  margin-right: 40%;
+  width: 90px;
+  margin: 0;
+  margin-top: 20px;
 }

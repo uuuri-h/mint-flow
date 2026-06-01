@@ -10,8 +10,8 @@ function OrderList() {
     const { user } = useOutletContext(); //contextからuserを取得
 
     return (
-        <div className="order-list-container">
-            <div className="order-list-header">
+        <div className="pg-container order-list-container">
+            <div className="pg-header order-list-header">
                 <h1>発注依頼一覧</h1>
             </div>
             <NewOrderBtn />

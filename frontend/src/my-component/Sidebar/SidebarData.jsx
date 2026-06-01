@@ -25,7 +25,7 @@ export const SidebarData = (user) => {
         menu.push({
             title: "新規依頼",
             icon: <AddIcon />,
-            link: '/new-order',
+            link: '/order-detail',
             order: 1
         });
     }

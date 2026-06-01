@@ -15,18 +15,20 @@
 }
 
 .order-table-container { 
-    overflow-x: scroll; /* 横スクロールを有効にする */
+    overflow-x: auto; /* 横スクロールを有効にする */
     overflow-y: auto; /* 縦スクロールを有効にする */
-    
     border: 1px solid #ddd;
     border-radius: 10px;
     box-sizing: border-box;
     /* width: max-content; */
+
+    max-height: 500px;
 }
 
 .order-table {
     min-width: 1000px; /* テーブルの最小幅を設定 */
-    border-collapse: collapse; /* セルの境界線を重ねる */
+    border-collapse: separate; /* セルの境界線を重ねる */
+    border-spacing: 0; /* セルの間隔をなくす */
     width: 100%;
     /* table-layout: fixed;  */
     /* セルの幅を固定にする */
@@ -51,6 +53,7 @@
     white-space: nowrap; /* テキストの折り返しを防止 */
 
 }
+
 
 
 

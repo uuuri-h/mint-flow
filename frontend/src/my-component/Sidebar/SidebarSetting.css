@@ -30,6 +30,10 @@
     color: inherit;
 }
 
+.LogoutGrp {
+    margin: 10px 0;
+}   
+
 
 .SettingGrp:hover, .LogoutGrp:hover {
     cursor: pointer;
@@ -50,7 +54,6 @@
     .SettingGrp,
     .LogoutGrp {
         line-height: 0.4;
-
     }
 
     .SidebarSetting .icon {
