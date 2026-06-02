@@ -1,0 +1,4 @@
+.order-detail-container {
+    overflow-x: auto; /* 横スクロールを有効にする */
+    overflow-y: hidden; /* 縦スクロールは非表示にする */
+}

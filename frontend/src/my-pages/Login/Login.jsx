@@ -50,10 +50,11 @@ function Login() {
             <h2>ログイン</h2>
             <form onSubmit={handleLogin}>
                 <div className="input-group">
-                    <label>
+                    <label className="form-label">
                         ユーザーID:
                     </label>
                     <input 
+                        className="form-input"
                         type="text"
                         name="userid" 
                         value={userid}
@@ -64,10 +65,11 @@ function Login() {
                 </div>
                 <br />
                 <div className="input-group">
-                    <label>
+                    <label className="form-label">
                         パスワード:
                     </label>
                     <input 
+                        className="form-input"
                         type="password" 
                         name="password"
                         value={password}
