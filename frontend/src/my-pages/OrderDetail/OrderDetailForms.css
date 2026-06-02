@@ -1,7 +1,9 @@
 
 .order-detail-forms-container {
     margin-top: 20px;
-    max-width: 500px; /* フォーム全体の幅を指定 */
+    max-width: 1000px; /* フォーム全体の幅を指定 */
+    overflow-x: auto; /* 横スクロールを有効にする */
+    min-width: 300px; /* フォーム全体の最小幅を指定 */
 }
 /* .order-detail-form {
     display: grid;
@@ -12,20 +14,17 @@
 } */
 
 .order-detail-forms {
-
-    
     margin-left: 8px;
 }
 
 .order-detail-form {
     display: grid;
     grid-template-columns: repeat(4, 3fr);
-    
     gap: 20px 30px;
 }
 
 .request-remarks-container {
-    grid-column: span 4; /* 備考欄を全幅にする */
+    grid-column: 1 / -1;
 }
 
 .form-item {
@@ -36,31 +35,30 @@
 
     align-items: left;
     margin-bottom: 0px;
-   
+
     gap: 10px;
 }
 
+
+.form-item input,
+.form-item textarea {
+    width: 100%;
+}
+
 .form-item input{
-    width: 220px;
+    /* width: 220px; */
     height: 30px;
 }
 
 .form-item textarea{
-    width: 220px;
+    /* width: 220px; */
     height: 100px;
 }
-/* 
 
-@media (min-width: 300px) {
-    .order-detail-forms-container {
-        margin-top: 20px;
-    }
 
+@media (max-width: 600px) {
     .order-detail-form {
-        display: flex;
-        flex-direction: column;
-        
-        gap: 10px;
+        grid-template-columns: 1fr; /* 1列にする */
     }
 
-} */
+}

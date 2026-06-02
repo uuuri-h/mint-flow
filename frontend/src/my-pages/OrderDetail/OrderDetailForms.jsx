@@ -82,7 +82,7 @@ function OrderDetailForms() {
                             className="form-textarea" 
                             id="request-remarks" 
                             name="request-remarks"
-                            style={{width: '300px', height: '100px'}}
+                            style={{width: '100%', height: '100px'}}
                         ></textarea>
                     </div>
 

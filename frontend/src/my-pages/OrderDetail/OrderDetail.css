@@ -1,4 +1,5 @@
 .order-detail-container {
-    overflow-x: auto; /* 横スクロールを有効にする */
-    overflow-y: hidden; /* 縦スクロールは非表示にする */
+    padding: 20px;
+    min-width: 300px; /* フォーム全体の最小幅を指定 */
+    overflow-y: auto; /* 縦スクロールを有効にする */
 }

@@ -13,6 +13,8 @@
     /* min-height: 0; は子要素が親からはみ出しても、縮んでいいようにするためのスタイル */
     min-height: 0;
     overflow-y: auto;
+
+    overflow-x: hidden; /* 横スクロールは非表示にする */
 }
 
 .page-inner {
