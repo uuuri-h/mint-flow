@@ -1,0 +1,25 @@
+.order-detail-forms-container {
+    
+
+}
+
+.order-detail-form {
+    display: grid;
+    grid-template-columns: 1fr;   
+    /* gap: 20px; */
+}
+
+
+@media (min-width: 768px) {
+    .order-detail-forms-container {
+        margin-top: 20px;
+    }
+
+    .order-detail-form {
+        display: flex;
+        flex-direction: column;
+        
+        gap: 10px;
+    }
+
+}
