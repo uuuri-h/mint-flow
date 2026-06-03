@@ -1,7 +1,7 @@
 import React from 'react'
 import './OrderDetailForms.css'
 
-function OrderDetailForms() {
+function OrderDetailForms({}) {
     return (
         <div className="order-detail-forms-container">
             <div className="order-detail-forms">

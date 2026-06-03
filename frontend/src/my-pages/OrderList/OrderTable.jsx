@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 
-function OrderTable() {
+function OrderTable({ user }) {
+    // const user = JSON.parse(localStorage.getItem('user'));
     const [orders, setOrders] = useState([]);
     const statusMap = {
         0: '依頼中',
@@ -13,9 +14,23 @@ function OrderTable() {
         99: 'キャンセル'
     };
 
+    //営業部の場合はチェックボックスを非表示
+    const [showCheckBox, setShowCheckBox] = useState(true);
+    console.log("OrderTable user:", user); 
+    useEffect(() => {
+        const userRole = user ? user.department_code : null; // ユーザーデータから役割を取得
+        if (userRole === '001') { // 営業部のコードに応じて条件を設定
+            setShowCheckBox(false);
+        }
+    }, []);
+    if (showCheckBox === false) {
+        console.log("営業部のユーザーのため、チェックボックスは非表示です。");
+        
+    }
+
+
     const [page, setPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
-
     {/* const[状態, 状態を更新する関数] = useState(初期値) */ }
 
     useEffect(() => {
@@ -25,7 +40,7 @@ function OrderTable() {
                 const response = await axios.get(
                     'http://localhost:8000/requests/summaries'
                 );
-                console.log('response.data.requests:', response.data.requests)
+                // console.log('response.data.requests:', response.data.requests)
 
                 setOrders(response.data.requests)
                 setTotalItems(response.data.requests.length) 
@@ -73,7 +88,7 @@ function OrderTable() {
                         {/* ここに発注データをマッピングして表示 */}
                         {orders.map((order) => (
                             <tr key={order.id}>
-                                <td className="td1"><input type="checkbox" className="check-box" /></td>
+                                <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
                                 <td className="td2">{order.request_date}</td>
                                 <td className="td3">{order.request_id}</td>
                                 <td className="td4">{order.customer_name}</td>

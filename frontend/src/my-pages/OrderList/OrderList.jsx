@@ -9,13 +9,14 @@ import OrderTable from "./OrderTable"
 function OrderList() {
     const { user } = useOutletContext(); //contextからuserを取得
 
+    // console.log("OrderList user:", user);
     return (
         <div className="pg-container order-list-container">
             <div className="pg-header order-list-header">
                 <h1>発注依頼一覧</h1>
             </div>
-            <NewOrderBtn />
-            <OrderTable />
+            <NewOrderBtn user={user} />
+            <OrderTable user={user} />
         </div>
     );
 }
