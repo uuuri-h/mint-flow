@@ -45,14 +45,9 @@
     width: 100%;
 }
 
-.form-item input{
+.form-item input {
     /* width: 220px; */
     height: 30px;
-}
-
-.form-item textarea{
-    /* width: 220px; */
-    height: 100px;
 }
 
 

@@ -36,11 +36,9 @@
 }
 
 .order-table th, .order-table td {
-    padding: 12px;
+    padding: 12px 12px 12px 18px;
     border-bottom: 1px solid #ddd;
     text-align: left; /* テキストを左揃え */
-    
-
 }
 
 .order-table th {
@@ -61,10 +59,6 @@
     background-color: #f9f9f9;
 }
 
-.order-table .status {
-    font-weight: bold;
-    color: #007bff;
-}
 
 .check-box {
     width: 20px;
@@ -102,13 +96,7 @@
     margin: 0;
 }   
 
-.order-table .status.completed {
-    color: #28a745;
-}
-.order-table .status.pending {
-    color: #ffc107;
-}
-.order-table .status.cancelled {
-    color: #dc3545;
-}
 
+.table-footer {
+    margin-top: 20px;
+}

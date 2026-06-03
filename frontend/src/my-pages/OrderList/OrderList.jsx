@@ -2,8 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './OrderList.css'
 import { useOutletContext } from 'react-router-dom' //outletからcontextを受け取る
-import NewOrderBtn from './NewOrderBtn';
-
+import NewOrderBtn from '../../my-component/Button/NewOrderBtn';
 import OrderTable from "./OrderTable"
 
 function OrderList() {

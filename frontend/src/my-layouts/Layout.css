@@ -93,3 +93,33 @@
     box-shadow: none;
     outline: none;
 }
+
+
+.status {
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: bolder;
+    color: #fff;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 90px;
+    height: 33px;
+
+}
+
+
+.status.completed {
+    background-color: #2f9e8f;
+}
+.status.partial {
+    background-color: #339af0;
+}
+.status.requesting {
+    background-color: #ffc107;
+}
+.status.cancelled {
+    background-color: #dc3545;
+}

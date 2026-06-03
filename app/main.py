@@ -11,6 +11,8 @@ from pydantic import ValidationError
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
 from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
+from app.schemas.customer import CustomerSchema, CustomerListSchema
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -374,6 +376,37 @@ def get_order(order_id: str):
     return OrderSchema(order_id=order_id, order_userid=26011, order_date="2024-12-31")  
 
 
+
+#===顧客用のエンドポイント===
+# 顧客情報取得
+
+@app.get("/customer/{customer_id}", response_model=CustomerSchema)
+def get_user(customer_id: str):
+    return CustomerSchema(
+        customer_id=customer_id,
+        customer_name="チョコミント株式会社",
+    )
+    
+@app.get("/customer/customers", response_model=CustomerListSchema)
+def get_user():
+    return CustomerListSchema(
+        customers=[
+            CustomerSchema(
+                customer_id="0001",
+                customer_name="チョコミント株式会社",
+            ),
+            CustomerSchema(
+                customer_id="0002",
+                customer_name="株式会社チョコレート",
+            ),
+            CustomerSchema(
+                customer_id="0003",
+                customer_name="ミント株式会社",
+            )
+        ]
+    )
+
+
 #バリデーションエラーのカスタムハンドラ
 @app.exception_handler(ValidationError)
 def validation_exception_handler(request : Request, ex : ValidationError):
@@ -383,5 +416,6 @@ def validation_exception_handler(request : Request, ex : ValidationError):
                 "details": ex.errors(),
         }
     )   
+
 
 

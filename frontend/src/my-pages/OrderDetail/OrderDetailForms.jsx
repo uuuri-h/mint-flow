@@ -1,7 +1,23 @@
 import React from 'react'
 import './OrderDetailForms.css'
+import { useState } from 'react';
 
 function OrderDetailForms({}) {
+    const [status, setStatus] = useState(2);
+    const statusMap = {
+        0: '依頼中',
+        1: '一部発注済み',
+        2: '発注済み',
+        99: 'キャンセル'
+    };
+
+    const statusClassMap = {
+        0: 'requesting',
+        1: 'partial',
+        2: 'completed',
+        99: 'cancelled'
+    };
+
     return (
         <div className="order-detail-forms-container">
             <div className="order-detail-forms">
@@ -43,13 +59,11 @@ function OrderDetailForms({}) {
 
                     <div className="form-item request-status-container">
                         <label className="form-label" htmlFor="request-status">依頼ステータス:</label>
-                        <input 
-                            className="form-input" 
-                            type="text" 
-                            id="request-status" 
-                            style={{width: '150px'}}
-                            name="request-status" 
-                        />
+                        <div 
+                            className={`status ${statusClassMap[status]}`}
+                        >
+                            {statusMap[status]}
+                        </div>
                     </div>
  
                     <div className="form-item request-dept-container">
@@ -82,7 +96,7 @@ function OrderDetailForms({}) {
                             className="form-textarea" 
                             id="request-remarks" 
                             name="request-remarks"
-                            style={{width: '100%', height: '100px'}}
+                            style={{width: '100%', height: '80px'}}
                         ></textarea>
                     </div>
 
