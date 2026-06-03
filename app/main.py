@@ -262,28 +262,36 @@ def get_request_list():
 @app.get("/requests/{request_id}/details", response_model=RequestListResponseSchema)
 def get_request_details(request_id: str):  
     # ここで依頼詳細取得のロジックを実装
-    return RequestListResponseSchema(
-        requests=[
-            RequestListItemSchema(
-                request_id="REQ26-0001",
-                request_date="2024-12-01",
-                status=1,
-                total_amount=50000,
-                customer_name="ABC株式会社",
-                total_quantity=100,
-                delivery_date="2024-12-31"
-            ),
-            RequestListItemSchema(
-                request_id="REQ26-0002",
-                request_date="2024-12-05",
-                status=2,
-                total_amount=30000,
-                customer_name="XYZ株式会社",
-                total_quantity=50,
-                delivery_date="2025-01-15"
+    
+    requests=[
+        RequestListItemSchema(
+            request_id="REQ26-0001",
+            request_date="2024-12-01",
+            item_count=5,
+            status=1,
+            total_amount=50000,
+            customer_name="ABC株式会社",
+            total_quantity=100,
+            delivery_date="2024-12-31"
+        ),
+        RequestListItemSchema(
+            request_id="REQ26-0002",
+            request_date="2024-12-05",
+            item_count=5,
+            status=2,
+            total_amount=30000,
+            customer_name="XYZ株式会社",
+            total_quantity=50,
+            delivery_date="2025-01-15"
+        )
+        ];
+    
+    for request in requests :
+        if request.request_id == request_id :
+            #Pydanticのモデルは引数名付きで渡す必要がある。
+            return RequestListResponseSchema(
+                requests =  [request]        
             )
-        ]
-    )
     
 #依頼詳細取得(一覧画面の取得用で使う)
 @app.get("/requests/{request_id}/summary", response_model=RequestListItemSchema)
@@ -381,14 +389,14 @@ def get_order(order_id: str):
 # 顧客情報取得
 
 @app.get("/customer/{customer_id}", response_model=CustomerSchema)
-def get_user(customer_id: str):
+def get_customer(customer_id: str):
     return CustomerSchema(
         customer_id=customer_id,
         customer_name="チョコミント株式会社",
     )
     
 @app.get("/customer/customers", response_model=CustomerListSchema)
-def get_user():
+def get_customers():
     return CustomerListSchema(
         customers=[
             CustomerSchema(

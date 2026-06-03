@@ -1,6 +1,8 @@
 import React from 'react'
 import './OrderDetailForms.css'
 import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function OrderDetailForms({}) {
     const [status, setStatus] = useState(2);
@@ -17,6 +19,28 @@ function OrderDetailForms({}) {
         2: 'completed',
         99: 'cancelled'
     };
+
+    const request_id = "REQ26-0001"
+    const [order, setOrder] = useState(null);
+    useEffect(() => {
+        // ここでAPIから発注データを取得して状態に保存する処理を実装
+        const fetchOrder = async () => {
+            try {
+                const response = await axios.get(
+                    
+                    `http://localhost:8000/requests/${request_id}/details`
+                );
+                console.log('response.data.requests:', response.data.requests)
+
+                setOrder(response.data.requests)
+
+            } catch (error) {
+                console.error('発注依頼データの取得に失敗しました:', error);
+            }
+        };
+
+        fetchOrder();
+    }, []); 
 
     return (
         <div className="order-detail-forms-container">
