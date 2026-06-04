@@ -12,23 +12,25 @@ function OrderTable({ user }) {
     const [orders, setOrders] = useState([]);
     const [status, setStatus] = useState('');
     const statusMap = {
-        0: '依頼中',
-        1: '一部発注済み',
-        2: '発注済み',
+        0: '新規依頼',
+        1: '依頼中',
+        2: '一部発注済み',
+        3: '発注済み',
         99: 'キャンセル'
     };
 
     const statusClassMap = {
-        0: 'requesting',
-        1: 'partial',
-        2: 'completed',
+        0: 'new-request',
+        1: 'requesting',
+        2: 'partial',
+        3: 'completed',
         99: 'cancelled'
     };
 
     //営業部の場合はチェックボックスを非表示
     const [showCheckBox, setShowCheckBox] = useState(true);
     const[showOrderBtn, setShowOrderBtn] = useState(true);
-    console.log("OrderTable user:", user); 
+    // console.log("OrderTable user:", user); 
     useEffect(() => {
         const userRole = user ? user.department_code : null; // ユーザーデータから役割を取得
         if (userRole === '001') { // 営業部のコードに応じて条件を設定
@@ -40,7 +42,7 @@ function OrderTable({ user }) {
         }
     }, [user]); // userが変更されたときに実行される, これがないと、ユーザーデータが更新されてもチェックボックスの表示が変わらない
     if (showCheckBox === false) {
-        console.log("営業部のユーザーのため、チェックボックスは非表示です。");
+        // console.log("営業部のユーザーのため、チェックボックスは非表示です。");
         
     }
 

@@ -44,13 +44,16 @@ class RequestResponseSchema(BaseModel):
 #一覧1行分
 class RequestListItemSchema(BaseModel):
     request_id: str
+    requester_name: str
+    requester_dept_name: str
     request_date: date
     item_count: int
-    status: int ## 0:依頼中、1:一部発注済み、2:発注済み, 99:キャンセル
+    status: int 
     total_amount: int
     customer_name: str
     total_quantity: int
     delivery_date: date
+    request_detail: str
 
 ## 一覧画面表示用
 class RequestListResponseSchema(BaseModel):

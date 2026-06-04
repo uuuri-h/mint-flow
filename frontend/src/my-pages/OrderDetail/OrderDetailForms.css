@@ -50,6 +50,11 @@
     height: 30px;
 }
 
+.form-item textarea {
+    padding: 8px 12px;
+    overflow-y: auto;
+}
+
 
 @media (max-width: 600px) {
     .order-detail-form {

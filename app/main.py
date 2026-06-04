@@ -183,22 +183,28 @@ def get_request_summaries_response():
             RequestListItemSchema(
                 request_id="REQ26-0001",
                 request_date="2024-12-01",
+                requester_name="山田太郎",
+                requester_dept_name="営業部",
                 item_count=5,
                 status=1,
                 total_amount=50000,
                 customer_name="ABC株式会社",
                 total_quantity=100,
-                delivery_date="2024-12-31"
+                delivery_date="2024-12-31",
+                request_detail="12月以降に出荷してください。"
             ),
             RequestListItemSchema(
                 request_id="REQ26-0002",
                 request_date="2024-12-05",
+                requester_name="山田花子",
+                requester_dept_name="製造部",
                 item_count=3,
                 status=2,
                 total_amount=30000,
                 customer_name="XYZ株式会社",
                 total_quantity=50,
-                delivery_date="2025-01-15"
+                delivery_date="2025-01-15",
+                request_detail="最短で納入お願いします。"
             )
         ]
     )
@@ -241,20 +247,28 @@ def get_request_list():
         RequestListItemSchema(
             request_id="REQ26-0001",
             request_date="2024-12-01",
+            requester_name="山田太郎",
+            requester_dept_name="営業部",
+            item_count=5,
             status=1,
             total_amount=50000,
             customer_name="ABC株式会社",
             total_quantity=100,
-            delivery_date="2024-12-31"
+            delivery_date="2024-12-31",
+            request_detail="12月以降に出荷してください。"
         ),
         RequestListItemSchema(
             request_id="REQ26-0002",
             request_date="2024-12-05",
+            requester_name="山田花子",
+            requester_dept_name="製造部",
+            item_count=3,
             status=2,
             total_amount=30000,
             customer_name="XYZ株式会社",
             total_quantity=50,
-            delivery_date="2025-01-15"
+            delivery_date="2025-01-15",
+            request_detail="最短で納入お願いします。"
         )
     ]   
     
@@ -267,22 +281,28 @@ def get_request_details(request_id: str):
         RequestListItemSchema(
             request_id="REQ26-0001",
             request_date="2024-12-01",
+            requester_name="山田太郎",
+            requester_dept_name="営業部",
             item_count=5,
             status=1,
             total_amount=50000,
             customer_name="ABC株式会社",
             total_quantity=100,
-            delivery_date="2024-12-31"
+            delivery_date="2024-12-31",
+            request_detail="12月以降に出荷してください。"
         ),
         RequestListItemSchema(
             request_id="REQ26-0002",
             request_date="2024-12-05",
-            item_count=5,
+            requester_name="山田花子",
+            requester_dept_name="製造部",
+            item_count=3,
             status=2,
             total_amount=30000,
             customer_name="XYZ株式会社",
             total_quantity=50,
-            delivery_date="2025-01-15"
+            delivery_date="2025-01-15",
+            request_detail="最短で納入お願いします。"
         )
         ];
     
@@ -388,13 +408,6 @@ def get_order(order_id: str):
 #===顧客用のエンドポイント===
 # 顧客情報取得
 
-@app.get("/customer/{customer_id}", response_model=CustomerSchema)
-def get_customer(customer_id: str):
-    return CustomerSchema(
-        customer_id=customer_id,
-        customer_name="チョコミント株式会社",
-    )
-    
 @app.get("/customer/customers", response_model=CustomerListSchema)
 def get_customers():
     return CustomerListSchema(
@@ -413,6 +426,14 @@ def get_customers():
             )
         ]
     )
+
+@app.get("/customer/{customer_id}", response_model=CustomerSchema)
+def get_customer(customer_id: str):
+    return CustomerSchema(
+        customer_id=customer_id,
+        customer_name="チョコミント株式会社",
+    )
+    
 
 
 #バリデーションエラーのカスタムハンドラ

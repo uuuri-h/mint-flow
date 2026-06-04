@@ -110,7 +110,9 @@
 
 }
 
-
+.status.new-request {
+    background-color: #868e96;
+}
 .status.completed {
     background-color: #2f9e8f;
 }

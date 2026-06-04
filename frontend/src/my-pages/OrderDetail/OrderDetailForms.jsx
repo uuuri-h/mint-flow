@@ -5,23 +5,25 @@ import { useEffect } from 'react';
 import axios from 'axios';
 
 function OrderDetailForms({}) {
-    const [status, setStatus] = useState(2);
+    const [status, setStatus] = useState(0);
     const statusMap = {
-        0: '依頼中',
-        1: '一部発注済み',
-        2: '発注済み',
+        0: '新規依頼',
+        1: '依頼中',
+        2: '一部発注済み',
+        3: '発注済み',
         99: 'キャンセル'
     };
 
     const statusClassMap = {
-        0: 'requesting',
-        1: 'partial',
-        2: 'completed',
+        0: 'new-request',
+        1: 'requesting',
+        2: 'partial',
+        3: 'completed',
         99: 'cancelled'
     };
 
-    const request_id = "REQ26-0001"
-    const [order, setOrder] = useState(null);
+    const request_id = "REQ26-0001" //あとで編集ボタンからもらう
+    const [order_header, setOrder] = useState(null);
     useEffect(() => {
         // ここでAPIから発注データを取得して状態に保存する処理を実装
         const fetchOrder = async () => {
@@ -30,9 +32,10 @@ function OrderDetailForms({}) {
                     
                     `http://localhost:8000/requests/${request_id}/details`
                 );
-                console.log('response.data.requests:', response.data.requests)
+                console.log('response.data.requests:', response.data.requests[0])
 
-                setOrder(response.data.requests)
+                setOrder(response.data.requests[0])
+                setStatus(response.data.requests[0].status)
 
             } catch (error) {
                 console.error('発注依頼データの取得に失敗しました:', error);
@@ -41,6 +44,26 @@ function OrderDetailForms({}) {
 
         fetchOrder();
     }, []); 
+
+    // const [customer_list, setCustomerList] = useState([]);
+    // useEffect(() => {
+    //     const fetchCustomer = async () => {
+    //         try {
+    //             const response = await axios.get(
+                    
+    //                 `http://localhost:8000/customer/customers`
+    //             );
+    //             console.log('部署リスト', response.data.customers)
+
+    //             setCustomerList(response.data.customers)
+
+    //         } catch (error) {
+    //             console.error('部署データの取得に失敗しました:', error);
+    //         }
+    //     };
+
+    //     fetchCustomer();
+    // }, []); 
 
     return (
         <div className="order-detail-forms-container">
@@ -57,6 +80,8 @@ function OrderDetailForms({}) {
                             name="request-id" 
                             style={{width: '150px'}}
                             readOnly 
+                            value={order_header?.request_id || ''}
+
                         />
                     </div>
 
@@ -67,7 +92,9 @@ function OrderDetailForms({}) {
                             type="text" 
                             id="customer-nm" 
                             style={{width: '200px'}}
-                            name="customer-nm"/>
+                            name="customer-nm"
+                            value={order_header?.customer_name || ''}                  
+                            />
                     </div>
 
                     <div className="form-item request-date-container">
@@ -78,6 +105,7 @@ function OrderDetailForms({}) {
                             id="request-date" 
                             style={{width: '150px'}}
                             name="request-date" 
+                            value={order_header?.request_date || ''}
                         />
                     </div>
 
@@ -97,6 +125,8 @@ function OrderDetailForms({}) {
                             id="request-dept" 
                             name="request-dept" 
                             style={{width: '200px'}}
+                            value={order_header?.requester_dept_name || ''}
+                            
                             readOnly 
                         />
                     </div>
@@ -109,7 +139,9 @@ function OrderDetailForms({}) {
                             id="requester-nm" 
                             style={{width: '150px'}}
                             name="requester-nm" 
+                            value={order_header?.requester_name || ''}
                             readOnly
+                            // value={order_header.requester || ''}
                         />
                     </div>
 
@@ -120,8 +152,10 @@ function OrderDetailForms({}) {
                             className="form-textarea" 
                             id="request-remarks" 
                             name="request-remarks"
+                            value={order_header?.request_detail || ''}
                             style={{width: '100%', height: '80px'}}
-                        ></textarea>
+                        >
+                        </textarea>
                     </div>
 
                      {/* ここに必要なフォームフィールドを追加する */ }
