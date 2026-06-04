@@ -4,6 +4,9 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import OrderBtn from '../../my-component/Button/OrderBtn';
+import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
+
+
 
 function OrderTable({ user }) {
     
@@ -11,21 +14,6 @@ function OrderTable({ user }) {
     // const user = JSON.parse(localStorage.getItem('user'));
     const [orders, setOrders] = useState([]);
     const [status, setStatus] = useState('');
-    const statusMap = {
-        0: '新規依頼',
-        1: '依頼中',
-        2: '一部発注済み',
-        3: '発注済み',
-        99: 'キャンセル'
-    };
-
-    const statusClassMap = {
-        0: 'new-request',
-        1: 'requesting',
-        2: 'partial',
-        3: 'completed',
-        99: 'cancelled'
-    };
 
     //営業部の場合はチェックボックスを非表示
     const [showCheckBox, setShowCheckBox] = useState(true);
@@ -115,8 +103,8 @@ function OrderTable({ user }) {
                                 <td className="td6">￥{order.total_amount}</td>
                                 <td className="td7">{order.delivery_date}</td>
                                 <td className="td9">
-                                    <span className={`status ${statusClassMap[order.status]}`}>
-                                        {statusMap[order.status]}
+                                    <span className={`status ${STATUS_CLASS_MAP[order.status]}`}>
+                                        {STATUS_MAP[order.status]}
                                     </span>
                                 </td>
                                 <td className="td10">

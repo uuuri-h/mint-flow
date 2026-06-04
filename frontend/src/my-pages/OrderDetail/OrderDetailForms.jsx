@@ -3,24 +3,11 @@ import './OrderDetailForms.css'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+// RequestDetail.jsx
+import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
 
 function OrderDetailForms({}) {
     const [status, setStatus] = useState(0);
-    const statusMap = {
-        0: '新規依頼',
-        1: '依頼中',
-        2: '一部発注済み',
-        3: '発注済み',
-        99: 'キャンセル'
-    };
-
-    const statusClassMap = {
-        0: 'new-request',
-        1: 'requesting',
-        2: 'partial',
-        3: 'completed',
-        99: 'cancelled'
-    };
 
     const request_id = "REQ26-0001" //あとで編集ボタンからもらう
     const [order_header, setOrder] = useState(null);
@@ -112,9 +99,9 @@ function OrderDetailForms({}) {
                     <div className="form-item request-status-container">
                         <label className="form-label" htmlFor="request-status">依頼ステータス:</label>
                         <div 
-                            className={`status ${statusClassMap[status]}`}
+                            className={`status ${STATUS_CLASS_MAP[status]}`}
                         >
-                            {statusMap[status]}
+                            {STATUS_MAP[status]}
                         </div>
                     </div>
  
