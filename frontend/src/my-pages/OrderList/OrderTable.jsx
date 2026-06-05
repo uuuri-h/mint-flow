@@ -5,11 +5,11 @@ import { useState } from 'react'
 import axios from 'axios'
 import OrderBtn from '../../my-component/Button/OrderBtn';
 import { API_URL,STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
-
+import { useNavigate } from 'react-router-dom'; // 追加: useNavigateをインポート
 
 
 function OrderTable({ user }) {
-    
+    const navigate = useNavigate(); // useNavigateフックを初期化
 
     // const user = JSON.parse(localStorage.getItem('user'));
     const [orders, setOrders] = useState([]);
@@ -59,9 +59,12 @@ function OrderTable({ user }) {
     }, []); 
 
     //テーブルの編集ボタンが押下されたときの処理
-    const requestEdit  = async(e, id) => {
+    const requestEdit  = async(id) => {
         // e.preventDefault(); //ページのリロードを止める
         console.log(id + "行の編集ボタンが押された！")
+                    //ホームページにリダイレクト
+        navigate('../order-detail', {state :{id}});
+
     }
 
     return (
@@ -97,7 +100,7 @@ function OrderTable({ user }) {
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
                         {orders.map((order) => (
-                            <tr key={order.id}>
+                            <tr key={order.request_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 {showCheckBox && (
                                     <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>

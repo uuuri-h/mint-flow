@@ -6,11 +6,11 @@ import axios from 'axios';
 // RequestDetail.jsx
 import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
 
-function OrderDetailForms({}) {
+function OrderDetailForms({user, id}) {
     const [status, setStatus] = useState(0);
-
-    const request_id = "REQ26-0001" //あとで編集ボタンからもらう
+    const request_id = id //あとで編集ボタンからもらう
     const [order_header, setOrder] = useState(null);
+
     useEffect(() => {
         // ここでAPIから発注データを取得して状態に保存する処理を実装
         const fetchOrder = async () => {
@@ -29,7 +29,9 @@ function OrderDetailForms({}) {
             }
         };
 
-        fetchOrder();
+        if (id) {
+            fetchOrder();
+        }
     }, []); 
 
     // const [customer_list, setCustomerList] = useState([]);
