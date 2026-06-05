@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import OrderBtn from '../../my-component/Button/OrderBtn';
-import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
+import { API_URL,STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
 
 
 
@@ -58,6 +58,12 @@ function OrderTable({ user }) {
         fetchOrders();
     }, []); 
 
+    //テーブルの編集ボタンが押下されたときの処理
+    const requestEdit  = async(e, id) => {
+        // e.preventDefault(); //ページのリロードを止める
+        console.log(id + "行の編集ボタンが押された！")
+    }
+
     return (
         <div className="order-table-wrapper"> 
             <p className='total-items'>件数（ <span className='total-items-count'>{totalItems}</span> 件）</p>
@@ -108,7 +114,14 @@ function OrderTable({ user }) {
                                     </span>
                                 </td>
                                 <td className="td10">
-                                    <button className="button btn btn-primary">編集</button>
+                                    <button 
+                                        className="button btn btn-primary"
+                                        onClick={() => requestEdit(order.request_id)}
+                                        type="submit"
+                                    >
+                                     {/* onClick={() => requestEdit(request.request_id)}　 */}
+                                        編集
+                                    </button>
                                 </td>
                             </tr>
                         ))}
