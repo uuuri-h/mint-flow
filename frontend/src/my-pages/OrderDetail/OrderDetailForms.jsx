@@ -9,7 +9,17 @@ import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
 function OrderDetailForms({user, id}) {
     const [status, setStatus] = useState(0);
     const request_id = id //あとで編集ボタンからもらう
-    const [order_header, setOrder] = useState(null);
+    // const [order_header, setOrder] = useState(null);
+
+const [orderHeader, setOrderHeader] = useState({
+    request_id: "",
+    customer_name: "",
+    request_date: "",
+    requester_dept_name: "",
+    requester_name: "",
+    request_detail: "",
+});
+
 
     useEffect(() => {
         // ここでAPIから発注データを取得して状態に保存する処理を実装
@@ -21,8 +31,10 @@ function OrderDetailForms({user, id}) {
                 );
                 console.log('response.data.requests:', response.data.requests[0])
 
-                setOrder(response.data.requests[0])
+                // setOrder(response.data.requests[0])
                 setStatus(response.data.requests[0].status)
+
+                setOrderHeader(response.data.requests[0]);
 
             } catch (error) {
                 console.error('発注依頼データの取得に失敗しました:', error);
@@ -69,7 +81,10 @@ function OrderDetailForms({user, id}) {
                             name="request-id" 
                             style={{width: '150px'}}
                             readOnly 
-                            value={order_header?.request_id || ''}
+                            // value={order_header?.request_id || ''}
+                            value={orderHeader.request_id}
+
+                            readOnly
 
                         />
                     </div>
@@ -82,7 +97,14 @@ function OrderDetailForms({user, id}) {
                             id="customer-nm" 
                             style={{width: '200px'}}
                             name="customer-nm"
-                            value={order_header?.customer_name || ''}                  
+                            // value={order_header?.customer_name || ''} 
+                            value={orderHeader.customer_name}  
+                            onChange={(e) =>
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    customer_name: e.target.value
+                                })
+                            }               
                             />
                     </div>
 
@@ -94,7 +116,14 @@ function OrderDetailForms({user, id}) {
                             id="request-date" 
                             style={{width: '150px'}}
                             name="request-date" 
-                            value={order_header?.request_date || ''}
+                            // value={order_header?.request_date || ''}
+                            value={orderHeader.request_date}
+                            onChange={(e) =>
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    request_date: e.target.value
+                                })
+                            }
                         />
                     </div>
 
@@ -114,8 +143,8 @@ function OrderDetailForms({user, id}) {
                             id="request-dept" 
                             name="request-dept" 
                             style={{width: '200px'}}
-                            value={order_header?.requester_dept_name || ''}
-                            
+                            // value={order_header?.requester_dept_name || ''}
+                            value={orderHeader.requester_dept_name}
                             readOnly 
                         />
                     </div>
@@ -127,8 +156,8 @@ function OrderDetailForms({user, id}) {
                             type="text" 
                             id="requester-nm" 
                             style={{width: '150px'}}
-                            name="requester-nm" 
-                            value={order_header?.requester_name || ''}
+                            value={orderHeader.requester_name}
+                            // value={order_header?.requester_name || ''}
                             readOnly
                             // value={order_header.requester || ''}
                         />
@@ -141,8 +170,15 @@ function OrderDetailForms({user, id}) {
                             className="form-textarea" 
                             id="request-remarks" 
                             name="request-remarks"
-                            value={order_header?.request_detail || ''}
+                            // value={order_header?.request_detail || ''}
                             style={{width: '100%', height: '80px'}}
+                            value={orderHeader.request_detail}
+                            onChange={(e) =>
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    request_detail: e.target.value
+                                })
+                            }
                         >
                         </textarea>
                     </div>
