@@ -13,9 +13,10 @@ function OrderDetailForms({user, id}) {
 
 const [orderHeader, setOrderHeader] = useState({
     request_id: "",
-    customer_name: "",
+    customer_id: "",
     request_date: "",
     requester_dept_name: "",
+    delivery_date: "",
     requester_name: "",
     request_detail: "",
 });
@@ -35,6 +36,8 @@ const [orderHeader, setOrderHeader] = useState({
                 setStatus(response.data.requests[0].status)
 
                 setOrderHeader(response.data.requests[0]);
+                // console.log(response.data.requests[0]);
+                console.log(response.data.requests[0].customer_name);
 
             } catch (error) {
                 console.error('発注依頼データの取得に失敗しました:', error);
@@ -46,25 +49,26 @@ const [orderHeader, setOrderHeader] = useState({
         }
     }, []); 
 
-    // const [customer_list, setCustomerList] = useState([]);
-    // useEffect(() => {
-    //     const fetchCustomer = async () => {
-    //         try {
-    //             const response = await axios.get(
+    const [customer_list, setCustomerList] = useState([]);
+    useEffect(() => {
+        const fetchCustomer = async () => {
+            try {
+                const response = await axios.get(
                     
-    //                 `http://localhost:8000/customer/customers`
-    //             );
-    //             console.log('部署リスト', response.data.customers)
+                    `http://localhost:8000/customer/customers`
+                );
+                console.log('顧客リスト', response.data.customers)
 
-    //             setCustomerList(response.data.customers)
+                setCustomerList(response.data.customers)
+                // console.log(customer_list);
 
-    //         } catch (error) {
-    //             console.error('部署データの取得に失敗しました:', error);
-    //         }
-    //     };
+            } catch (error) {
+                console.error('顧客データの取得に失敗しました:', error);
+            }
+        };
 
-    //     fetchCustomer();
-    // }, []); 
+        fetchCustomer();
+    }, []); 
 
     return (
         <div className="order-detail-forms-container">
@@ -80,7 +84,6 @@ const [orderHeader, setOrderHeader] = useState({
                             id="request-id" 
                             name="request-id" 
                             style={{width: '150px'}}
-                            readOnly 
                             // value={order_header?.request_id || ''}
                             value={orderHeader.request_id}
 
@@ -89,27 +92,17 @@ const [orderHeader, setOrderHeader] = useState({
                         />
                     </div>
 
-                    <div className="form-item customer-nm-container">
-                        <label className="form-label"  htmlFor="customer-nm">顧客名:</label>
-                        <input 
-                            className="form-input" 
-                            type="text" 
-                            id="customer-nm" 
-                            style={{width: '200px'}}
-                            name="customer-nm"
-                            // value={order_header?.customer_name || ''} 
-                            value={orderHeader.customer_name}  
-                            onChange={(e) =>
-                                setOrderHeader({
-                                    ...orderHeader,
-                                    customer_name: e.target.value
-                                })
-                            }               
-                            />
+                    <div className="form-item request-status-container">
+                        <p className="form-label" htmlFor="request-status">依頼ステータス:</p>
+                        <div 
+                            className={`status ${STATUS_CLASS_MAP[status]}`}
+                        >
+                            {STATUS_MAP[status]}
+                        </div>
                     </div>
 
                     <div className="form-item request-date-container">
-                        <label className="form-label" htmlFor="request-date">納期:</label>
+                        <label className="form-label" htmlFor="request-date">依頼日:</label>
                         <input 
                             className="form-input" 
                             type="date" 
@@ -127,13 +120,54 @@ const [orderHeader, setOrderHeader] = useState({
                         />
                     </div>
 
-                    <div className="form-item request-status-container">
-                        <label className="form-label" htmlFor="request-status">依頼ステータス:</label>
-                        <div 
-                            className={`status ${STATUS_CLASS_MAP[status]}`}
-                        >
-                            {STATUS_MAP[status]}
-                        </div>
+                    <div className="form-item customer-nm-container">
+                    <label className="form-label" htmlFor="customer-nm">
+                        顧客名:
+                    </label>
+
+                    <select
+                        className="form-input"
+                        id="customer-nm"
+                        name="customer-nm"
+                        value={orderHeader.customer_id}
+                        onChange={(e) =>
+                            setOrderHeader({
+                                ...orderHeader,
+                                customer_id: e.target.value
+                            })
+                        }
+                    >
+                        <option value="">選択してください</option>
+
+                        {customer_list.map((customer) => (
+                            <option
+                                key={customer.customer_id}
+                                value={customer.customer_id}
+                            >
+                                {customer.customer_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+
+                    <div className="form-item request-date-container">
+                        <label className="form-label" htmlFor="delivery_date">納期:</label>
+                        <input 
+                            className="form-input" 
+                            type="date" 
+                            id="delivery_date" 
+                            style={{width: '150px'}}
+                            name="delivery_date" 
+                            // value={order_header?.request_date || ''}
+                            value={orderHeader.delivery_date}
+                            onChange={(e) =>
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    delivery_date: e.target.value
+                                })
+                            }
+                        />
                     </div>
  
                     <div className="form-item request-dept-container">

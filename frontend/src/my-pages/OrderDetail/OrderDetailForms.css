@@ -39,12 +39,13 @@
     gap: 10px;
 }
 
-
+.form-item select,
 .form-item input,
 .form-item textarea {
     width: 100%;
 }
 
+.form-item select,
 .form-item input {
     /* width: 220px; */
     height: 30px;

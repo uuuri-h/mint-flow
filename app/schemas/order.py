@@ -14,6 +14,7 @@ class InsertAndUpdateOrderDetailSchema(BaseModel):
     price: int = Field(..., example=1000)
     supplier_id: str = Field(..., example="0001")
     customer_id: str = Field(..., example="0001") 
+    customer_name: str
     status: int = Field(..., example=1)
     
 
@@ -53,6 +54,7 @@ class OrderListItemSchema(BaseModel):
     order_date: date
     status: int
     total_amount: int
+    customer_id: str
     customer_name: str
     total_quantity: int
     delivery_date: date

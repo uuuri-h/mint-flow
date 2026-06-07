@@ -188,7 +188,8 @@ def get_request_summaries_response():
                 item_count=5,
                 status=1,
                 total_amount=50000,
-                customer_name="ABC株式会社",
+                customer_id="0001",
+                customer_name="チョコミント株式会社",
                 total_quantity=100,
                 delivery_date="2024-12-31",
                 request_detail="12月以降に出荷してください。"
@@ -201,7 +202,8 @@ def get_request_summaries_response():
                 item_count=3,
                 status=2,
                 total_amount=30000,
-                customer_name="XYZ株式会社",
+                customer_id="0001",
+                customer_name="チョコミント株式会社",
                 total_quantity=50,
                 delivery_date="2025-01-15",
                 request_detail="最短で納入お願いします。"
@@ -252,7 +254,8 @@ def get_request_list():
             item_count=5,
             status=1,
             total_amount=50000,
-            customer_name="ABC株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=100,
             delivery_date="2024-12-31",
             request_detail="12月以降に出荷してください。"
@@ -265,7 +268,8 @@ def get_request_list():
             item_count=3,
             status=2,
             total_amount=30000,
-            customer_name="XYZ株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=50,
             delivery_date="2025-01-15",
             request_detail="最短で納入お願いします。"
@@ -286,7 +290,8 @@ def get_request_details(request_id: str):
             item_count=5,
             status=1,
             total_amount=50000,
-            customer_name="ABC株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=100,
             delivery_date="2024-12-31",
             request_detail="12月以降に出荷してください。"
@@ -299,7 +304,8 @@ def get_request_details(request_id: str):
             item_count=3,
             status=2,
             total_amount=30000,
-            customer_name="XYZ株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=50,
             delivery_date="2025-01-15",
             request_detail="最短で納入お願いします。"
@@ -322,7 +328,8 @@ def get_request_summary(request_id: str):
         request_date="2024-12-01",
         status=1,
         total_amount=50000,
-        customer_name="ABC株式会社",
+        customer_id="0001",
+        customer_name="チョコミント株式会社",
         total_quantity=100,
         delivery_date="2024-12-31"
     )  
@@ -335,7 +342,8 @@ def get_request_summary(request_id: str):
             request_date="2024-12-01",
             status=1,
             total_amount=50000,
-            customer_name="ABC株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=100,
             delivery_date="2024-12-31"
         ),
@@ -344,7 +352,8 @@ def get_request_summary(request_id: str):
             request_date="2024-12-05",
             status=2,
             total_amount=30000,
-            customer_name="XYZ株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=50,
             delivery_date="2025-01-15"
         )
@@ -363,7 +372,8 @@ def get_request_summaries():
             request_date="2024-12-01",
             status=1,
             total_amount=50000,
-            customer_name="ABC株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=100,
             delivery_date="2024-12-31"
         ),
@@ -372,7 +382,8 @@ def get_request_summaries():
             request_date="2024-12-05",
             status=2,
             total_amount=30000,
-            customer_name="XYZ株式会社",
+            customer_id="0001",
+            customer_name="チョコミント株式会社",
             total_quantity=50,
             delivery_date="2025-01-15"
         )

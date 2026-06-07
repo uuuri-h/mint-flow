@@ -94,6 +94,13 @@
     outline: none;
 }
 
+.form-item select.form-input {
+    background-color: #ffffff;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-left: 8px;
+}
+
 
 .status {
     border-radius: 50px;

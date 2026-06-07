@@ -45,7 +45,10 @@ function SidebarSetting() {
                         <SettingsIcon className='icon'/>
                         <p>設定</p>
                     </NavLink>
-                    <div className='LogoutGrp' onClick={ShowModal} content={setContent}>
+                    <div 
+                        className='LogoutGrp' 
+                        onClick={ShowModal} 
+                    >
                         <LogoutIcon className='icon'/>
                         <p>ログアウト</p>
                     </div>
@@ -57,6 +60,7 @@ function SidebarSetting() {
             setShowModal={setShowModal} 
             setConfirmStatus={setConfirmStatus}
             content={content} 
+            
 
             />
         </>

@@ -6,7 +6,8 @@ from datetime import date
 # ヘッダ登録・更新
 class InsertAndUpdateRequestSchema(BaseModel):
     request_userid: str = Field(..., example="26011")
-    client_name: str = Field(..., example="ABC株式会社")
+    customer_id: str = Field(..., example="0001")
+    customer_name: str
     deadline: date = Field(..., example="2024-12-31")
     priority: int = Field(..., example=1) 
 
@@ -50,6 +51,7 @@ class RequestListItemSchema(BaseModel):
     item_count: int
     status: int 
     total_amount: int
+    customer_id: str
     customer_name: str
     total_quantity: int
     delivery_date: date

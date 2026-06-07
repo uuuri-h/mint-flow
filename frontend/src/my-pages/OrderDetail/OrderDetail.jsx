@@ -1,6 +1,7 @@
 import React from "react";
 import "./OrderDetail.css";
 import OrderDetailForms from "./OrderDetailForms";
+import OrderDetailTable from "./OrderDetailTable";
 import { useLocation } from 'react-router-dom';
 
 function OrderDetail({ user }) {
@@ -14,6 +15,7 @@ function OrderDetail({ user }) {
       </div>
       <div className="order-detail-body">
         <OrderDetailForms user={user} id={id}/>
+        <OrderDetailTable user={user} id={id}/>
       </div>
     </div>
   );
