@@ -52,13 +52,9 @@ function App() {
                 element={<Home />}
             />
 
-            <Route 
+            <Route
                 path="/order-detail"
-                element={
-                    user && user.department_code === "001" ? 
-                    <OrderDetail /> 
-                    : <Home />
-                }
+                element={<OrderDetail user={user} />}
             />
 
 

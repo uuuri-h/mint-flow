@@ -17,6 +17,81 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+#仮のデータ（データーベースの代わり）
+header_data=[
+    RequestListItemSchema(
+        request_id="REQ26-0001",
+        request_date="2024-12-01",
+        requester_name="山田太郎",
+        requester_dept_name="営業部",
+        item_count=5,
+        status=1,
+        total_amount=50000,
+        customer_id="0001",
+        customer_name="チョコミント株式会社",
+        total_quantity=100,
+        delivery_date="2024-12-31",
+        request_detail="12月以降に出荷してください。"
+    ),
+    RequestListItemSchema(
+        request_id="REQ26-0002",
+        request_date="2024-12-05",
+        requester_name="山田花子",
+        requester_dept_name="製造部",
+        item_count=3,
+        status=2,
+        total_amount=30000,
+        customer_id="0002",
+        customer_name="株式会社チョコレート",
+        total_quantity=50,
+        delivery_date="2025-01-15",
+        request_detail="最短で納入お願いします。"
+    )
+]
+
+detail_data = [
+    RequestDetailSchema(
+        request_id="REQ26-0001",
+        item_id="ITM26-0001",
+        item_num=1,
+        item_partsnum="SK-12345",
+        quantity=50,
+        price=1000,
+        supplier_id="0001",
+        status=1
+    ),
+    RequestDetailSchema(
+        request_id="REQ26-0001",
+        item_id="ITM26-0002",
+        item_num=2,
+        item_partsnum="SK-67890",
+        quantity=50,
+        price=2000,
+        supplier_id="0002",
+        status=2
+    ),
+    RequestDetailSchema(
+        request_id="REQ26-0002",
+        item_id="ITM26-0003",
+        item_num=1,
+        item_partsnum="AB-11111",
+        quantity=20,
+        price=1500,
+        supplier_id="0001",
+        status=1
+    ),
+    RequestDetailSchema(
+        request_id="REQ26-0002",
+        item_id="ITM26-0004",
+        item_num=2,
+        item_partsnum="CD-22222",
+        quantity=30,
+        price=1000,
+        supplier_id="0003",
+        status=3
+    )
+]
+
 # ここではOAuth2PasswordBearerを使用して、トークンベースの認証を行うためのエンドポイントを定義しています。
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login/" #JWTを取得するためのエンドポイントURLを指定 
@@ -179,37 +254,27 @@ async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authoriza
 def get_request_summaries_response():  
     # ここで依頼一覧取得のロジックを実装
     return RequestListResponseSchema(
-        requests=[
-            RequestListItemSchema(
-                request_id="REQ26-0001",
-                request_date="2024-12-01",
-                requester_name="山田太郎",
-                requester_dept_name="営業部",
-                item_count=5,
-                status=1,
-                total_amount=50000,
-                customer_id="0001",
-                customer_name="チョコミント株式会社",
-                total_quantity=100,
-                delivery_date="2024-12-31",
-                request_detail="12月以降に出荷してください。"
-            ),
-            RequestListItemSchema(
-                request_id="REQ26-0002",
-                request_date="2024-12-05",
-                requester_name="山田花子",
-                requester_dept_name="製造部",
-                item_count=3,
-                status=2,
-                total_amount=30000,
-                customer_id="0001",
-                customer_name="チョコミント株式会社",
-                total_quantity=50,
-                delivery_date="2025-01-15",
-                request_detail="最短で納入お願いします。"
-            )
-        ]
+        requests= header_data
     )
+    
+#依頼の明細取得
+@app.get("/requests/{request_id}/details")
+def get_request_detail(request_id: str):
+
+    header = next(
+        (h for h in header_data if h.request_id == request_id),
+        None
+    )
+
+    details = [
+        d for d in detail_data
+        if d.request_id == request_id
+    ]
+
+    return {
+        "header": header,
+        "details": details
+    }
 
 # 依頼登録
 @app.post("/requests/", response_model=RequestResponseSchema)
@@ -245,72 +310,14 @@ def delete_request(request_id: str):
 @app.get("/requests/", response_model=list[RequestListItemSchema])
 def get_request_list():
     # ここで依頼一覧取得のロジックを実装
-    return [
-        RequestListItemSchema(
-            request_id="REQ26-0001",
-            request_date="2024-12-01",
-            requester_name="山田太郎",
-            requester_dept_name="営業部",
-            item_count=5,
-            status=1,
-            total_amount=50000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=100,
-            delivery_date="2024-12-31",
-            request_detail="12月以降に出荷してください。"
-        ),
-        RequestListItemSchema(
-            request_id="REQ26-0002",
-            request_date="2024-12-05",
-            requester_name="山田花子",
-            requester_dept_name="製造部",
-            item_count=3,
-            status=2,
-            total_amount=30000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=50,
-            delivery_date="2025-01-15",
-            request_detail="最短で納入お願いします。"
-        )
-    ]   
-    
+    return header_data
+
 #依頼詳細取得(詳細画面の取得用で使う)
 @app.get("/requests/{request_id}/details", response_model=RequestListResponseSchema)
 def get_request_details(request_id: str):  
     # ここで依頼詳細取得のロジックを実装
-    
-    requests=[
-        RequestListItemSchema(
-            request_id="REQ26-0001",
-            request_date="2024-12-01",
-            requester_name="山田太郎",
-            requester_dept_name="営業部",
-            item_count=5,
-            status=1,
-            total_amount=50000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=100,
-            delivery_date="2024-12-31",
-            request_detail="12月以降に出荷してください。"
-        ),
-        RequestListItemSchema(
-            request_id="REQ26-0002",
-            request_date="2024-12-05",
-            requester_name="山田花子",
-            requester_dept_name="製造部",
-            item_count=3,
-            status=2,
-            total_amount=30000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=50,
-            delivery_date="2025-01-15",
-            request_detail="最短で納入お願いします。"
-        )
-        ];
+    requests=header_data
+
     
     for request in requests :
         if request.request_id == request_id :
@@ -322,42 +329,8 @@ def get_request_details(request_id: str):
 #依頼詳細取得(一覧画面の取得用で使う)
 @app.get("/requests/{request_id}/summary", response_model=RequestListItemSchema)
 def get_request_summary(request_id: str):  
-    # ここで依頼詳細取得のロジックを実装
-    return RequestListItemSchema(
-        request_id="REQ26-0001",
-        request_date="2024-12-01",
-        status=1,
-        total_amount=50000,
-        customer_id="0001",
-        customer_name="チョコミント株式会社",
-        total_quantity=100,
-        delivery_date="2024-12-31"
-    )  
-
-
     # ここで依頼一覧取得のロジックを実装
-    return [
-        RequestListItemSchema(
-            request_id="REQ26-0001",
-            request_date="2024-12-01",
-            status=1,
-            total_amount=50000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=100,
-            delivery_date="2024-12-31"
-        ),
-        RequestListItemSchema(
-            request_id="REQ26-0002",
-            request_date="2024-12-05",
-            status=2,
-            total_amount=30000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=50,
-            delivery_date="2025-01-15"
-        )
-    ]
+    return header_data
     
 
 
@@ -366,28 +339,8 @@ def get_request_summary(request_id: str):
 @app.get("/requests/summary", response_model=list[RequestListItemSchema])
 def get_request_summaries():  
     # ここで依頼一覧取得のロジックを実装
-    return [
-        RequestListItemSchema(
-            request_id="REQ26-0001",
-            request_date="2024-12-01",
-            status=1,
-            total_amount=50000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=100,
-            delivery_date="2024-12-31"
-        ),
-        RequestListItemSchema(
-            request_id="REQ26-0002",
-            request_date="2024-12-05",
-            status=2,
-            total_amount=30000,
-            customer_id="0001",
-            customer_name="チョコミント株式会社",
-            total_quantity=50,
-            delivery_date="2025-01-15"
-        )
-    ]
+    return header_data
+
 
 
 #===発注用のエンドポイント===

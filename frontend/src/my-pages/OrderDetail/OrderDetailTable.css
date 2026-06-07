@@ -1,0 +1,101 @@
+.detail-table-wrapper {
+    margin-top: 20px;
+}
+
+.total-items {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-align: right;
+}
+
+.total-items-count {
+    font-weight: bold;
+    color: #2f9e8f;
+}
+
+.detail-table-container { 
+    overflow-x: auto; /* 横スクロールを有効にする */
+    overflow-y: auto; /* 縦スクロールを有効にする */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    /* width: max-content; */
+
+    max-height: 500px;
+}
+
+.detail-table {
+    min-width: 1000px; /* テーブルの最小幅を設定 */
+    border-collapse: separate; /* セルの境界線を重ねる */
+    border-spacing: 0; /* セルの間隔をなくす */
+    width: 100%;
+    /* table-layout: fixed;  */
+    /* セルの幅を固定にする */
+    font-size: 14px;
+}
+
+.detail-table th, .detail-table td {
+    padding: 12px 12px 12px 18px;
+    border-bottom: 1px solid #ddd;
+    text-align: left; /* テキストを左揃え */
+}
+
+.detail-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.detail-table td {
+    color: #555;
+    white-space: nowrap; /* テキストの折り返しを防止 */
+
+}
+
+
+
+.detail-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+
+.check-box {
+    width: 20px;
+    height: 20px;
+
+    /*チェックしたときのスタイル*/
+    accent-color: #2f9e8f;
+
+} 
+
+
+.th1,
+.td1,
+.th10,
+.td10 {
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+.btn {
+    width : 46px;
+    height : 28px;
+    font-size: 13px;
+
+    /* 文字を中央に配置 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    margin: 0;
+}   
+
+
+.table-footer {
+    margin-top: 20px;
+}

@@ -6,48 +6,8 @@ import axios from 'axios';
 // RequestDetail.jsx
 import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
 
-function OrderDetailForms({user, id}) {
+function OrderDetailForms({user, orderHeader, setOrderHeader}) {
     const [status, setStatus] = useState(0);
-    const request_id = id //あとで編集ボタンからもらう
-    // const [order_header, setOrder] = useState(null);
-
-const [orderHeader, setOrderHeader] = useState({
-    request_id: "",
-    customer_id: "",
-    request_date: "",
-    requester_dept_name: "",
-    delivery_date: "",
-    requester_name: "",
-    request_detail: "",
-});
-
-
-    useEffect(() => {
-        // ここでAPIから発注データを取得して状態に保存する処理を実装
-        const fetchOrder = async () => {
-            try {
-                const response = await axios.get(
-                    
-                    `http://localhost:8000/requests/${request_id}/details`
-                );
-                console.log('response.data.requests:', response.data.requests[0])
-
-                // setOrder(response.data.requests[0])
-                setStatus(response.data.requests[0].status)
-
-                setOrderHeader(response.data.requests[0]);
-                // console.log(response.data.requests[0]);
-                console.log(response.data.requests[0].customer_name);
-
-            } catch (error) {
-                console.error('発注依頼データの取得に失敗しました:', error);
-            }
-        };
-
-        if (id) {
-            fetchOrder();
-        }
-    }, []); 
 
     const [customer_list, setCustomerList] = useState([]);
     useEffect(() => {

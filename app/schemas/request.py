@@ -29,7 +29,6 @@ class RequestSchema(InsertAndUpdateRequestSchema):
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
     request_id: str = Field(..., example="REQ26-0001")
     item_id: str = Field(..., example="ITM26-0001")
-    item_num: int = Field(..., example=1)
 
 
 #POST登録APIで受ける
