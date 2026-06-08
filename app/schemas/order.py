@@ -5,14 +5,14 @@ from datetime import date
 # 登録・更新で使用するスキーマ    
 
 class InsertAndUpdateOrderSchema(BaseModel):
-    order_userid: str = Field(..., example=26011)
+    order_user_cd: str = Field(..., example=26011)
     order_date: date = Field(..., example="2024-12-31")
 
 class InsertAndUpdateOrderDetailSchema(BaseModel):
     item_partsnum: str = Field(..., example="sk_12345")
     quantity: int = Field(..., example=20)
     price: int = Field(..., example=1000)
-    supplier_id: str = Field(..., example="0001")
+    supplier_id: int = Field(..., example=1)
     customer_id: str = Field(..., example="0001") 
     customer_name: str
     status: int = Field(..., example=1)
@@ -20,7 +20,7 @@ class InsertAndUpdateOrderDetailSchema(BaseModel):
 
 # リクエスト情報を表すスキーマ    
 class OrderSchema(BaseModel):
-    order_userid: str = Field(..., example=26011)
+    order_user_cd: str = Field(..., example=26011)
     order_id: str = Field(..., example="ORD26-0001")
     order_date: date = Field(..., example="2024-12-31")
     

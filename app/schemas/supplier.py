@@ -3,7 +3,7 @@ from typing import List
 
 # サプライヤー情報を表すスキーマ(1件)
 class SupplierSchema(BaseModel):
-    supplier_id: str = Field(..., example="0001")
+    supplier_id: int = Field(..., example=1)
     supplier_name: str = Field(..., example="ChocoMint")
     
 

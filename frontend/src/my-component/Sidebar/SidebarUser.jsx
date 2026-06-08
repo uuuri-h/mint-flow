@@ -9,7 +9,7 @@ function SidebarUser({user}) {
                 <img src={icon} ></img>
                 <div className="UserGrp">
                     <p className="UserName">{user ? user.user_name : 'ゲスト'}</p>
-                    <p className="UserInfo">{user ? user.userid : '000000'} / {user ? user.department_name : '----'}</p>
+                    <p className="UserInfo">{user ? user.user_cd : '000000'} / {user ? user.department_name : '----'}</p>
                 </div>
             </div>
         </div>

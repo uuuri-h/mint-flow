@@ -3,7 +3,7 @@ from typing import List
 
 # 顧客情報を表すスキーマ(1件)
 class CustomerSchema(BaseModel):
-    customer_id: str = Field(..., example="0001")
+    customer_id: str = Field(..., example=1)
     customer_name: str = Field(..., example="チョコミント株式会社")
     
 

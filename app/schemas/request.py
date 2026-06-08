@@ -5,7 +5,7 @@ from datetime import date
 
 # ヘッダ登録・更新
 class InsertAndUpdateRequestSchema(BaseModel):
-    request_userid: str = Field(..., example="26011")
+    request_user_cd: str = Field(..., example="26011")
     customer_id: str = Field(..., example="0001")
     customer_name: str
     deadline: date = Field(..., example="2024-12-31")
@@ -13,10 +13,10 @@ class InsertAndUpdateRequestSchema(BaseModel):
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):
-    item_partsnum: str = Field(..., example="sk_12345")
+    item_id: int = Field(..., example= 1)
     quantity: int = Field(..., example=20)
     price: int = Field(..., example=1000)
-    supplier_id: str = Field(..., example="0001")
+    supplier_id: int = Field(..., example=1)
     status: int = Field(..., example=1)
     
 
@@ -29,8 +29,8 @@ class RequestSchema(InsertAndUpdateRequestSchema):
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
     request_id: str = Field(..., example="REQ26-0001")
     detail_id:int = Field(..., example=1)
-    item_cd: str = Field(..., example="ITM26-0001")
-    item_name: str = Field(..., example="スカート")
+    # item_partsnum: str = Field(..., example="ITM26-0001")
+    # item_name: str = Field(..., example="スカート")
 
 
 #POST登録APIで受ける
@@ -52,7 +52,7 @@ class RequestListItemSchema(BaseModel):
     item_count: int
     status: int 
     total_amount: int
-    customer_id: str
+    customer_id: int
     customer_name: str
     total_quantity: int 
     delivery_date: date

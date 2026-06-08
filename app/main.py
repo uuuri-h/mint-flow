@@ -54,57 +54,47 @@ detail_data = [
     RequestDetailSchema(
         request_id="REQ26-0001",
         detail_id = 1,
-        item_cd="ITM26-0001",
-        item_partsnum="SK-12345",
+        item_id=3,
         quantity=50,
         price=1000,
-        supplier_id="0001",
+        supplier_id=1,
         status=3,
-        item_name="スカート",
     ),
     RequestDetailSchema(
         request_id="REQ26-0001",
         detail_id = 2,
-        item_cd="ITM26-0002",
-        item_partsnum="SK-67890",
+        item_id=2,
         quantity=50,
         price=2000,
-        supplier_id="0002",
+        supplier_id=1,
         status=1,
-        item_name="スカート",
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
         detail_id = 1,
-        item_cd="ITM26-0003",
-        item_partsnum="AB-11111",
+        item_id=1,
         quantity=20,
         price=1500,
-        supplier_id="0001",
+        supplier_id=1,
         status=1,
-        item_name="パンツ",
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
         detail_id = 2,
-        item_cd="ITM26-0004",
-        item_partsnum="CD-22222",
+        item_id=5,
         quantity=30,
         price=1000,
-        supplier_id="0003",
+        supplier_id=1,
         status=3,
-        item_name="Tシャツ",
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
         detail_id = 3,
-        item_cd="ITM26-1111",
-        item_partsnum="CA-22222",
+        item_id= 4,
         quantity=12,
         price=2000,
-        supplier_id="0002",
+        supplier_id=1,
         status=1,
-        item_name="Tシャツ",
     )
 ]
 
@@ -148,7 +138,7 @@ def update_user(user_id: str, user: InsertAndUpdateUserSchema):
 @app.get("/users/{user_id}", response_model=UserSchema)
 def get_user(user_id: str):
     return UserSchema(
-        userid=user_id,
+        user_cd=user_id,
         user_name="山田太郎",
         department_code="001",
         department_name="営業部",
@@ -156,8 +146,8 @@ def get_user(user_id: str):
     )
     
 #ユーザー認証
-# def authenticate_user(fake_db, userid: str, password: str):
-#     user = get_user(userid)  # ユーザー情報を取得する関数を呼び出す
+# def authenticate_user(fake_db, user_cd: str, password: str):
+#     user = get_user(user_cd)  # ユーザー情報を取得する関数を呼び出す
 #     if not user:
 #         return False
 #     if not verify_password(password, user.hashed_password):  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
@@ -177,7 +167,7 @@ def get_user(user_id: str):
 def login(login_data: LoginSchema):
     
     # ユーザーの存在確認
-    user = get_user(login_data.userid)  # ユーザー情報を取得する関数を呼び出す
+    user = get_user(login_data.user_cd)  # ユーザー情報を取得する関数を呼び出す
     
     if not user:
         raise HTTPException(status_code=400, detail="ユーザーが見つかりません")
@@ -190,7 +180,7 @@ def login(login_data: LoginSchema):
     
     #JWT作成
     access_token = create_access_token(
-        data={"sub": user.userid} #JWTの中にuseridを入れている　subはトークンの持ち主を表す(JWT標準項目)
+        data={"sub": user.user_cd} #JWTの中にuser_cdを入れている　subはトークンの持ち主を表す(JWT標準項目)
     )
     
     #JWTを返す(Reactへ返す)
@@ -249,17 +239,17 @@ async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authoriza
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    userid: str = payload.get("sub") #ペイロードからユーザーIDを取得　subはJWTの持ち主を表す(JWT標準項目)
+    user_cd: str = payload.get("sub") #ペイロードからユーザーIDを取得　subはJWTの持ち主を表す(JWT標準項目)
     
-    #useridが存在しない場合
-    if userid is None:
+    #user_cdが存在しない場合
+    if user_cd is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="ユーザーIDが見つかりません",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = get_user(userid) #ここでユーザー情報を取得する関数を呼び出すこともできる
+    user = get_user(user_cd) #ここでユーザー情報を取得する関数を呼び出すこともできる
 
     return user
 
@@ -313,7 +303,7 @@ def update_request(
 @app.get("/requests/{request_id}", response_model=RequestSchema)
 def get_request(request_id: str):
     # ここで依頼情報取得のロジックを実装
-    return RequestSchema(request_id=request_id, request_userid=26011, client_name="ABC株式会社", deadline="2024-12-31", priority=1)     
+    return RequestSchema(request_id=request_id, request_user_cd=26011, client_name="ABC株式会社", deadline="2024-12-31", priority=1)     
 
 #依頼削除
 @app.delete("/requests/{request_id}", response_model=RequestResponseSchema)
@@ -381,7 +371,7 @@ def update_order(
 @app.get("/orders/{order_id}", response_model=OrderSchema)
 def get_order(order_id: str):
     # ここで発注情報取得のロジックを実装
-    return OrderSchema(order_id=order_id, order_userid=26011, order_date="2024-12-31")  
+    return OrderSchema(order_id=order_id, order_user_cd=26011, order_date="2024-12-31")  
 
 
 
@@ -421,15 +411,15 @@ def get_suppliers():
     return SupplierListSchema(
         suppliers=[
             SupplierSchema(
-                supplier_id="0001",
+                supplier_id=1,
                 supplier_name="ChocoMint",
             ),
             SupplierSchema(
-                supplier_id="0002",
+                supplier_id=1,
                 supplier_name="Chocolate",
             ),
             SupplierSchema(
-                supplier_id="0003",
+                supplier_id=1,
                 supplier_name="MINT",
             )
         ]

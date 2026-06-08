@@ -4,14 +4,14 @@ from datetime import date
 # ===UserSchema定義===
 # 登録・更新で使用するスキーマ
 class InsertAndUpdateUserSchema(BaseModel):
-    userid: str = Field(..., example="26011")
+    user_cd: str = Field(..., example="26011")
     user_name: str = Field(..., example="山田太郎")
     password: str = Field(..., example="Mint1234")
 
 
 #ログインで使用するスキーマ(パスワードとIDを受け取る)
 class LoginSchema(BaseModel):
-    userid: str = Field(..., example="260011")
+    user_cd: str = Field(..., example="260011")
     password: str = Field(..., example="Mint1234")
     
 
@@ -26,7 +26,7 @@ class TokenResponseSchema(BaseModel):
 
 # リクエスト情報を表すスキーマ  passwordはレスポンスに含めないようにする！
 class UserSchema(BaseModel):
-    userid: str = Field(..., example="260011")
+    user_cd: str = Field(..., example="260011")
     user_name: str = Field(..., example="山田太郎")
     department_code: str = Field(..., example="002")
     department_name: str = Field(..., example="購買部") #002は購買部

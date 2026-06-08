@@ -8,7 +8,7 @@ function Login() {
 
     //useStateに入力された値を保存
     const [data, setData] = useState('');
-    const [userid, setUserid] = useState('');
+    const [user_cd, setuser_cd] = useState('');
     const [password, setPassword] = useState('');
 
 
@@ -21,7 +21,7 @@ function Login() {
                 'http://localhost:8000/login/',//ReactからFastAPIへ！　HTTP通信（JSONデータを送信）
                 //JSONデータの形式でユーザーIDとパスワードを送信
                 {
-                    userid: userid,
+                    user_cd: user_cd,
                     password: password
                 }
             );
@@ -56,10 +56,10 @@ function Login() {
                     <input 
                         className="form-input"
                         type="text"
-                        name="userid" 
-                        value={userid}
+                        name="user_cd" 
+                        value={user_cd}
                         placeholder='ユーザーID'
-                        onChange={(e) => setUserid(e.target.value)}
+                        onChange={(e) => setuser_cd(e.target.value)}
                     />
                     
                 </div>

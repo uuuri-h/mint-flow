@@ -85,7 +85,13 @@ function OrderDetailTable({
                                 {showCheckBox && (
                                     <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
                                 )}
-                                <td className="td2">{order.item_partsnum}</td>
+                                <td className="td2">
+                                    {/* {order.item_partsnum} */}
+                                    <input 
+                                        className ="form-input"
+                                        type="text"
+                                    />
+                                </td>
                                 <td className="td3">{order.item_name}</td>
                                 <td className="td4">{order.quantity}</td>
                                 <td className="td5">￥{order.price}</td>
