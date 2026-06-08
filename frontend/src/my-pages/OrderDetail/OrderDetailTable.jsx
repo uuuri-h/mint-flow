@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
+import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
 
 
 function OrderDetailTable({
@@ -35,6 +35,30 @@ function OrderDetailTable({
         
     }
 
+
+    const [supplier_list, setSupplierList] = useState([]);
+    useEffect(() => {
+        const fetchSupplier = async () => {
+            try {
+                const response = await axios.get(
+                    
+                    `http://localhost:8000/supplier/suppliers`
+                );
+
+
+                setSupplierList(response.data.suppliers)
+                console.log(response.data.suppliers)
+
+
+            } catch (error) {
+                console.error('顧客データの取得に失敗しました:', error);
+            }
+        };
+
+        fetchSupplier();
+    }, []); 
+
+
     return (
         <div className='detail-table-wrapper'>
             <div className='detail-table-container'>
@@ -56,7 +80,7 @@ function OrderDetailTable({
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
                         {orders.map((order) => (
-                            <tr key={order.request_id}>
+                            <tr key={order.detail_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 {showCheckBox && (
                                     <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
@@ -66,11 +90,35 @@ function OrderDetailTable({
                                 <td className="td4">{order.quantity}</td>
                                 <td className="td5">￥{order.price}</td>
                                 <td className="td6">￥{order.price * order.quantity}</td>
-                                <td className="td7">{order.supplier_id}</td>
+                                <td className="td7">
+                                    <select
+                                        className="form-input"
+                                        id="supplier-nm"
+                                        name="supplier-nm"
+                                        value={order.supplier_id}
+                                        onChange={(e) =>
+                                            setOrderHeader({
+                                                ...order,
+                                                supplier_id: e.target.value
+                                            })
+                                        }
+                                    >
+                                        <option value="">選択してください</option>
+
+                                        {supplier_list.map((supplier) => (
+                                            <option
+                                                key={supplier.supplier_id}
+                                                value={supplier.supplier_id}
+                                            >
+                                                {supplier.supplier_name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </td>
                                 <td className="td9">
-                                    {/* <span className={`status ${STATUS_CLASS_MAP[order.status]}`}>
-                                        {STATUS_MAP[order.status]}
-                                    </span> */}
+                                    <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
+                                        {ITEM_STATUS_MAP[order.status]}
+                                    </span>
                                 </td>
                                 <td className="td10">
                                     <button 

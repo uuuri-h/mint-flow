@@ -12,6 +12,7 @@ from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSche
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
 from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
+from app.schemas.supplier import SupplierSchema, SupplierListSchema
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -52,30 +53,30 @@ header_data=[
 detail_data = [
     RequestDetailSchema(
         request_id="REQ26-0001",
-        item_id="ITM26-0001",
-        item_num=1,
+        detail_id = 1,
+        item_cd="ITM26-0001",
         item_partsnum="SK-12345",
         quantity=50,
         price=1000,
         supplier_id="0001",
-        status=1,
+        status=3,
         item_name="スカート",
     ),
     RequestDetailSchema(
         request_id="REQ26-0001",
-        item_id="ITM26-0002",
-        item_num=2,
+        detail_id = 2,
+        item_cd="ITM26-0002",
         item_partsnum="SK-67890",
         quantity=50,
         price=2000,
         supplier_id="0002",
-        status=2,
+        status=1,
         item_name="スカート",
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
-        item_id="ITM26-0003",
-        item_num=1,
+        detail_id = 1,
+        item_cd="ITM26-0003",
         item_partsnum="AB-11111",
         quantity=20,
         price=1500,
@@ -85,13 +86,24 @@ detail_data = [
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
-        item_id="ITM26-0004",
-        item_num=2,
+        detail_id = 2,
+        item_cd="ITM26-0004",
         item_partsnum="CD-22222",
         quantity=30,
         price=1000,
         supplier_id="0003",
         status=3,
+        item_name="Tシャツ",
+    ),
+    RequestDetailSchema(
+        request_id="REQ26-0002",
+        detail_id = 3,
+        item_cd="ITM26-1111",
+        item_partsnum="CA-22222",
+        quantity=12,
+        price=2000,
+        supplier_id="0002",
+        status=1,
         item_name="Tシャツ",
     )
 ]
@@ -403,6 +415,33 @@ def get_customer(customer_id: str):
     )
     
 
+
+@app.get("/supplier/suppliers", response_model=SupplierListSchema)
+def get_suppliers():
+    return SupplierListSchema(
+        suppliers=[
+            SupplierSchema(
+                supplier_id="0001",
+                supplier_name="ChocoMint",
+            ),
+            SupplierSchema(
+                supplier_id="0002",
+                supplier_name="Chocolate",
+            ),
+            SupplierSchema(
+                supplier_id="0003",
+                supplier_name="MINT",
+            )
+        ]
+    )
+
+@app.get("/supplier/{supplier_id}", response_model=SupplierSchema)
+def get_supplier(supplier_id: str):
+    return SupplierSchema(
+        supplier_id=supplier_id,
+        supplier_name="ChocoMint",
+    )
+    
 
 #バリデーションエラーのカスタムハンドラ
 @app.exception_handler(ValidationError)

@@ -102,7 +102,7 @@
 }
 
 
-.status {
+.status, .item-status {
     border-radius: 50px;
     font-size: 12px;
     font-weight: bolder;
@@ -131,4 +131,12 @@
 }
 .status.cancelled {
     background-color: #dc3545;
+}
+
+.item-status.requesting {
+    background-color: #ffc107;
+}
+
+.item-status.completed {
+    background-color: #2f9e8f;
 }

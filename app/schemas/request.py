@@ -28,7 +28,8 @@ class RequestSchema(InsertAndUpdateRequestSchema):
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
     request_id: str = Field(..., example="REQ26-0001")
-    item_id: str = Field(..., example="ITM26-0001")
+    detail_id:int = Field(..., example=1)
+    item_cd: str = Field(..., example="ITM26-0001")
     item_name: str = Field(..., example="スカート")
 
 
