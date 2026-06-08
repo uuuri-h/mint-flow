@@ -24,7 +24,7 @@ function OrderDetail({ user }) {
   });
 
   const [orderDetail, setOrderDetails] = useState([]);
-
+  const [status, setStatus] = useState(0);
   const request_id = id
   useEffect(() => {
       // ここでAPIから発注データを取得して状態に保存する処理を実装
@@ -33,10 +33,11 @@ function OrderDetail({ user }) {
               const response = await axios.get(
                   `http://localhost:8000/requests/${id}/details`
               );
-              console.log(response.data);
 
               setOrderHeader(response.data.header);
               setOrderDetails(response.data.details);
+              setStatus(response.data.header.status);
+
 
           } catch (error) {
               console.error('発注依頼データの取得に失敗しました:', error);
@@ -58,6 +59,8 @@ function OrderDetail({ user }) {
           user={user}     
           orderHeader={orderHeader}
           setOrderHeader={setOrderHeader}
+          status = {status}
+          setStatus = {setStatus}
         />
         <OrderDetailTable 
           user={user} 

@@ -8,7 +8,7 @@ import OrderTable from "./OrderTable"
 function OrderList() {
     const { user } = useOutletContext(); //contextからuserを取得
 
-    // console.log("OrderList user:", user);
+
     return (
         <div className="pg-container order-list-container">
             <div className="pg-header order-list-header">

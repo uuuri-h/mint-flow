@@ -27,7 +27,6 @@ function App() {
                     }
                 });
                 setUser(response.data);
-                // console.log("response.data", response.data);
             } catch (error) {
                 console.error('ユーザー情報の取得に失敗しました', error);
             }

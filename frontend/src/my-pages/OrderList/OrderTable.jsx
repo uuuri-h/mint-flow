@@ -18,7 +18,7 @@ function OrderTable({ user }) {
     //営業部の場合はチェックボックスを非表示
     const [showCheckBox, setShowCheckBox] = useState(true);
     const[showOrderBtn, setShowOrderBtn] = useState(true);
-    // console.log("OrderTable user:", user); 
+
     useEffect(() => {
         const userRole = user ? user.department_code : null; // ユーザーデータから役割を取得
         if (userRole === '001') { // 営業部のコードに応じて条件を設定
@@ -30,8 +30,7 @@ function OrderTable({ user }) {
         }
     }, [user]); // userが変更されたときに実行される, これがないと、ユーザーデータが更新されてもチェックボックスの表示が変わらない
     if (showCheckBox === false) {
-        // console.log("営業部のユーザーのため、チェックボックスは非表示です。");
-        
+
     }
 
     const [page, setPage] = useState(1);
@@ -45,7 +44,7 @@ function OrderTable({ user }) {
                 const response = await axios.get(
                     'http://localhost:8000/requests/summaries'
                 );
-                // console.log('response.data.requests:', response.data.requests)
+
 
                 setOrders(response.data.requests)
                 setTotalItems(response.data.requests.length) 
@@ -61,7 +60,7 @@ function OrderTable({ user }) {
     //テーブルの編集ボタンが押下されたときの処理
     const requestEdit  = async(id) => {
         // e.preventDefault(); //ページのリロードを止める
-        console.log(id + "行の編集ボタンが押された！")
+
                     //ホームページにリダイレクト
         navigate('../order-detail', {state :{id}});
 

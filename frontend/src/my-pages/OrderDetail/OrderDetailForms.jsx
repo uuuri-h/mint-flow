@@ -6,8 +6,15 @@ import axios from 'axios';
 // RequestDetail.jsx
 import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
 
-function OrderDetailForms({user, orderHeader, setOrderHeader}) {
-    const [status, setStatus] = useState(0);
+function OrderDetailForms({
+    user, 
+    orderHeader, 
+    setOrderHeader,
+    status,
+    setStatus,
+}) {
+
+    // const [status, setStatus] = useState(0);
 
     const [customer_list, setCustomerList] = useState([]);
     useEffect(() => {
@@ -17,10 +24,10 @@ function OrderDetailForms({user, orderHeader, setOrderHeader}) {
                     
                     `http://localhost:8000/customer/customers`
                 );
-                console.log('顧客リスト', response.data.customers)
+
 
                 setCustomerList(response.data.customers)
-                // console.log(customer_list);
+
 
             } catch (error) {
                 console.error('顧客データの取得に失敗しました:', error);
