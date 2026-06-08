@@ -29,6 +29,7 @@ class RequestSchema(InsertAndUpdateRequestSchema):
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
     request_id: str = Field(..., example="REQ26-0001")
     item_id: str = Field(..., example="ITM26-0001")
+    item_name: str = Field(..., example="スカート")
 
 
 #POST登録APIで受ける
@@ -52,7 +53,7 @@ class RequestListItemSchema(BaseModel):
     total_amount: int
     customer_id: str
     customer_name: str
-    total_quantity: int
+    total_quantity: int 
     delivery_date: date
     request_detail: str
 

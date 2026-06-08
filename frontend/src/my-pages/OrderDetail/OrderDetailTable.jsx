@@ -12,10 +12,13 @@ function OrderDetailTable({
     orderDetail
 }) {
 
+
+    console.log(orderDetail)
+    const orders = orderDetail
+
     //営業部の場合はチェックボックスを非表示
     const [showCheckBox, setShowCheckBox] = useState(true);
     const[showOrderBtn, setShowOrderBtn] = useState(true);
-    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         const userRole = user ? user.department_code : null; // ユーザーデータから役割を取得
@@ -52,27 +55,27 @@ function OrderDetailTable({
                     </thead>
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
-                        {orders.map((orderDetail) => (
-                            <tr key={orderDetail.request_id}>
+                        {orders.map((order) => (
+                            <tr key={order.request_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 {showCheckBox && (
                                     <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
                                 )}
-                                <td className="td2">{orderDetail.request_date}</td>
-                                <td className="td3">{orderDetail.request_id}</td>
-                                <td className="td4">{orderDetail.customer_name}</td>
-                                <td className="td5">{orderDetail.item_count}</td>
-                                <td className="td6">￥{orderDetail.total_amount}</td>
-                                <td className="td7">{orderDetail.delivery_date}</td>
+                                <td className="td2">{order.item_partsnum}</td>
+                                <td className="td3">{order.item_name}</td>
+                                <td className="td4">{order.quantity}</td>
+                                <td className="td5">￥{order.price}</td>
+                                <td className="td6">￥{order.price * order.quantity}</td>
+                                <td className="td7">{order.supplier_id}</td>
                                 <td className="td9">
-                                    {/* <span className={`status ${STATUS_CLASS_MAP[orderDetail.status]}`}>
-                                        {STATUS_MAP[orderDetail.status]}
+                                    {/* <span className={`status ${STATUS_CLASS_MAP[order.status]}`}>
+                                        {STATUS_MAP[order.status]}
                                     </span> */}
                                 </td>
                                 <td className="td10">
                                     <button 
                                         className="button btn btn-primary"
-                                        // onClick={() => requestEdit(orderDetail.request_id)}
+                                        // onClick={() => requestEdit(order.request_id)}
                                         type="submit"
                                     >
                                      {/* onClick={() => requestEdit(request.request_id)}　 */}

@@ -58,7 +58,8 @@ detail_data = [
         quantity=50,
         price=1000,
         supplier_id="0001",
-        status=1
+        status=1,
+        item_name="スカート",
     ),
     RequestDetailSchema(
         request_id="REQ26-0001",
@@ -68,7 +69,8 @@ detail_data = [
         quantity=50,
         price=2000,
         supplier_id="0002",
-        status=2
+        status=2,
+        item_name="スカート",
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
@@ -78,7 +80,8 @@ detail_data = [
         quantity=20,
         price=1500,
         supplier_id="0001",
-        status=1
+        status=1,
+        item_name="パンツ",
     ),
     RequestDetailSchema(
         request_id="REQ26-0002",
@@ -88,7 +91,8 @@ detail_data = [
         quantity=30,
         price=1000,
         supplier_id="0003",
-        status=3
+        status=3,
+        item_name="Tシャツ",
     )
 ]
 
