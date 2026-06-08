@@ -99,13 +99,13 @@ function OrderTable({ user }) {
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
                         {orders.map((order) => (
-                            <tr key={order.request_id}>
+                            <tr key={order.request_cd}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 {showCheckBox && (
                                     <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
                                 )}
                                 <td className="td2">{order.request_date}</td>
-                                <td className="td3">{order.request_id}</td>
+                                <td className="td3">{order.request_cd}</td>
                                 <td className="td4">{order.customer_name}</td>
                                 <td className="td5">{order.item_count}</td>
                                 <td className="td6">￥{order.total_amount}</td>
@@ -118,10 +118,10 @@ function OrderTable({ user }) {
                                 <td className="td10">
                                     <button 
                                         className="button btn btn-primary"
-                                        onClick={() => requestEdit(order.request_id)}
+                                        onClick={() => requestEdit(order.request_cd)}
                                         type="submit"
                                     >
-                                     {/* onClick={() => requestEdit(request.request_id)}　 */}
+                                     {/* onClick={() => requestEdit(request.request_cd)}　 */}
                                         編集
                                     </button>
                                 </td>

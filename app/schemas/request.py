@@ -6,7 +6,7 @@ from datetime import date
 # ヘッダ登録・更新
 class InsertAndUpdateRequestSchema(BaseModel):
     request_user_cd: str = Field(..., example="26011")
-    customer_id: str = Field(..., example="0001")
+    customer_cd: int = Field(..., example=1)
     customer_name: str
     deadline: date = Field(..., example="2024-12-31")
     priority: int = Field(..., example=1) 
@@ -22,12 +22,12 @@ class InsertAndUpdateRequestDetailSchema(BaseModel):
 
 # ヘッダ返却用
 class RequestSchema(InsertAndUpdateRequestSchema):
-    request_id: str = Field(..., example="REQ26-0001")
+    request_cd: str = Field(..., example="REQ26-0001")
 
 
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
-    request_id: str = Field(..., example="REQ26-0001")
+    request_cd: str = Field(..., example="REQ26-0001")
     detail_id:int = Field(..., example=1)
     # item_partsnum: str = Field(..., example="ITM26-0001")
     # item_name: str = Field(..., example="スカート")
@@ -45,14 +45,14 @@ class RequestResponseSchema(BaseModel):
     
 #一覧1行分
 class RequestListItemSchema(BaseModel):
-    request_id: str
+    request_cd: str
     requester_name: str
     requester_dept_name: str
     request_date: date
     item_count: int
     status: int 
     total_amount: int
-    customer_id: int
+    customer_cd: int
     customer_name: str
     total_quantity: int 
     delivery_date: date

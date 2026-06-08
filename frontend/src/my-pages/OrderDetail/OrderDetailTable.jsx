@@ -129,10 +129,10 @@ function OrderDetailTable({
                                 <td className="td10">
                                     <button 
                                         className="button btn btn-primary"
-                                        // onClick={() => requestEdit(order.request_id)}
+                                        // onClick={() => requestEdit(order.request_cd)}
                                         type="submit"
                                     >
-                                     {/* onClick={() => requestEdit(request.request_id)}　 */}
+                                     {/* onClick={() => requestEdit(request.request_cd)}　 */}
                                         編集
                                     </button>
                                 </td>

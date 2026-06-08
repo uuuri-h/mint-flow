@@ -51,8 +51,8 @@ function OrderDetailForms({
                             id="request-id" 
                             name="request-id" 
                             style={{width: '150px'}}
-                            // value={order_header?.request_id || ''}
-                            value={orderHeader.request_id}
+                            // value={order_header?.request_cd || ''}
+                            value={orderHeader.request_cd}
 
                             readOnly
 
@@ -96,11 +96,11 @@ function OrderDetailForms({
                         className="form-input"
                         id="customer-nm"
                         name="customer-nm"
-                        value={orderHeader.customer_id}
+                        value={orderHeader.customer_cd}
                         onChange={(e) =>
                             setOrderHeader({
                                 ...orderHeader,
-                                customer_id: e.target.value
+                                customer_cd: e.target.value
                             })
                         }
                     >
@@ -108,8 +108,8 @@ function OrderDetailForms({
 
                         {customer_list.map((customer) => (
                             <option
-                                key={customer.customer_id}
-                                value={customer.customer_id}
+                                key={customer.customer_cd}
+                                value={customer.customer_cd}
                             >
                                 {customer.customer_name}
                             </option>

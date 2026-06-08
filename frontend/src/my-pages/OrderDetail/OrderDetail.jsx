@@ -14,8 +14,8 @@ function OrderDetail({ user }) {
 
 
   const [orderHeader, setOrderHeader] = useState({
-      request_id: "",
-      customer_id: "",
+      request_cd: "",
+      customer_cd: "",
       request_date: "",
       requester_dept_name: "",
       delivery_date: "",
@@ -25,7 +25,7 @@ function OrderDetail({ user }) {
 
   const [orderDetail, setOrderDetails] = useState([]);
   const [status, setStatus] = useState(0);
-  const request_id = id
+  const request_cd = id
   useEffect(() => {
       // ここでAPIから発注データを取得して状態に保存する処理を実装
       const fetchOrderDetail = async () => {

@@ -21,28 +21,28 @@ app = FastAPI()
 #仮のデータ（データーベースの代わり）
 header_data=[
     RequestListItemSchema(
-        request_id="REQ26-0001",
+        request_cd="REQ26-0001",
         request_date="2024-12-01",
         requester_name="山田太郎",
         requester_dept_name="営業部",
         item_count=5,
         status=1,
         total_amount=50000,
-        customer_id="0001",
+        customer_cd=1,
         customer_name="チョコミント株式会社",
         total_quantity=100,
         delivery_date="2024-12-31",
         request_detail="12月以降に出荷してください。"
     ),
     RequestListItemSchema(
-        request_id="REQ26-0002",
+        request_cd="REQ26-0002",
         request_date="2024-12-05",
         requester_name="山田花子",
         requester_dept_name="製造部",
         item_count=3,
         status=2,
         total_amount=30000,
-        customer_id="0002",
+        customer_cd=1,
         customer_name="株式会社チョコレート",
         total_quantity=50,
         delivery_date="2025-01-15",
@@ -52,7 +52,7 @@ header_data=[
 
 detail_data = [
     RequestDetailSchema(
-        request_id="REQ26-0001",
+        request_cd="REQ26-0001",
         detail_id = 1,
         item_id=3,
         quantity=50,
@@ -61,7 +61,7 @@ detail_data = [
         status=3,
     ),
     RequestDetailSchema(
-        request_id="REQ26-0001",
+        request_cd="REQ26-0001",
         detail_id = 2,
         item_id=2,
         quantity=50,
@@ -70,7 +70,7 @@ detail_data = [
         status=1,
     ),
     RequestDetailSchema(
-        request_id="REQ26-0002",
+        request_cd="REQ26-0002",
         detail_id = 1,
         item_id=1,
         quantity=20,
@@ -79,7 +79,7 @@ detail_data = [
         status=1,
     ),
     RequestDetailSchema(
-        request_id="REQ26-0002",
+        request_cd="REQ26-0002",
         detail_id = 2,
         item_id=5,
         quantity=30,
@@ -88,7 +88,7 @@ detail_data = [
         status=3,
     ),
     RequestDetailSchema(
-        request_id="REQ26-0002",
+        request_cd="REQ26-0002",
         detail_id = 3,
         item_id= 4,
         quantity=12,
@@ -264,17 +264,17 @@ def get_request_summaries_response():
     )
     
 #依頼の明細取得
-@app.get("/requests/{request_id}/details")
-def get_request_detail(request_id: str):
+@app.get("/requests/{request_cd}/details")
+def get_request_detail(request_cd: str):
 
     header = next(
-        (h for h in header_data if h.request_id == request_id),
+        (h for h in header_data if h.request_cd == request_cd),
         None
     )
 
     details = [
         d for d in detail_data
-        if d.request_id == request_id
+        if d.request_cd == request_cd
     ]
 
     return {
@@ -291,23 +291,23 @@ def create_request(
     return RequestResponseSchema(message="依頼登録が正常に処理されました。") 
 
 # 依頼更新
-@app.put("/requests/{request_id}", response_model=RequestResponseSchema)
+@app.put("/requests/{request_cd}", response_model=RequestResponseSchema)
 def update_request(
-        request_id: str, 
+        request_cd: str, 
         request_data: RequestCreateSchema
     ):
     # ここで依頼更新のロジックを実装
     return RequestResponseSchema(message="依頼情報が正常に更新されました。")    
 
 # 依頼情報取得
-@app.get("/requests/{request_id}", response_model=RequestSchema)
-def get_request(request_id: str):
+@app.get("/requests/{request_cd}", response_model=RequestSchema)
+def get_request(request_cd: str):
     # ここで依頼情報取得のロジックを実装
-    return RequestSchema(request_id=request_id, request_user_cd=26011, client_name="ABC株式会社", deadline="2024-12-31", priority=1)     
+    return RequestSchema(request_cd=request_cd, request_user_cd=26011, client_name="ABC株式会社", deadline="2024-12-31", priority=1)     
 
 #依頼削除
-@app.delete("/requests/{request_id}", response_model=RequestResponseSchema)
-def delete_request(request_id: str):
+@app.delete("/requests/{request_cd}", response_model=RequestResponseSchema)
+def delete_request(request_cd: str):
     # ここで依頼削除のロジックを実装
     return RequestResponseSchema(message="依頼が正常に削除されました。")
 
@@ -319,22 +319,22 @@ def get_request_list():
     return header_data
 
 #依頼詳細取得(詳細画面の取得用で使う)
-@app.get("/requests/{request_id}/details", response_model=RequestListResponseSchema)
-def get_request_details(request_id: str):  
+@app.get("/requests/{request_cd}/details", response_model=RequestListResponseSchema)
+def get_request_details(request_cd: str):  
     # ここで依頼詳細取得のロジックを実装
     requests=header_data
 
     
     for request in requests :
-        if request.request_id == request_id :
+        if request.request_cd == request_cd :
             #Pydanticのモデルは引数名付きで渡す必要がある。
             return RequestListResponseSchema(
                 requests =  [request]        
             )
     
 #依頼詳細取得(一覧画面の取得用で使う)
-@app.get("/requests/{request_id}/summary", response_model=RequestListItemSchema)
-def get_request_summary(request_id: str):  
+@app.get("/requests/{request_cd}/summary", response_model=RequestListItemSchema)
+def get_request_summary(request_cd: str):  
     # ここで依頼一覧取得のロジックを実装
     return header_data
     
@@ -383,24 +383,24 @@ def get_customers():
     return CustomerListSchema(
         customers=[
             CustomerSchema(
-                customer_id="0001",
+                customer_cd=1,
                 customer_name="チョコミント株式会社",
             ),
             CustomerSchema(
-                customer_id="0002",
+                customer_cd=2,
                 customer_name="株式会社チョコレート",
             ),
             CustomerSchema(
-                customer_id="0003",
+                customer_cd=3,
                 customer_name="ミント株式会社",
             )
         ]
     )
 
-@app.get("/customer/{customer_id}", response_model=CustomerSchema)
-def get_customer(customer_id: str):
+@app.get("/customer/{customer_cd}", response_model=CustomerSchema)
+def get_customer(customer_cd: str):
     return CustomerSchema(
-        customer_id=customer_id,
+        customer_cd=customer_cd,
         customer_name="チョコミント株式会社",
     )
     
