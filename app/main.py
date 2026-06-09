@@ -140,7 +140,7 @@ def get_user(user_id: str):
     return UserSchema(
         user_cd=user_id,
         user_name="山田太郎",
-        department_code="001",
+        department_id=1,
         department_name="営業部",
         admin_flag=False
     )

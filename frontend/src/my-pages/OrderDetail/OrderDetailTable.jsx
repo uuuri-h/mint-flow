@@ -21,8 +21,8 @@ function OrderDetailTable({
     const[showOrderBtn, setShowOrderBtn] = useState(true);
 
     useEffect(() => {
-        const userRole = user ? user.department_code : null; // ユーザーデータから役割を取得
-        if (userRole === '001') { // 営業部のコードに応じて条件を設定
+        const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+        if (userRole === 1) { // 営業部のコードに応じて条件を設定
             setShowCheckBox(false);
             setShowOrderBtn(false);
         } else {

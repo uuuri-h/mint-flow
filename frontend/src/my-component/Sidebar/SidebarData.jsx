@@ -21,7 +21,7 @@ export const SidebarData = (user) => {
     },
 ];
     
-    if (user?.department_code === "001") { // 営業のユーザーにのみ表示
+    if (user?.department_id === 1) { // 営業のユーザーにのみ表示
         menu.push({
             title: "新規依頼",
             icon: <AddIcon />,
