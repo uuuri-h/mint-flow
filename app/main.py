@@ -415,11 +415,11 @@ def get_suppliers():
                 supplier_name="ChocoMint",
             ),
             SupplierSchema(
-                supplier_id=1,
+                supplier_id=2,
                 supplier_name="Chocolate",
             ),
             SupplierSchema(
-                supplier_id=1,
+                supplier_id=3,
                 supplier_name="MINT",
             )
         ]

@@ -9,12 +9,12 @@ import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
 
 function OrderDetailTable({
     user,
-    orderDetail
+    orderDetail,
+    setOrderDetail
 }) {
-
-
-    console.log(orderDetail)
-    const orders = orderDetail
+    
+    console.log("orderDetail=", orderDetail)
+    console.log("typeof=", typeof orderDetail)
 
     //営業部の場合はチェックボックスを非表示
     const [showCheckBox, setShowCheckBox] = useState(true);
@@ -59,6 +59,7 @@ function OrderDetailTable({
     }, []); 
 
 
+
     return (
         <div className='detail-table-wrapper'>
             <div className='detail-table-container'>
@@ -79,7 +80,7 @@ function OrderDetailTable({
                     </thead>
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
-                        {orders.map((order) => (
+                        {orderDetail.map((order) => (
                             <tr key={order.detail_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 {showCheckBox && (
@@ -87,26 +88,46 @@ function OrderDetailTable({
                                 )}
                                 <td className="td2">
                                     {/* {order.item_partsnum} */}
+
+                                </td>
+                                <td className="td3">{order.item_name}</td>
+                                <td className="td4">
                                     <input 
                                         className ="form-input"
                                         type="text"
+                                        id="quantity"
+                                        style={{width: '150px'}}
+                                        name="quantity"
+                                        value={order.quantity}
+                                        onChange={(e) =>
+                                            setOrderDetail(
+                                                orderDetail.map((item) =>
+                                                    item.detail_id === order.detail_id
+                                                        ? {
+                                                            ...item,
+                                                            quantity: e.target.value
+                                                        }
+                                                        : item
+                                                )
+                                            )
+                                        }
                                     />
                                 </td>
-                                <td className="td3">{order.item_name}</td>
-                                <td className="td4">{order.quantity}</td>
                                 <td className="td5">￥{order.price}</td>
                                 <td className="td6">￥{order.price * order.quantity}</td>
                                 <td className="td7">
                                     <select
-                                        className="form-input"
-                                        id="supplier-nm"
-                                        name="supplier-nm"
-                                        value={order.supplier_id}
                                         onChange={(e) =>
-                                            setOrderHeader({
-                                                ...order,
-                                                supplier_id: e.target.value
-                                            })
+                                            setOrderDetail(
+                                                orderDetail.map((item) =>
+                                                    item.detail_id === order.detail_id
+                                                        ? {
+                                                            ...item,
+                                                            supplier_id: Number(e.target.value)
+                                                        }
+                                                        : item
+                                                )
+                                            )
                                         }
                                     >
                                         <option value="">選択してください</option>

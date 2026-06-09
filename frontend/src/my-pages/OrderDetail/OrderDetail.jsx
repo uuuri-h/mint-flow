@@ -23,7 +23,7 @@ function OrderDetail({ user }) {
       request_detail: "",
   });
 
-  const [orderDetail, setOrderDetails] = useState([]);
+  const [orderDetail, setOrderDetail] = useState([]);
   const [status, setStatus] = useState(0);
   const request_cd = id
   useEffect(() => {
@@ -35,7 +35,7 @@ function OrderDetail({ user }) {
               );
 
               setOrderHeader(response.data.header);
-              setOrderDetails(response.data.details);
+              setOrderDetail(response.data.details);
               setStatus(response.data.header.status);
 
 
@@ -65,6 +65,7 @@ function OrderDetail({ user }) {
         <OrderDetailTable 
           user={user} 
           orderDetail={orderDetail}
+          setOrderDetail={setOrderDetail}
 
         />
       </div>

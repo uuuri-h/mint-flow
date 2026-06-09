@@ -29,7 +29,7 @@ class UserSchema(BaseModel):
     user_cd: str = Field(..., example="260011")
     user_name: str = Field(..., example="山田太郎")
     department_id: int = Field(..., example=2)
-    department_name: str = Field(..., example="購買部") #002は購買部
+    department_name: str = Field(..., example="購買部") #2は購買部
     admin_flag: bool = Field(..., example=False) #管理者フラグ　Trueなら管理者、Falseなら一般ユーザー
     
 
