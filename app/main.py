@@ -28,7 +28,7 @@ header_data=[
         item_count=5,
         status=1,
         total_amount=50000,
-        customer_cd=1,
+        customer_id=1,
         customer_name="チョコミント株式会社",
         total_quantity=100,
         delivery_date="2024-12-31",
@@ -42,7 +42,7 @@ header_data=[
         item_count=3,
         status=2,
         total_amount=30000,
-        customer_cd=1,
+        customer_id=1,
         customer_name="株式会社チョコレート",
         total_quantity=50,
         delivery_date="2025-01-15",
@@ -383,24 +383,24 @@ def get_customers():
     return CustomerListSchema(
         customers=[
             CustomerSchema(
-                customer_cd=1,
+                customer_id=1,
                 customer_name="チョコミント株式会社",
             ),
             CustomerSchema(
-                customer_cd=2,
+                customer_id=2,
                 customer_name="株式会社チョコレート",
             ),
             CustomerSchema(
-                customer_cd=3,
+                customer_id=3,
                 customer_name="ミント株式会社",
             )
         ]
     )
 
-@app.get("/customer/{customer_cd}", response_model=CustomerSchema)
-def get_customer(customer_cd: str):
+@app.get("/customer/{customer_id}", response_model=CustomerSchema)
+def get_customer(customer_id: str):
     return CustomerSchema(
-        customer_cd=customer_cd,
+        customer_id=customer_id,
         customer_name="チョコミント株式会社",
     )
     

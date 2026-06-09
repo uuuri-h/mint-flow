@@ -15,7 +15,7 @@ function OrderDetail({ user }) {
 
   const [orderHeader, setOrderHeader] = useState({
       request_cd: "",
-      customer_cd: "",
+      customer_id: "",
       request_date: "",
       requester_dept_name: "",
       delivery_date: "",

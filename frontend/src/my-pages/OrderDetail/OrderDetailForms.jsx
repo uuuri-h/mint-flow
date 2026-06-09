@@ -96,11 +96,11 @@ function OrderDetailForms({
                         className="form-input"
                         id="customer-nm"
                         name="customer-nm"
-                        value={orderHeader.customer_cd}
+                        value={orderHeader.customer_id}
                         onChange={(e) =>
                             setOrderHeader({
                                 ...orderHeader,
-                                customer_cd: e.target.value
+                                customer_id: e.target.value
                             })
                         }
                     >
@@ -108,8 +108,8 @@ function OrderDetailForms({
 
                         {customer_list.map((customer) => (
                             <option
-                                key={customer.customer_cd}
-                                value={customer.customer_cd}
+                                key={customer.customer_id}
+                                value={customer.customer_id}
                             >
                                 {customer.customer_name}
                             </option>
