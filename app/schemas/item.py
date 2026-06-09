@@ -11,7 +11,7 @@ from typing import List
 
 # サプライヤー情報を表すスキーマ(1件)
 class ItemSchema(BaseModel):
-    item_cd: int = Field(..., example=1)
+    item_id: int = Field(..., example=1)
     item_name: str = Field(..., example="台形スカート")
     item_part_no: str = Field(..., example="ITM26-0001")
     supplier_id: int = Field(..., example=1)
