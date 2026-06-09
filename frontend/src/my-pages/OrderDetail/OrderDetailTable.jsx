@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
 import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
-
+import {FormSelect} from "../../my-component/FormItem/FormSelect";
 
 function OrderDetailTable({
     user,
@@ -96,7 +96,7 @@ function OrderDetailTable({
                                         className ="form-input"
                                         type="text"
                                         id="quantity"
-                                        style={{width: '150px'}}
+                                        style={{width: '70px'}}
                                         name="quantity"
                                         value={order.quantity}
                                         onChange={(e) =>
@@ -116,7 +116,13 @@ function OrderDetailTable({
                                 <td className="td5">￥{order.price}</td>
                                 <td className="td6">￥{order.price * order.quantity}</td>
                                 <td className="td7">
-                                    <select
+
+                                    {/* <FormSelect 
+                                        selectedValue={}
+                                        options={}
+                                        onChange={(e) => setItemId(Number(e.target.value))}
+                                    /> */}
+                                    {/* <select
                                         onChange={(e) =>
                                             setOrderDetail(
                                                 orderDetail.map((item) =>
@@ -140,7 +146,7 @@ function OrderDetailTable({
                                                 {supplier.supplier_name}
                                             </option>
                                         ))}
-                                    </select>
+                                    </select> */}
                                 </td>
                                 <td className="td9">
                                     <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
