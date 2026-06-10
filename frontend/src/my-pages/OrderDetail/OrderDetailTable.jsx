@@ -5,16 +5,16 @@ import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
 import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
-import {FormSelect} from "../../my-component/FormItem/FormSelect";
+import FormSelect from '../../my-component/FormItem/FormSelect';
+// import NewOrderBtn from '../../my-component/Button/NewOrderBtn';
 
 function OrderDetailTable({
     user,
     orderDetail,
     setOrderDetail
 }) {
+
     
-    console.log("orderDetail=", orderDetail)
-    console.log("typeof=", typeof orderDetail)
 
     //営業部の場合はチェックボックスを非表示
     const [showCheckBox, setShowCheckBox] = useState(true);
@@ -45,10 +45,7 @@ function OrderDetailTable({
                     `http://localhost:8000/supplier/suppliers`
                 );
 
-
                 setSupplierList(response.data.suppliers)
-                console.log(response.data.suppliers)
-
 
             } catch (error) {
                 console.error('顧客データの取得に失敗しました:', error);
@@ -58,6 +55,11 @@ function OrderDetailTable({
         fetchSupplier();
     }, []); 
 
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const supplierOptions = supplier_list.map((supplier) => ({
+        value: supplier.supplier_id,
+        label: supplier.supplier_name
+    }));
 
 
     return (
@@ -116,12 +118,12 @@ function OrderDetailTable({
                                 <td className="td5">￥{order.price}</td>
                                 <td className="td6">￥{order.price * order.quantity}</td>
                                 <td className="td7">
-
-                                    {/* <FormSelect 
-                                        selectedValue={}
-                                        options={}
-                                        onChange={(e) => setItemId(Number(e.target.value))}
-                                    /> */}
+                                    <FormSelect 
+                                        selectedValue={order.supplier_id}
+                                        options={supplierOptions}
+                                        onChange={(e) => setOrderDetail(Number(e.target.value))}
+                                    />
+                                    {/* {console.log(supplier_list)} */}
                                     {/* <select
                                         onChange={(e) =>
                                             setOrderDetail(
