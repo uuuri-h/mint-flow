@@ -11,6 +11,7 @@ from pydantic import ValidationError
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
 from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
+from app.schemas.item import ItemSchema, ItemListSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
 from app.schemas.supplier import SupplierSchema, SupplierListSchema
 
@@ -56,7 +57,8 @@ detail_data = [
         detail_id = 1,
         item_id=3,
         quantity=50,
-        price=1000,
+        sales_price=1000,
+        cost_price=5.2,
         supplier_id=1,
         status=3,
     ),
@@ -65,7 +67,8 @@ detail_data = [
         detail_id = 2,
         item_id=2,
         quantity=50,
-        price=2000,
+        sales_price=2000,
+        cost_price=10,
         supplier_id=1,
         status=1,
     ),
@@ -74,7 +77,8 @@ detail_data = [
         detail_id = 1,
         item_id=1,
         quantity=20,
-        price=1500,
+        sales_price=1500,
+        cost_price=10.2,
         supplier_id=1,
         status=1,
     ),
@@ -83,7 +87,8 @@ detail_data = [
         detail_id = 2,
         item_id=5,
         quantity=30,
-        price=1000,
+        sales_price=1000,
+        cost_price=5.1,
         supplier_id=1,
         status=3,
     ),
@@ -92,7 +97,8 @@ detail_data = [
         detail_id = 3,
         item_id= 4,
         quantity=12,
-        price=2000,
+        sales_price=20000,
+        cost_price=175,
         supplier_id=1,
         status=1,
     )
@@ -372,6 +378,57 @@ def update_order(
 def get_order(order_id: str):
     # ここで発注情報取得のロジックを実装
     return OrderSchema(order_id=order_id, order_user_cd=26011, order_date="2024-12-31")  
+
+
+#===アイテムのエンドポイント===
+# アイテム情報取得
+
+def get_items():
+    return ItemListSchema(
+        items=[
+            ItemSchema(
+                item_id=1,
+                item_cd="SKT-001",
+                item_name="台形スカート",
+                maker_name="Mille Fleur",
+                supplier_id=1,
+                sales_price=4980,
+                cost_price=12.5,
+            ),
+            ItemSchema(
+                item_id=2,
+                item_cd="BLS-002",
+                item_name="レースブラウス",
+                maker_name="Rose Garden",
+                supplier_id=2,
+                sales_price=3980,
+                cost_price=8.7,
+            ),
+            ItemSchema(
+                item_id=3,
+                item_cd="OP-003",
+                item_name="花柄ワンピース",
+                maker_name="Lily Closet",
+                supplier_id=1,
+                sales_price=7980,
+                cost_price=18.2,
+            ),
+        ]
+    )
+
+@app.get("/customer/{customer_id}", response_model=ItemSchema)
+def get_customer(customer_id: str):
+    return ItemSchema(
+        item_id=3,
+        item_cd="OP-003",
+        item_name="花柄ワンピース",
+        maker_name="Lily Closet",
+        supplier_id=1,
+        sales_price=7980,
+        cost_price=18.2,
+            
+    )
+    
 
 
 

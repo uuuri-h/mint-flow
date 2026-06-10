@@ -9,15 +9,21 @@
 from pydantic import BaseModel, Field
 from typing import List
 
-# サプライヤー情報を表すスキーマ(1件)
+# item情報を表すスキーマ(1件)
 class ItemSchema(BaseModel):
     item_id: int = Field(..., example=1)
-    item_cd: str = Field(..., example="ITM26-0001")
+    
+    item_cd: str = Field(..., example="ITM26-0001") #これは型番
     item_name: str = Field(..., example="台形スカート")
-    supplier_id: int = Field(..., example=1)
+    
+    maker_name: str = Field(..., example="ABC社")  # メーカー
+    supplier_id: int = Field(..., example=1) #仕入れ先
+    
+    sales_price: int = Field(..., example=1000)
+    cost_price: float = Field(..., example=5.5)
     
 
-# サプライヤー情報を表すスキーマ(複数)
+# item情報を表すスキーマ(複数)
 class ItemListSchema(BaseModel):
     items: List[ItemSchema] #ItemSchema が複数入ったリスト
 

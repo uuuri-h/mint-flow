@@ -113,10 +113,10 @@ function OrderDetailTable({
                                 <td className="td5">
                                     <span>￥ </span>
                                     <FormInput 
-                                        value={order.price}
+                                        value={order.sales_price}
                                         onChange= {(e) => updateDetailField(
                                                 order.detail_id, 
-                                                "price",
+                                                "sales_price",
                                                 Number(e.target.value)
                                             )
                                         }
@@ -128,7 +128,7 @@ function OrderDetailTable({
                                 <td className="td6"
                                     style={{width: "120px"}}
                                 >
-                                    ￥ {(order.price * order.quantity).toLocaleString()}
+                                    ￥ {(order.sales_price * order.quantity).toLocaleString()}
                                 </td>
                                 <td className="td7">
                                     <FormSelect 

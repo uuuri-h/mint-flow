@@ -15,7 +15,8 @@ class InsertAndUpdateRequestSchema(BaseModel):
 class InsertAndUpdateRequestDetailSchema(BaseModel):
     item_id: int = Field(..., example= 1)
     quantity: int = Field(..., example=20)
-    price: int = Field(..., example=1000)
+    sales_price: int = Field(..., example=1000)
+    cost_price: float = Field(..., example=1000)
     supplier_id: int = Field(..., example=1)
     # status: int = Field(..., example=1)
     
