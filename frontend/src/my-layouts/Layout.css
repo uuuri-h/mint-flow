@@ -1,6 +1,7 @@
 .layout {
     display: flex;
     height: 100vh;
+    color: #334155;
 }
 
 .main-content {
@@ -21,10 +22,6 @@
     flex: 1; 
     min-width: 0;
     margin: 0 auto;
-    /* background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .button {
@@ -49,7 +46,6 @@
     background-color: #fcfcfc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #5b5b5b;
 
 }
 
@@ -57,14 +53,16 @@
     margin: 0;
     margin-left: 5px;
     font-size: 18px;
-    color: #5b5b5b;
     text-align:left;
     box-sizing: border-box;
+    color: #4e5452;
 }
 
 .form-label {
-    color: rgb(58, 58, 58);
     text-align: left;
+    font-size: 14px;
+    font-weight: bolder;
+    color: #4e5452;
 }
 
 .form-input, .form-textarea {
@@ -72,9 +70,11 @@
     border-radius: 4px;
     background-color: #ffffff;
     /* margin-left: 10px; */
-    color: rgb(64, 64, 64);
-    
+
+    font-size: 14px;
+    height: 35px;
 }
+
 
 /* 入力欄の色を変更 */
 .form-input:focus, .form-textarea:focus {

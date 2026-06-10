@@ -43,11 +43,9 @@
 
 .detail-table th {
     background-color: #f2f2f2;
-    color: #333;
 }
 
 .detail-table td {
-    color: #555;
     white-space: nowrap; /* テキストの折り返しを防止 */
 
 }

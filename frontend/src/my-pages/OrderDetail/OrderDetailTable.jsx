@@ -6,12 +6,14 @@ import axios from 'axios';
 // RequestDetail.jsx
 import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
+import FormInput from '../../my-component/FormItem/FormInput';
 // import NewOrderBtn from '../../my-component/Button/NewOrderBtn';
 
 function OrderDetailTable({
     user,
     orderDetail,
-    setOrderDetail
+    setOrderDetail,
+    updateDetailField
 }) {
 
     
@@ -94,61 +96,51 @@ function OrderDetailTable({
                                 </td>
                                 <td className="td3">{order.item_name}</td>
                                 <td className="td4">
-                                    <input 
-                                        className ="form-input"
-                                        type="text"
-                                        id="quantity"
-                                        style={{width: '70px'}}
-                                        name="quantity"
+
+                                    <FormInput 
                                         value={order.quantity}
-                                        onChange={(e) =>
-                                            setOrderDetail(
-                                                orderDetail.map((item) =>
-                                                    item.detail_id === order.detail_id
-                                                        ? {
-                                                            ...item,
-                                                            quantity: e.target.value
-                                                        }
-                                                        : item
-                                                )
+                                        onChange= {(e) => updateDetailField(
+                                                order.detail_id, 
+                                                "quantity",
+                                                Number(e.target.value)
                                             )
                                         }
+                                        width = "70px"
+                                        type = "number"
+                                        min="0"
                                     />
                                 </td>
-                                <td className="td5">￥{order.price}</td>
-                                <td className="td6">￥{order.price * order.quantity}</td>
+                                <td className="td5">
+                                    <span>￥ </span>
+                                    <FormInput 
+                                        value={order.price}
+                                        onChange= {(e) => updateDetailField(
+                                                order.detail_id, 
+                                                "price",
+                                                Number(e.target.value)
+                                            )
+                                        }
+                                        width = "100px"
+                                        type = "number"
+                                        min="0"
+                                    />
+                                </td>
+                                <td className="td6"
+                                    style={{width: "120px"}}
+                                >
+                                    ￥ {(order.price * order.quantity).toLocaleString()}
+                                </td>
                                 <td className="td7">
                                     <FormSelect 
                                         selectedValue={order.supplier_id}
                                         options={supplierOptions}
-                                        onChange={(e) => setOrderDetail(Number(e.target.value))}
-                                    />
-                                    {/* {console.log(supplier_list)} */}
-                                    {/* <select
-                                        onChange={(e) =>
-                                            setOrderDetail(
-                                                orderDetail.map((item) =>
-                                                    item.detail_id === order.detail_id
-                                                        ? {
-                                                            ...item,
-                                                            supplier_id: Number(e.target.value)
-                                                        }
-                                                        : item
-                                                )
+                                        onChange= {(e) => updateDetailField(
+                                                order.detail_id, 
+                                                "supplier_id",
+                                                Number(e.target.value)
                                             )
                                         }
-                                    >
-                                        <option value="">選択してください</option>
-
-                                        {supplier_list.map((supplier) => (
-                                            <option
-                                                key={supplier.supplier_id}
-                                                value={supplier.supplier_id}
-                                            >
-                                                {supplier.supplier_name}
-                                            </option>
-                                        ))}
-                                    </select> */}
+                                    />
                                 </td>
                                 <td className="td9">
                                     <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>

@@ -12,6 +12,7 @@ function OrderDetailForms({
     setOrderHeader,
     status,
     setStatus,
+    setOrderDetail,
 }) {
 
     // const [status, setStatus] = useState(0);

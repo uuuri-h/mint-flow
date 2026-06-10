@@ -49,6 +49,42 @@ function OrderDetail({ user }) {
 
   }, []); 
 
+  const updateDetailField = (
+      detailId, 
+      field, 
+      value
+    ) => {
+    setOrderDetail(
+        orderDetail.map((item) =>
+            item.detail_id === detailId
+                ? {
+                  ...item, // スプレッド構文：itemの中身をコピーして新しいオブジェクトを作る
+                  [field]: value // fieldで指定されたプロパティを更新（同じキーがある場合は上書き）
+                }
+                : item
+        )
+    );
+  };
+
+//  mapで全行を確認し、
+// item.detail_id === detailId
+// で更新対象の行を探している。
+// 一致した行だけ新しいオブジェクトを返し、
+// 一致しない行はそのまま返す。
+
+//   setOrderDetail(
+//     orderDetail.map((item) => {
+//         if (item.detail_id === detailId) {
+//             return {
+//                 ...item,
+//                 [field]: value
+//             };
+//         } else {
+//             return item;
+//         }
+//     })
+// );
+
   return (
     <div className="pg-container order-detail-container">
       <div className="pg-header order-detail-header">
@@ -61,11 +97,13 @@ function OrderDetail({ user }) {
           setOrderHeader={setOrderHeader}
           status = {status}
           setStatus = {setStatus}
+          updateDetailField={updateDetailField}
         />
         <OrderDetailTable 
           user={user} 
           orderDetail={orderDetail}
           setOrderDetail={setOrderDetail}
+          updateDetailField={updateDetailField}
 
         />
       </div>

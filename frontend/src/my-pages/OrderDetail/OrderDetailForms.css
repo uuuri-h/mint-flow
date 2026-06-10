@@ -1,17 +1,11 @@
 
 .order-detail-forms-container {
     margin-top: 20px;
+    margin-bottom: 50px;
     max-width: 1000px; /* フォーム全体の幅を指定 */
     overflow-x: auto; /* 横スクロールを有効にする */
     min-width: 300px; /* フォーム全体の最小幅を指定 */
 }
-/* .order-detail-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    
-    
-    gap: 20px;
-} */
 
 .order-detail-forms {
     margin-left: 8px;
@@ -28,8 +22,6 @@
 }
 
 .form-item {
-    /* display: grid;
-    grid-template-columns: 120px 1fr; */
     display: flex;
     flex-direction: column;
 
@@ -43,12 +35,6 @@
 .form-item input,
 .form-item textarea {
     width: 100%;
-}
-
-.form-item select,
-.form-item input {
-    /* width: 220px; */
-    height: 30px;
 }
 
 .form-item textarea {

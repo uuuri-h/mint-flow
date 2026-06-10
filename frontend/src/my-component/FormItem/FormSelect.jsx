@@ -7,13 +7,6 @@ function FormSelect({
     onChange
 }) {
 
-
-
-    console.log(options)
-    // options,
-    // onChange
-    
-
     return (
         <div className='form-item'>
             <select
