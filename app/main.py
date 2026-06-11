@@ -416,18 +416,18 @@ def get_items():
         ]
     )
 
-@app.get("/customer/{customer_id}", response_model=ItemSchema)
-def get_customer(customer_id: str):
-    return ItemSchema(
-        item_id=3,
-        item_cd="OP-003",
-        item_name="花柄ワンピース",
-        maker_name="Lily Closet",
-        supplier_id=1,
-        sales_price=7980,
-        cost_price=18.2,
+# @app.get("/customer/{customer_id}", response_model=ItemSchema)
+# def get_customer(customer_id: str):
+#     return ItemSchema(
+#         item_id=3,
+#         item_cd="OP-003",
+#         item_name="花柄ワンピース",
+#         maker_name="Lily Closet",
+#         supplier_id=1,
+#         sales_price=7980,
+#         cost_price=18.2,
             
-    )
+#     )
     
 
 
