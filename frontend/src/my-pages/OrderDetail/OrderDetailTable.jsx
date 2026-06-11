@@ -7,7 +7,6 @@ import axios from 'axios';
 import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
-// import NewOrderBtn from '../../my-component/Button/NewOrderBtn';
 
 function OrderDetailTable({
     user,
@@ -48,6 +47,7 @@ function OrderDetailTable({
                 );
 
                 setSupplierList(response.data.suppliers)
+                console.log(response.data.suppliers)
 
             } catch (error) {
                 console.error('顧客データの取得に失敗しました:', error);
@@ -57,10 +57,43 @@ function OrderDetailTable({
         fetchSupplier();
     }, []); 
 
+
+    const [item_list, setItemList] = useState([]);
+    useEffect(() => {
+        const fetchItem = async () => {
+            try {
+                const response = await axios.get(
+                    
+                    `http://localhost:8000/item/items`
+                );
+                
+                setItemList(response.data.items)
+
+            } catch (error) {
+                console.error('顧客データの取得に失敗しました:', error);
+            }
+        };
+
+        fetchItem();
+    }, []); 
+
     //セレクトボックス用にvalue:---, label: ---に変換
-    const supplierOptions = supplier_list.map((supplier) => ({
+    // const itemOptions = item_list.map((supplier) => ({
+    //     value: supplier.supplier_id,
+    //     label: supplier.supplier_name
+    // }));
+
+
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const supplierOptions = (supplier_list || []).map((supplier) => ({
         value: supplier.supplier_id,
         label: supplier.supplier_name
+    }));
+
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const itemOptions = (item_list || []).map((item) => ({
+        value: item.item_id,
+        label: item.item_name
     }));
 
 
@@ -94,7 +127,18 @@ function OrderDetailTable({
                                     {/* {order.item_partsnum} */}
 
                                 </td>
-                                <td className="td3">{order.item_name}</td>
+                                <td className="td3">{order.item_name}
+                                    <FormSelect 
+                                        selectedValue={order.item_id}
+                                        options={itemOptions}
+                                        onChange= {(e) => updateDetailField(
+                                                order.detail_id, 
+                                                "item_id",
+                                                Number(e.target.value)
+                                            )
+                                        }
+                                    />
+                                </td>
                                 <td className="td4">
 
                                     <FormInput 

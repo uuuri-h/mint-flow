@@ -383,6 +383,7 @@ def get_order(order_id: str):
 #===アイテムのエンドポイント===
 # アイテム情報取得
 
+@app.get("/item/items", response_model=ItemListSchema)
 def get_items():
     return ItemListSchema(
         items=[
