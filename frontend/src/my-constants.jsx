@@ -29,7 +29,11 @@ export const ITEM_STATUS_CLASS_MAP = {
     3: 'completed',
 };
 
-
+export const DEPARTMENT = {
+    SALES: 1,
+    PURCHASE: 2,
+    ADMIN: 3,
+};
 
 
 // export const SCREEN_MODE = {

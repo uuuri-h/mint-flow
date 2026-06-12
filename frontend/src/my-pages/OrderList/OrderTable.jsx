@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import OrderBtn from '../../my-component/Button/OrderBtn';
-import { API_URL,STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
+import { API_URL,STATUS_MAP, STATUS_CLASS_MAP,DEPARTMENT } from "../../my-constants";
 import { useNavigate } from 'react-router-dom'; // 追加: useNavigateをインポート
 
 
@@ -16,21 +16,9 @@ function OrderTable({ user }) {
     const [status, setStatus] = useState('');
 
     //営業部の場合はチェックボックスを非表示
-    const [showCheckBox, setShowCheckBox] = useState(true);
-    const[showOrderBtn, setShowOrderBtn] = useState(true);
-
-    useEffect(() => {
-        const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
-        if (userRole === 1) { // 営業部のコードに応じて条件を設定
-            setShowCheckBox(false);
-            setShowOrderBtn(false);
-        } else {
-            setShowCheckBox(true);
-            setShowOrderBtn(true);
-        }
-    }, [user]); // userが変更されたときに実行される, これがないと、ユーザーデータが更新されてもチェックボックスの表示が変わらない
-    if (showCheckBox === false) {
-
+    const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+    function canShow(departmentId) {
+        return userRole === departmentId;
     }
 
     const [page, setPage] = useState(1);
@@ -68,24 +56,14 @@ function OrderTable({ user }) {
 
     return (
         <div className="order-table-wrapper"> 
+        
             <p className='total-items'>件数（ <span className='total-items-count'>{totalItems}</span> 件）</p>
             <div className="order-table-container">
                 <table className="order-table">
-                    {/* <colgroup>
-                        <col className="col1" style={{ width: '8%' }} />
-                        <col className="col2" style={{ width: '15%' }} />
-                        <col className="col3" style={{ width: '15%' }} />
-                        <col className="col4" style={{ width: '15%' }} />
-                        <col className="col5" style={{ width: '15%' }} />
-                        <col className="col6" style={{ width: '15%' }} />
-                        <col className="col7" style={{ width: '15%' }} />
-                        <col className="col8" style={{ width: '15%' }} />
-                        <col className="col10" style={{ width: '8%' }} />
-                    </colgroup> */}
                     <thead>
                         <tr 
                         >
-                            {showCheckBox && <th className='th1'></th>}
+                            {canShow(DEPARTMENT.PURCHASE) && <th className='th1'></th>}
                             <th className='th2'>依頼日</th>
                             <th className='th3'>依頼ID</th>
                             <th className='th4'>顧客名</th>
@@ -101,8 +79,8 @@ function OrderTable({ user }) {
                         {orders.map((order) => (
                             <tr key={order.request_cd}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
-                                {showCheckBox && (
-                                    <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
+                                {canShow(DEPARTMENT.PURCHASE) && (
+                                    <td className="td1"><input type="checkbox" className="check-box" /></td>
                                 )}
                                 <td className="td2">{order.request_date}</td>
                                 <td className="td3">{order.request_cd}</td>
@@ -131,7 +109,7 @@ function OrderTable({ user }) {
                 </table>
             </div>
             <div className="table-footer">
-                {showOrderBtn && <OrderBtn className="order-btn" user={user} />} 
+                {canShow(DEPARTMENT.PURCHASE) && <OrderBtn className="order-btn" user={user} />} 
             </div>
         </div>
     );

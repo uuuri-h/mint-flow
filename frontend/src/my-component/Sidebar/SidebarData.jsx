@@ -2,7 +2,7 @@ import React from 'react'
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-
+import { DEPARTMENT } from "../../my-constants";
 
 export const SidebarData = (user) => {
     const menu = [
@@ -21,7 +21,7 @@ export const SidebarData = (user) => {
     },
 ];
     
-    if (user?.department_id === 1) { // 営業のユーザーにのみ表示
+    if (user?.department_id === DEPARTMENT.SALES) { // 営業のユーザーにのみ表示
         menu.push({
             title: "新規依頼",
             icon: <AddIcon />,

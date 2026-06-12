@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP } from "../../my-constants";
+import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP, DEPARTMENT } from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
@@ -15,27 +15,11 @@ function OrderDetailTable({
     updateDetailField
 }) {
 
-    
 
-    //営業部の場合はチェックボックスを非表示
-    const [showCheckBox, setShowCheckBox] = useState(true);
-    const[showOrderBtn, setShowOrderBtn] = useState(true);
-
-    useEffect(() => {
-        const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
-        if (userRole === 1) { // 営業部のコードに応じて条件を設定
-            setShowCheckBox(false);
-            setShowOrderBtn(false);
-        } else {
-
-            setShowCheckBox(true);
-            setShowOrderBtn(true);
-        }
-    }, [user]); // userが変更されたときに実行される, これがないと、ユーザーデータが更新されてもチェックボックスの表示が変わらない
-    if (showCheckBox === false) {
-        
-    }
-
+const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+function canShow(departmentId) {
+    return userRole === departmentId;
+}
 
     const [supplier_list, setSupplierList] = useState([]);
     useEffect(() => {
@@ -110,7 +94,7 @@ function OrderDetailTable({
                     <thead>
                         <tr 
                         >
-                            {showCheckBox && <th className='th1'></th>}
+                            {canShow(DEPARTMENT.PURCHASE) && <th className='th1'></th>}
                             <th className='th2'>型番</th>
                             <th className='th3'>アイテム名</th>
                             <th className='th4'>数量</th>
@@ -126,8 +110,9 @@ function OrderDetailTable({
                         {orderDetail.map((order) => (
                             <tr key={order.detail_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
-                                {showCheckBox && (
-                                    <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
+                                
+                                {canShow(DEPARTMENT.PURCHASE) && (
+                                    <td className="td1"><input type="checkbox" className="check-box" /></td>
                                 )}
                                 <td className="td2">
                                     <FormSelect 
