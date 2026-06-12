@@ -85,7 +85,7 @@ detail_data = [
     RequestDetailSchema(
         request_cd="REQ26-0002",
         detail_id = 2,
-        item_id=5,
+        item_id=2,
         quantity=30,
         sales_price=1000,
         cost_price=5.1,
@@ -95,7 +95,7 @@ detail_data = [
     RequestDetailSchema(
         request_cd="REQ26-0002",
         detail_id = 3,
-        item_id= 4,
+        item_id= 3,
         quantity=12,
         sales_price=20000,
         cost_price=175,

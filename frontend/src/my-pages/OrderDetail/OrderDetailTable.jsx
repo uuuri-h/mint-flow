@@ -47,7 +47,7 @@ function OrderDetailTable({
                 );
 
                 setSupplierList(response.data.suppliers)
-                console.log(response.data.suppliers)
+                
 
             } catch (error) {
                 console.error('顧客データの取得に失敗しました:', error);
@@ -78,24 +78,30 @@ function OrderDetailTable({
     }, []); 
 
     //セレクトボックス用にvalue:---, label: ---に変換
-    // const itemOptions = item_list.map((supplier) => ({
-    //     value: supplier.supplier_id,
-    //     label: supplier.supplier_name
-    // }));
-
-
-    //セレクトボックス用にvalue:---, label: ---に変換
     const supplierOptions = (supplier_list || []).map((supplier) => ({
         value: supplier.supplier_id,
         label: supplier.supplier_name
     }));
 
     //セレクトボックス用にvalue:---, label: ---に変換
-    const itemOptions = (item_list || []).map((item) => ({
+    const itemNmOptions = (item_list || []).map((item) => ({
         value: item.item_id,
         label: item.item_name
     }));
 
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const itemCdOptions = (item_list || []).map((item) => ({
+        value: item.item_id,
+        label: item.item_cd
+    }));
+
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const itemCostPriceList = (item_list || []).map((item) => ({
+        value: item.item_id,
+        cost_price: item.cost_price,
+        // sale_price: item.sale.price
+
+    }));
 
     return (
         <div className='detail-table-wrapper'>
@@ -124,13 +130,22 @@ function OrderDetailTable({
                                     <td className="td1"><input type="checkbox" className="check-box" disabled={!showCheckBox} /></td>
                                 )}
                                 <td className="td2">
-                                    {/* {order.item_partsnum} */}
-
-                                </td>
-                                <td className="td3">{order.item_name}
                                     <FormSelect 
                                         selectedValue={order.item_id}
-                                        options={itemOptions}
+                                        options={itemCdOptions}
+                                        onChange= {(e) => updateDetailField(
+                                                order.detail_id, 
+                                                "item_id",
+                                                Number(e.target.value)
+                                            )
+                                        }
+                                    />
+
+                                </td>
+                                <td className="td3">
+                                    <FormSelect 
+                                        selectedValue={order.item_id}
+                                        options={itemNmOptions}
                                         onChange= {(e) => updateDetailField(
                                                 order.detail_id, 
                                                 "item_id",
@@ -157,6 +172,7 @@ function OrderDetailTable({
                                 <td className="td5">
                                     <span>￥ </span>
                                     <FormInput 
+                                        
                                         value={order.sales_price}
                                         onChange= {(e) => updateDetailField(
                                                 order.detail_id, 
@@ -189,6 +205,7 @@ function OrderDetailTable({
                                 <td className="td9">
                                     <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
                                         {ITEM_STATUS_MAP[order.status]}
+                                        {console.log(order)}
                                     </span>
                                 </td>
                                 <td className="td10">
