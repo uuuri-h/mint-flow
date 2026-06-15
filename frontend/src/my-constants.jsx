@@ -20,11 +20,13 @@ export const STATUS_CLASS_MAP = {
 
 
 export const ITEM_STATUS_MAP = {
+    0: "新規",
     1: '未発注',
     3: '発注済',
 };
 
 export const ITEM_STATUS_CLASS_MAP = {
+    0: 'new-request',
     1: 'requesting',
     3: 'completed',
 };

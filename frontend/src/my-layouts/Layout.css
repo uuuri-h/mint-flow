@@ -133,6 +133,10 @@
     background-color: #dc3545;
 }
 
+.item-status.new-request{
+    background-color: #868e96;
+}
+
 .item-status.requesting {
     background-color: #ffc107;
 }
