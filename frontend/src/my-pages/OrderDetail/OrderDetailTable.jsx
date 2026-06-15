@@ -89,6 +89,8 @@ function canShow(departmentId) {
 
     return (
         <div className='detail-table-wrapper'>
+            <div className='detail-table-header'>
+            </div>
             <div className='detail-table-container'>
                 <table className='detail-table'>
                     <thead>
@@ -156,11 +158,12 @@ function canShow(departmentId) {
                                 </td>
                                 <td className="td5">
                                     <span>￥ </span>
-                                    <FormInput 
+                                    <FormInput
                                         
                                         value={order.sales_price}
+                                        options={itemCostPriceList}
                                         onChange= {(e) => updateDetailField(
-                                                order.detail_id, 
+                                                items.detail_id, 
                                                 "sales_price",
                                                 Number(e.target.value)
                                             )
@@ -208,6 +211,15 @@ function canShow(departmentId) {
                     </tbody>
 
                 </table>
+            </div>
+            <div className='detail-table-footer'>
+
+                <button 
+                    className='button btn row-add-btn'
+                    type = 'submit'
+                >
+                    ＋
+                </button>
             </div>
         </div>
     )

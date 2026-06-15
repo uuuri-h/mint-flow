@@ -2,6 +2,8 @@
     margin-top: 20px;
 }
 
+
+
 .total-items {
     font-size: 14px;
     font-weight: 500;
@@ -75,8 +77,7 @@
   vertical-align: middle;
 }
 
-
-.btn {
+.btn  .btn-primary{
     width : 46px;
     height : 28px;
     font-size: 13px;
@@ -94,6 +95,12 @@
 }   
 
 
-.table-footer {
-    margin-top: 20px;
+.detail-table-footer{
+    margin-top: 5px;
+}
+
+.row-add-btn {
+    width: 30px;
+    font-size: 20px;
+    margin-left: 5px;
 }
