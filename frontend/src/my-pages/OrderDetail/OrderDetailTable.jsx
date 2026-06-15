@@ -88,7 +88,6 @@ function canShow(departmentId) {
 
     }));
 
-
     function AddNewRow () {
 
         // 今入っているデータ
@@ -110,8 +109,15 @@ function canShow(departmentId) {
         console.log(newList)
 
         // state更新
-        setOrderDetail(newList);
+        // setOrderDetail(newList);
+        return newList
     }
+
+    useEffect(() => {
+        if (totalItems === 0) {
+            setOrderDetail(AddNewRow);
+        }
+    }, []);
 
     return (
         <div className='detail-table-wrapper'>
@@ -227,12 +233,12 @@ function canShow(departmentId) {
                                 </td>
                                 <td className="td10">
                                     <button 
-                                        className="button btn btn-primary"
+                                        className="button btn .red-btn"
                                         // onClick={() => requestEdit(order.request_cd)}
                                         type="submit"
                                     >
                                      {/* onClick={() => requestEdit(request.request_cd)}　 */}
-                                        編集
+                                        削除
                                     </button>
                                 </td>
                             </tr>
@@ -246,7 +252,8 @@ function canShow(departmentId) {
                 <button 
                     className='button btn row-add-btn'
                     type = 'submit'
-                    onClick={AddNewRow}
+                    // onClick={setOrderDetail(AddNewRow)}
+                    onClick={() => setOrderDetail(AddNewRow)}
                 >
                     ＋
                 </button>

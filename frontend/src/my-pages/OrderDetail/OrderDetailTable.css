@@ -2,8 +2,6 @@
     margin-top: 20px;
 }
 
-
-
 .total-items {
     font-size: 14px;
     font-weight: 500;
@@ -73,26 +71,9 @@
 .td1,
 .th10,
 .td10 {
-  text-align: center;
-  vertical-align: middle;
+    text-align: center;
+    vertical-align: middle;
 }
-
-.btn  .btn-primary{
-    width : 46px;
-    height : 28px;
-    font-size: 13px;
-
-    /* 文字を中央に配置 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    margin: 0;
-}   
 
 
 .detail-table-footer{
