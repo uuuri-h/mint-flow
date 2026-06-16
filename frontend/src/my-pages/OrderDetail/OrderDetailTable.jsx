@@ -233,7 +233,7 @@ function canShow(departmentId) {
                                 </td>
                                 <td className="td10">
                                     <button 
-                                        className="button btn .red-btn"
+                                        className="button delate-btn"
                                         // onClick={() => requestEdit(order.request_cd)}
                                         type="submit"
                                     >
@@ -250,7 +250,7 @@ function canShow(departmentId) {
             <div className='detail-table-footer'>
 
                 <button 
-                    className='button btn row-add-btn'
+                    className='button  row-add-btn'
                     type = 'submit'
                     // onClick={setOrderDetail(AddNewRow)}
                     onClick={() => setOrderDetail(AddNewRow)}

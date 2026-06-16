@@ -32,11 +32,24 @@
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
+
+    /* 文字を中央に配置 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    margin: 0;
 }
 
 .button:hover {
     background-color: #36a39c;
 }
+
+.delate-btn {
+    background-color: #dc3545;
+}
+
 
 .pg-container {
     width: 100%;
