@@ -16,6 +16,7 @@ function OrderDetailTable({
 }) {
 
     let totalItems = orderDetail.length;
+    let rowNo = 0;
 
 const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
 function canShow(departmentId) {
@@ -88,13 +89,14 @@ function canShow(departmentId) {
 
     }));
 
+    //テーブル左下の行追加ボタン「＋」が押された時の処理
     function AddNewRow () {
 
         // 今入っているデータ
         const currentList = orderDetail;
 
         const newRow = {
-            detail_id: orderDetail.length + 1,
+            detail_id: orderDetail.length + 1, //**重複するからなおす */
             item_id: "",
             quantity: "",
             sales_price: "",
@@ -106,18 +108,38 @@ function canShow(departmentId) {
          // 元の配列 + 新しい行
         const newList = [...currentList, newRow];
 
-        console.log(newList)
-
         // state更新
         // setOrderDetail(newList);
         return newList
     }
 
+    //新規登録の時(アイテムがない時)に一行空の行を入れる処理
     useEffect(() => {
         if (totalItems === 0) {
-            setOrderDetail(AddNewRow);
+            setOrderDetail(AddNewRow());
         }
     }, []);
+
+    //テーブルの削除ボタンが押された時の処理
+    const detailRowDelate = async(detail_id) => {
+
+        // 今入っているデータをコピー
+        const newList = [...orderDetail];
+        
+
+        newList.forEach((item, index) => {
+            console.log(item);
+            if (item.detail_id === detail_id) {
+                newList.splice(index , 1); //splice(開始位置, 削除件数)
+            }
+        })
+
+        setOrderDetail(newList);
+        if (newList.length === 0) {
+            setOrderDetail(AddNewRow());
+        } 
+    
+    };
 
     return (
         <div className='detail-table-wrapper'>
@@ -150,7 +172,7 @@ function canShow(departmentId) {
                                 {canShow(DEPARTMENT.PURCHASE) && (
                                     <td className="td0"><input type="checkbox" className="check-box" /></td>
                                 )}
-                                <td className='td1'>{order.detail_id}</td>
+                                <td className='td1'>{rowNo = rowNo+1}</td>
                                 <td className="td2">
                                     <FormSelect 
                                         selectedValue={order.item_id}
@@ -228,16 +250,14 @@ function canShow(departmentId) {
                                 <td className="td9">
                                     <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
                                         {ITEM_STATUS_MAP[order.status]}
-                                        {console.log(order)}
                                     </span>
                                 </td>
                                 <td className="td10">
                                     <button 
                                         className="button delate-btn"
-                                        // onClick={() => requestEdit(order.request_cd)}
-                                        type="submit"
+                                        onClick={() => detailRowDelate(order.detail_id)}
+                                        type="button"
                                     >
-                                     {/* onClick={() => requestEdit(request.request_cd)}　 */}
                                         削除
                                     </button>
                                 </td>
@@ -251,9 +271,9 @@ function canShow(departmentId) {
 
                 <button 
                     className='button  row-add-btn'
-                    type = 'submit'
+                    type = 'button'
                     // onClick={setOrderDetail(AddNewRow)}
-                    onClick={() => setOrderDetail(AddNewRow)}
+                    onClick={() => setOrderDetail(AddNewRow())}
                 >
                     ＋
                 </button>
