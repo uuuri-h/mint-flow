@@ -18,11 +18,13 @@ function OrderDetailTable({
     let totalItems = orderDetail.length;
     let rowNo = 0;
 
-const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
-function canShow(departmentId) {
-    return userRole === departmentId;
-}
+    const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+    //ログイン中のユーザーの権限（部署）によって、表示を分ける（部署id）と一致すれば表示する
+    function canShow(departmentId) {
+        return userRole === departmentId;
+    }
 
+    //サプライヤーリストを取得
     const [supplier_list, setSupplierList] = useState([]);
     useEffect(() => {
         const fetchSupplier = async () => {
@@ -43,7 +45,7 @@ function canShow(departmentId) {
         fetchSupplier();
     }, []); 
 
-
+    //アイテムリストを取得
     const [item_list, setItemList] = useState([]);  
     useEffect(() => {
         const fetchItem = async () => {
@@ -89,27 +91,27 @@ function canShow(departmentId) {
 
     }));
 
+    //テーブルの空行を作る
+    const createEmptyRow = () => ({
+        detail_id: Date.now(),
+        item_id: "",
+        quantity: "",
+        sales_price: "",
+        cost_price: "",
+        supplier_id: "",
+        status: 0,
+    });
+
     //テーブル左下の行追加ボタン「＋」が押された時の処理
     function AddNewRow () {
 
         // 今入っているデータ
         const currentList = orderDetail;
 
-        const newRow = {
-            detail_id: orderDetail.length + 1, //**重複するからなおす */
-            item_id: "",
-            quantity: "",
-            sales_price: "",
-            cost_price: "",
-            supplier_id: "",
-            status: 0,
-        };
-
          // 元の配列 + 新しい行
-        const newList = [...currentList, newRow];
+        const newList = [...currentList, createEmptyRow()];
 
         // state更新
-        // setOrderDetail(newList);
         return newList
     }
 
@@ -125,19 +127,21 @@ function canShow(departmentId) {
 
         // 今入っているデータをコピー
         const newList = [...orderDetail];
-        
 
+        //detail_idが位置する行を削除
         newList.forEach((item, index) => {
             console.log(item);
             if (item.detail_id === detail_id) {
                 newList.splice(index , 1); //splice(開始位置, 削除件数)
             }
-        })
+        });
 
-        setOrderDetail(newList);
+        // state更新
         if (newList.length === 0) {
-            setOrderDetail(AddNewRow());
-        } 
+            setOrderDetail([createEmptyRow()]);
+        } else {
+            setOrderDetail(newList);
+        }
     
     };
 
