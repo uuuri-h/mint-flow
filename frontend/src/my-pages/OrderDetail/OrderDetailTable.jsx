@@ -235,7 +235,7 @@ function OrderDetailTable({
                                     />
                                 </td>
                                 <td className="td4">
-
+                                        
                                     <FormInput 
                                         value={order.quantity}
                                         onChange= {(e) => updateDetailField(

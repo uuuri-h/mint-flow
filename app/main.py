@@ -8,7 +8,7 @@ from jwt.exceptions import InvalidTokenError
 
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
+from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
 from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 from app.schemas.item import ItemSchema, ItemListSchema
@@ -37,8 +37,10 @@ header_data=[
     RequestListItemSchema(
         request_cd="REQ26-0001",
         request_date="2024-12-01",
-        assigned_user_id=1,
+        assigner_id=1,
+        assigner_dept_id=1,
         requester_id=2,
+        requester_dept_id=2,
         item_count=2,
         status=1,
         total_amount=50000,
@@ -51,8 +53,10 @@ header_data=[
     RequestListItemSchema(
         request_cd="REQ26-0002",
         request_date="2024-12-05",
-        assigned_user_id=2,
+        assigner_id=2,
+        assigner_dept_id=2,
         requester_id=1,
+        requester_dept_id=2,
         item_count=3,
         status=2,
         total_amount=30000,
@@ -161,24 +165,38 @@ def get_user(user_id: str):
         user_name="山田太郎",
         department_id=1,
         department_name="営業部",
-        admin_flag=False
     )
     
-#ユーザー認証
-# def authenticate_user(fake_db, user_cd: str, password: str):
-#     user = get_user(user_cd)  # ユーザー情報を取得する関数を呼び出す
-#     if not user:
-#         return False
-#     if not verify_password(password, user.hashed_password):  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
-#         return False
-#     return user
-
-# def verify_password(
-#     plain_password,
-#     hashed_password
-# ):
-#     return plain_password == hashed_password
-
+@app.get("/users/users", response_model=UserListSchema)
+def get_departments():
+    return UserListSchema(
+        users=[
+            UserSchema(
+                user_cd = "260011",
+                user_name ="山田太郎",
+                department_id = 1,
+                department_name = "営業",
+            ),
+            UserSchema(
+                user_cd = "260022",
+                user_name ="山田花子",
+                department_id = 2,
+                department_name = "購買",
+            ),
+            UserSchema(
+                user_cd = "260033",
+                user_name ="猫飼ねこ",
+                department_id = 3,
+                department_name = "製造",
+            ),
+            UserSchema(
+                user_cd = "260012",
+                user_name ="犬飼いぬ",
+                department_id = 1,
+                department_name = "営業",
+            )
+        ]
+    )
 
 #-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
 #ログイン(パスワードとIDを受け取る→トークンを返す)

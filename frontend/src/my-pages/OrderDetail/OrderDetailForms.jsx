@@ -14,10 +14,9 @@ function OrderDetailForms({
     setOrderHeader,
     status,
     setStatus,
-    setOrderDetail,
+    updateDetailField,
 }) {
 
-    console.log(orderHeader)
     // 顧客リスト取得
     const [customer_list, setCustomerList] = useState([]);
     useEffect(() => {
@@ -52,7 +51,6 @@ function OrderDetailForms({
 
 
                 setDepartmentList(response.data.departments)
-                console.log(department_list)
 
 
             } catch (error) {
@@ -66,7 +64,7 @@ function OrderDetailForms({
     //セレクトボックス用にvalue:---, label: ---に変換
     const departmentList = (department_list || []).map((item) => ({
         value: item.department_id,
-        cost_price: item.department_name,
+        label: item.department_name,
     }));
 
     return (
@@ -171,29 +169,21 @@ function OrderDetailForms({
  
                     <div className="form-item request-dept-container">
                         <label className="form-label" htmlFor="request-dept">依頼主部署:</label>
-                        {/* <input 
-                            className="form-input" 
-                            id="request-dept" 
-                            name="request-dept" 
-                            style={{width: '200px'}}
-                            // value={order_header?.requester_dept_name || ''}
-                            value={orderHeader.requester_dept_name}
-                            readOnly 
-                        /> */}
                         <FormSelect 
-                            className="form-input" 
-                            id="request-dept" 
-                            name="request-dept" 
-                            style={{width: '200px'}}
-                            selectedValue={orderHeader.requester_id}
+                            selectedValue={orderHeader.requester_dept_id}
                             options={departmentList}
                             onChange={(e) =>
                                 setOrderHeader({
                                     ...orderHeader,
-                                    requester_dept_id: e.target.value
+                                    requester_dept_id: Number(e.target.value)
                                 })
                             }
+                            // className="form-input" 
+                            // id="request-dept" 
+                            // name="request-dept" 
+                            // style={{width: '100px'}}
                         />
+                        {console.log(departmentList)}
                     </div>
 
                     <div className="form-item requester-nm-container">

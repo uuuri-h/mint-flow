@@ -17,6 +17,7 @@ function OrderDetail({ user }) {
       request_cd: "",
       customer_id: "",
       request_date: "",
+      requester_dept_id: "",   // ←追加
       requester_dept_name: "",
       delivery_date: "",
       requester_name: "",
@@ -103,7 +104,6 @@ function OrderDetail({ user }) {
           setOrderHeader={setOrderHeader}
           status = {status}
           setStatus = {setStatus}
-          updateDetailField={updateDetailField}
         />
         <OrderDetailTable 
           user={user} 

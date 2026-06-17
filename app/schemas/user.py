@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import date
+from typing import List
 
 # ===UserSchema定義===
 # 登録・更新で使用するスキーマ
@@ -30,8 +31,11 @@ class UserSchema(BaseModel):
     user_name: str = Field(..., example="山田太郎")
     department_id: int = Field(..., example=2)
     department_name: str = Field(..., example="購買部") #2は購買部
-    admin_flag: bool = Field(..., example=False) #管理者フラグ　Trueなら管理者、Falseなら一般ユーザー
     
+
+# ユーザー情報を表すスキーマ(複数)
+class UserListSchema(BaseModel):
+    users: List[UserSchema] #UserSchema が複数入ったリスト
 
 #レスポンスで使用するスキーマ
 class ResponseSchema(BaseModel):

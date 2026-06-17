@@ -48,7 +48,9 @@ class RequestResponseSchema(BaseModel):
 class RequestListItemSchema(BaseModel):
     request_cd: str
     requester_id: int
-    assigned_user_id:int
+    requester_dept_id: int
+    assigner_id:int
+    assigner_dept_id:int
     request_date: date
     item_count: int
     status: int 
