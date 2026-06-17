@@ -54,17 +54,23 @@ function OrderDetail({ user }) {
       field, 
       value
     ) => {
-    setOrderDetail(
-        orderDetail.map((item) =>
-            item.detail_id === detailId
-                ? {
-                  ...item, // スプレッド構文：itemの中身をコピーして新しいオブジェクトを作る
-                  [field]: value // fieldで指定されたプロパティを更新（同じキーがある場合は上書き）
-                }
-                : item
-        )
-    );
-  };
+    
+    setOrderDetail(prev => {
+      //reactが最新のorderDetailを渡すようにprev =>を使う
+      //reactで前のstateを使って更新するときは prev を使う
+        return prev.map( item =>
+          item.detail_id === detailId
+              ? {
+                ...item, // スプレッド構文：itemの中身をコピーして新しいオブジェクトを作る
+                [field]: value // fieldで指定されたプロパティを更新（同じキーがある場合は上書き）
+              }
+              : item
+        );
+      });
+    };
+
+
+
 
 //  mapで全行を確認し、
 // item.detail_id === detailId

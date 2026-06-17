@@ -66,9 +66,9 @@ function OrderDetailTable({
     }, []); 
 
     //セレクトボックス用にvalue:---, label: ---に変換
-    const supplierOptions = (supplier_list || []).map((supplier) => ({
-        value: supplier.supplier_id,
-        label: supplier.supplier_name
+    const supplierOptions = (supplier_list || []).map((item) => ({
+        value: item.supplier_id,
+        label: item.supplier_name
     }));
 
     //セレクトボックス用にvalue:---, label: ---に変換
@@ -87,17 +87,42 @@ function OrderDetailTable({
     const itemCostPriceList = (item_list || []).map((item) => ({
         value: item.item_id,
         cost_price: item.cost_price,
-        // sale_price: item.sale.price
-
     }));
+
+    //選択した型番やアイテム名（item_id)によって、金額、サプライヤ、メーカー等をセットする
+    function setByItem (detail_id, item_id) {
+
+        // item_list.forEach((item, index) => {
+        //     if (item.item_id === item_id) {
+        //         console.log(item.sales_price)
+        //         updateDetailField(detail_id, "item_id", item.item_id);
+        //         updateDetailField(detail_id, "sales_price", item.sales_price);
+        //         updateDetailField(detail_id, "supplier_id", item.supplier_id);
+        //     }
+        // })
+
+        //item_listの中からitem_idが一致するものを1件探してselectedItemに入れる
+        //一件だけ見つけたい場合はfind(条件)
+        const selectedItem = item_list.find (
+            item => item.item_id === item_id
+        );
+
+        if (!selectedItem) return;
+
+        updateDetailField(detail_id, "sales_price", selectedItem.sales_price);
+        updateDetailField(detail_id, "supplier_id", selectedItem.supplier_id);
+
+    }
+
 
     //テーブルの空行を作る
     const createEmptyRow = () => ({
-        detail_id: Date.now(),
+        detail_id: Date.now(), //keyが被らないようにするため。
         item_id: "",
         quantity: "",
         sales_price: "",
         cost_price: "",
+        maker_name: "",
         supplier_id: "",
         status: 0,
     });
@@ -130,7 +155,6 @@ function OrderDetailTable({
 
         //detail_idが位置する行を削除
         newList.forEach((item, index) => {
-            console.log(item);
             if (item.detail_id === detail_id) {
                 newList.splice(index , 1); //splice(開始位置, 削除件数)
             }
@@ -181,12 +205,20 @@ function OrderDetailTable({
                                     <FormSelect 
                                         selectedValue={order.item_id}
                                         options={itemCdOptions}
-                                        onChange= {(e) => updateDetailField(
+                                        onChange= {(e) => {
+                                            const itemId = Number(e.target.value);
+                                            updateDetailField(
                                                 order.detail_id, 
                                                 "item_id",
-                                                Number(e.target.value)
-                                            )
-                                        }
+                                                itemId
+                                            );
+
+                                            setByItem(
+                                                order.detail_id,
+                                                itemId
+                                            );
+                                        }}
+
                                     />
 
                                 </td>
@@ -220,7 +252,6 @@ function OrderDetailTable({
                                 <td className="td5">
                                     <span>￥ </span>
                                     <FormInput
-                                        
                                         value={order.sales_price}
                                         options={itemCostPriceList}
                                         onChange= {(e) => updateDetailField(

@@ -410,7 +410,7 @@ def get_items():
                 item_cd="OP-003",
                 item_name="花柄ワンピース",
                 maker_name="Lily Closet",
-                supplier_id=1,
+                supplier_id=3,
                 sales_price=7980,
                 cost_price=18.2,
             ),
@@ -468,6 +468,10 @@ def get_customer(customer_id: str):
 def get_suppliers():
     return SupplierListSchema(
         suppliers=[
+            SupplierSchema(
+                supplier_id=0,
+                supplier_name="未選択",
+            ),
             SupplierSchema(
                 supplier_id=1,
                 supplier_name="ChocoMint",
