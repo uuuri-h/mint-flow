@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
 import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
+import FormSelect from '../../my-component/FormItem/FormSelect';
+import FormInput from '../../my-component/FormItem/FormInput';
 
 function OrderDetailForms({
     user, 
@@ -15,8 +17,8 @@ function OrderDetailForms({
     setOrderDetail,
 }) {
 
-    // const [status, setStatus] = useState(0);
-
+    console.log(orderHeader)
+    // 顧客リスト取得
     const [customer_list, setCustomerList] = useState([]);
     useEffect(() => {
         const fetchCustomer = async () => {
@@ -37,6 +39,35 @@ function OrderDetailForms({
 
         fetchCustomer();
     }, []); 
+
+    //部署リスト取得
+    const [department_list, setDepartmentList] = useState([]);
+    useEffect(() => {
+        const fetchDepartment = async () => {
+            try {
+                const response = await axios.get(
+                    
+                    `http://localhost:8000/department/departments`
+                );
+
+
+                setDepartmentList(response.data.departments)
+                console.log(department_list)
+
+
+            } catch (error) {
+                console.error('部署データの取得に失敗しました:', error);
+            }
+        };
+
+        fetchDepartment();
+    }, []); 
+
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const departmentList = (department_list || []).map((item) => ({
+        value: item.department_id,
+        cost_price: item.department_name,
+    }));
 
     return (
         <div className="order-detail-forms-container">
@@ -140,7 +171,7 @@ function OrderDetailForms({
  
                     <div className="form-item request-dept-container">
                         <label className="form-label" htmlFor="request-dept">依頼主部署:</label>
-                        <input 
+                        {/* <input 
                             className="form-input" 
                             id="request-dept" 
                             name="request-dept" 
@@ -148,6 +179,20 @@ function OrderDetailForms({
                             // value={order_header?.requester_dept_name || ''}
                             value={orderHeader.requester_dept_name}
                             readOnly 
+                        /> */}
+                        <FormSelect 
+                            className="form-input" 
+                            id="request-dept" 
+                            name="request-dept" 
+                            style={{width: '200px'}}
+                            selectedValue={orderHeader.requester_id}
+                            options={departmentList}
+                            onChange={(e) =>
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    requester_dept_id: e.target.value
+                                })
+                            }
                         />
                     </div>
 
@@ -158,7 +203,7 @@ function OrderDetailForms({
                             type="text" 
                             id="requester-nm" 
                             style={{width: '150px'}}
-                            value={orderHeader.requester_name}
+                            // value={orderHeader.requester_id}
                             // value={order_header?.requester_name || ''}
                             readOnly
                             // value={order_header.requester || ''}

@@ -14,18 +14,31 @@ from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as 
 from app.schemas.item import ItemSchema, ItemListSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
 from app.schemas.supplier import SupplierSchema, SupplierListSchema
+from app.schemas.department import DepartmentSchema, DepartmentListSchema
 
 from fastapi.middleware.cors import CORSMiddleware
 
+
 app = FastAPI()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #仮のデータ（データーベースの代わり）
 header_data=[
     RequestListItemSchema(
         request_cd="REQ26-0001",
         request_date="2024-12-01",
-        requester_name="山田太郎",
-        requester_dept_name="営業部",
+        assigned_user_id=1,
+        requester_id=2,
         item_count=2,
         status=1,
         total_amount=50000,
@@ -38,8 +51,8 @@ header_data=[
     RequestListItemSchema(
         request_cd="REQ26-0002",
         request_date="2024-12-05",
-        requester_name="山田花子",
-        requester_dept_name="製造部",
+        assigned_user_id=2,
+        requester_id=1,
         item_count=3,
         status=2,
         total_amount=30000,
@@ -492,6 +505,31 @@ def get_supplier(supplier_id: str):
     return SupplierSchema(
         supplier_id=supplier_id,
         supplier_name="ChocoMint",
+    )
+    
+    
+
+@app.get("/department/departments", response_model=DepartmentListSchema)
+def get_departments():
+    return DepartmentListSchema(
+        departments=[
+            DepartmentSchema(
+                department_id=0,
+                department_name="管理者",
+            ),
+            DepartmentSchema(
+                department_id=1,
+                department_name="営業",
+            ),
+            DepartmentSchema(
+                department_id=2,
+                department_name="購買",
+            ),
+            DepartmentSchema(
+                department_id=3,
+                department_name="製造",
+            )
+        ]
     )
     
 

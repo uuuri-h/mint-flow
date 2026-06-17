@@ -47,8 +47,8 @@ class RequestResponseSchema(BaseModel):
 #一覧1行分
 class RequestListItemSchema(BaseModel):
     request_cd: str
-    requester_name: str
-    requester_dept_name: str
+    requester_id: int
+    assigned_user_id:int
     request_date: date
     item_count: int
     status: int 

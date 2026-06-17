@@ -32,9 +32,10 @@ export const ITEM_STATUS_CLASS_MAP = {
 };
 
 export const DEPARTMENT = {
+    ADMIN: 0,
     SALES: 1,
     PURCHASE: 2,
-    ADMIN: 3,
+    MANUFACTURER: 3,
 };
 
 
