@@ -219,7 +219,9 @@ function OrderDetailForms({
                     </div>
  
                     <div className="form-item request-dept-container">
-                        <label className="form-label" htmlFor="request-dept">依頼主部署:</label>
+                        <label className="form-label" htmlFor="request-dept">
+                            {}依頼主部署:
+                        </label>
                         <FormSelect 
                             selectedValue={orderHeader.requester_dept_id}
                             options={departmentList}

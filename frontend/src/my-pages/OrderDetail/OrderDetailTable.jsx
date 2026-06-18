@@ -218,6 +218,7 @@ function OrderDetailTable({
                                                 itemId
                                             );
                                         }}
+                                        style={{width: '130px'}}
 
                                     />
 
@@ -232,6 +233,7 @@ function OrderDetailTable({
                                                 Number(e.target.value)
                                             )
                                         }
+                                        style={{width: '130px'}}
                                     />
                                 </td>
                                 <td className="td4">
@@ -280,6 +282,7 @@ function OrderDetailTable({
                                                 Number(e.target.value)
                                             )
                                         }
+                                        style={{width: '130px'}}
                                     />
                                 </td>
                                 <td className="td8">
@@ -292,6 +295,7 @@ function OrderDetailTable({
                                                 Number(e.target.value)
                                             )
                                         }
+                                        style={{width: '130px'}}
                                     />
                                 </td>
                                 <td className="td9">

@@ -36,6 +36,13 @@ function App() {
 
     }, []); 
 
+    //部署によって表示・非表示を切り替えるための関数
+    //
+    const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+    function canShow(departmentId) {
+        return userRole === departmentId;
+    }
+
     return (
     <BrowserRouter>
     <Routes>
@@ -48,7 +55,7 @@ function App() {
             {/*Layoutの子Routeが Outletに表示される　*/}
             <Route 
                 path="/home"
-                element={<Home />}
+                element={<Home user={user}/>}
             />
 
             <Route
@@ -59,41 +66,19 @@ function App() {
 
             <Route 
                 path="/order-list"
-                element={<OrderList />}
+                element={<OrderList user={user}/>}
             />
 
             <Route 
                 path="/setting"
-                element={<Setting />}
+                element={<Setting user={user}/>}
             />
 
         </Route>
 
     </Routes>
     </BrowserRouter>
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/" element={<Login />} />
-    //     <Route path="/home" element={<Home />} />
-    //   </Routes>
-    // </BrowserRouter>
     );  
 }
 
 export default App;
-
-// import React from 'react';
-// import './App.css';
-// import Login from './my-component/Login';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <Login />
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
