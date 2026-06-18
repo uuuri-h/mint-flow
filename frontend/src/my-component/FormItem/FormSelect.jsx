@@ -4,7 +4,8 @@ import React from 'react'
 function FormSelect({
     selectedValue,
     options,
-    onChange
+    onChange,
+    ...props
 }) {
 
     return (
@@ -13,6 +14,7 @@ function FormSelect({
                 className="form-input"
                 value={selectedValue}
                 onChange={onChange}
+                {...props}
             >
             
             <option value="">選択してください</option>

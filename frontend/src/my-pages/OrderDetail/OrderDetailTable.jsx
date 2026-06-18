@@ -78,6 +78,13 @@ function OrderDetailTable({
     }));
 
     //セレクトボックス用にvalue:---, label: ---に変換
+    const MakerOptions = (item_list || []).map((item) => ({
+        value: item.item_id,
+        label: item.maker_name
+    }));
+
+
+    //セレクトボックス用にvalue:---, label: ---に変換
     const itemCdOptions = (item_list || []).map((item) => ({
         value: item.item_id,
         label: item.item_cd
@@ -186,7 +193,8 @@ function OrderDetailTable({
                             <th className='th4'>数量</th>
                             <th className='th5'>金額</th>
                             <th className='th6'>合計金額</th>
-                            <th className='th7'>仕入先</th>
+                            <th className='th7'>メーカー名</th>
+                            <th className='th8'>仕入先</th>
                             <th className='th9'>発注ステータス</th>
                             <th className='th10'></th>
                         </tr>
@@ -271,6 +279,18 @@ function OrderDetailTable({
                                     ￥ {(order.sales_price * order.quantity).toLocaleString()}
                                 </td>
                                 <td className="td7">
+                                    <FormSelect 
+                                        selectedValue={order.supplier_id}
+                                        options={MakerOptions}
+                                        onChange= {(e) => updateDetailField(
+                                                order.detail_id, 
+                                                "supplier_id",
+                                                Number(e.target.value)
+                                            )
+                                        }
+                                    />
+                                </td>
+                                <td className="td8">
                                     <FormSelect 
                                         selectedValue={order.supplier_id}
                                         options={supplierOptions}

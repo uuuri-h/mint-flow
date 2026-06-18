@@ -61,6 +61,35 @@ function OrderDetailForms({
         fetchDepartment();
     }, []); 
 
+    //ユーザーリストを取得
+    const [user_list, setUserList] = useState([]);  
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(
+                    
+                    `http://localhost:8000/user/users`
+                );
+                
+                setUserList(response.data.users);
+                console.log("user"+response.data.users);
+
+            } catch (error) {
+                console.error('ユーザ一覧データの取得に失敗しました:', error);
+            }
+        };
+
+        fetchUser();
+    }, []); 
+
+    //セレクトボックス用にvalue:---, label: ---に変換
+    const userList = (user_list || []).map((item) => ({
+        value: item.user_id,
+        label: item.user_name,
+    }));
+
+    console.log(userList)
+
     //セレクトボックス用にvalue:---, label: ---に変換
     const departmentList = (department_list || []).map((item) => ({
         value: item.department_id,
@@ -178,17 +207,16 @@ function OrderDetailForms({
                                     requester_dept_id: Number(e.target.value)
                                 })
                             }
-                            // className="form-input" 
-                            // id="request-dept" 
-                            // name="request-dept" 
-                            // style={{width: '100px'}}
+                            className="form-input" 
+                            id="request-dept" 
+                            name="request-dept" 
+                            style={{width: '100px'}}
                         />
-                        {console.log(departmentList)}
                     </div>
 
                     <div className="form-item requester-nm-container">
                         <label className="form-label" htmlFor="requester-nm">依頼主:</label>
-                        <input 
+                        {/* <input 
                             className="form-input" 
                             type="text" 
                             id="requester-nm" 
@@ -197,6 +225,21 @@ function OrderDetailForms({
                             // value={order_header?.requester_name || ''}
                             readOnly
                             // value={order_header.requester || ''}
+                        /> */}
+
+                        <FormSelect 
+                            selectedValue={orderHeader.requester_id}
+                            options={userList}
+                            onChange={(e) =>
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    user_id: Number(e.target.value)
+                                })
+                            }
+                            className="form-input" 
+                            id="request-dept" 
+                            name="request-dept" 
+                            style={{width: '150px'}}
                         />
                     </div>
 

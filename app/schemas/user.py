@@ -27,6 +27,7 @@ class TokenResponseSchema(BaseModel):
 
 # リクエスト情報を表すスキーマ  passwordはレスポンスに含めないようにする！
 class UserSchema(BaseModel):
+    user_id: int = Field(..., example=1)
     user_cd: str = Field(..., example="260011")
     user_name: str = Field(..., example="山田太郎")
     department_id: int = Field(..., example=2)

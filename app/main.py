@@ -161,38 +161,43 @@ def update_user(user_id: str, user: InsertAndUpdateUserSchema):
 @app.get("/users/{user_id}", response_model=UserSchema)
 def get_user(user_id: str):
     return UserSchema(
-        user_cd=user_id,
+        user_id =1,
+        user_cd=user_id, #あとでフロントをcdに直す
         user_name="山田太郎",
         department_id=1,
         department_name="営業部",
     )
     
-@app.get("/users/users", response_model=UserListSchema)
+@app.get("/user/users", response_model=UserListSchema)
 def get_departments():
     return UserListSchema(
         users=[
             UserSchema(
+                user_id=1,
                 user_cd = "260011",
                 user_name ="山田太郎",
                 department_id = 1,
                 department_name = "営業",
             ),
             UserSchema(
+                user_id=2,
                 user_cd = "260022",
                 user_name ="山田花子",
                 department_id = 2,
                 department_name = "購買",
             ),
             UserSchema(
+                user_id=3,
                 user_cd = "260033",
                 user_name ="猫飼ねこ",
                 department_id = 3,
                 department_name = "製造",
             ),
             UserSchema(
+                user_id=4,
                 user_cd = "260012",
                 user_name ="犬飼いぬ",
-                department_id = 1,
+                department_id = 4,
                 department_name = "営業",
             )
         ]
