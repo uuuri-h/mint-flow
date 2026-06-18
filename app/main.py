@@ -197,8 +197,8 @@ def get_departments():
                 user_id=4,
                 user_cd = "260012",
                 user_name ="犬飼いぬ",
-                department_id = 4,
-                department_name = "営業",
+                department_id = 3,
+                # department_name = "営業",
             )
         ]
     )

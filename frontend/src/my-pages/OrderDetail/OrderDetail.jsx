@@ -21,6 +21,7 @@ function OrderDetail({ user }) {
       requester_dept_name: "",
       delivery_date: "",
       requester_name: "",
+      requester_id: "",
       request_detail: "",
   });
 

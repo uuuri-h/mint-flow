@@ -17,7 +17,9 @@ function FormSelect({
                 {...props}
             >
             
-            <option value="">選択してください</option>
+            <option value="">
+                {/* 選択してください */}
+            </option>
             
             {options.map((option) => (
                 <option

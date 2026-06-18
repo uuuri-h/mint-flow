@@ -19,6 +19,7 @@ function OrderDetailTable({
     let rowNo = 0;
 
     const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+    
     //ログイン中のユーザーの権限（部署）によって、表示を分ける（部署id）と一致すれば表示する
     function canShow(departmentId) {
         return userRole === departmentId;
@@ -98,15 +99,6 @@ function OrderDetailTable({
 
     //選択した型番やアイテム名（item_id)によって、金額、サプライヤ、メーカー等をセットする
     function setByItem (detail_id, item_id) {
-
-        // item_list.forEach((item, index) => {
-        //     if (item.item_id === item_id) {
-        //         console.log(item.sales_price)
-        //         updateDetailField(detail_id, "item_id", item.item_id);
-        //         updateDetailField(detail_id, "sales_price", item.sales_price);
-        //         updateDetailField(detail_id, "supplier_id", item.supplier_id);
-        //     }
-        // })
 
         //item_listの中からitem_idが一致するものを1件探してselectedItemに入れる
         //一件だけ見つけたい場合はfind(条件)

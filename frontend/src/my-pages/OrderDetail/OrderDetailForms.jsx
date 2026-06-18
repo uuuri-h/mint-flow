@@ -72,7 +72,6 @@ function OrderDetailForms({
                 );
                 
                 setUserList(response.data.users);
-                console.log("user"+response.data.users);
 
             } catch (error) {
                 console.error('ユーザ一覧データの取得に失敗しました:', error);
@@ -88,13 +87,36 @@ function OrderDetailForms({
         label: item.user_name,
     }));
 
-    console.log(userList)
-
     //セレクトボックス用にvalue:---, label: ---に変換
     const departmentList = (department_list || []).map((item) => ({
         value: item.department_id,
         label: item.department_name,
     }));
+
+    //ユーザー選択時
+    function setByUser(userId) {
+        const selectedUser = user_list.find(
+            user => user.user_id === userId
+        );
+
+        if (!selectedUser) return;
+        console.log("user変更");
+
+        //スプレット構文で、orderHeaderをコピーして、必要な値を更新し、上書き
+        setOrderHeader(prev => ({
+            ...prev,
+            requester_id: userId, 
+            requester_name: selectedUser.user_name,
+            requester_dept_id: selectedUser.department_id,
+            requester_dept_name: selectedUser.department_name,
+        }));
+    }
+
+    //部署選択時
+    //あとで選択部署に所属するユーザーを、依頼主/依頼先ユーザーセレクトボックスに表示する（ひとまず選択されたら空にしておく）
+    function setByDept() {
+
+    }
 
     return (
         <div className="order-detail-forms-container">
@@ -201,12 +223,17 @@ function OrderDetailForms({
                         <FormSelect 
                             selectedValue={orderHeader.requester_dept_id}
                             options={departmentList}
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 setOrderHeader({
                                     ...orderHeader,
-                                    requester_dept_id: Number(e.target.value)
-                                })
-                            }
+                                    requester_dept_id: Number(e.target.value),
+                                    requester_dept_name: "",
+                                    requester_id: "",
+                                    requester_name: "",
+                                });
+                                // setByDept();
+                                console.log("部署変更");
+                            }}
                             className="form-input" 
                             id="request-dept" 
                             name="request-dept" 
@@ -216,26 +243,18 @@ function OrderDetailForms({
 
                     <div className="form-item requester-nm-container">
                         <label className="form-label" htmlFor="requester-nm">依頼主:</label>
-                        {/* <input 
-                            className="form-input" 
-                            type="text" 
-                            id="requester-nm" 
-                            style={{width: '150px'}}
-                            // value={orderHeader.requester_id}
-                            // value={order_header?.requester_name || ''}
-                            readOnly
-                            // value={order_header.requester || ''}
-                        /> */}
-
                         <FormSelect 
                             selectedValue={orderHeader.requester_id}
                             options={userList}
-                            onChange={(e) =>
-                                setOrderHeader({
-                                    ...orderHeader,
-                                    user_id: Number(e.target.value)
-                                })
-                            }
+                            onChange={(e) => {
+                                const userId = Number(e.target.value);
+                                // setOrderHeader({
+                                //     ...orderHeader,
+                                //     userId
+                                // });
+                                setByUser(userId);
+                                
+                            }}
                             className="form-input" 
                             id="request-dept" 
                             name="request-dept" 
