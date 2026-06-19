@@ -9,10 +9,13 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import './App.css'
+// RequestDetail.jsx
+
 
 function App() {
-    const [user, setUser] = React.useState(null);
 
+    //ログイン中のユーザーを取得
+    const [user, setUser] = React.useState(null);
     React.useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -35,13 +38,6 @@ function App() {
     fetchUser();
 
     }, []); 
-
-    //部署によって表示・非表示を切り替えるための関数
-    //
-    const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
-    function canShow(departmentId) {
-        return userRole === departmentId;
-    }
 
     return (
     <BrowserRouter>

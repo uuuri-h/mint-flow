@@ -4,6 +4,14 @@
 
 import axios from 'axios';
 
+
+//部署によって表示・非表示を切り替えるための関数
+//
+
+export function canShow(departmentId) {
+    return userRole === departmentId;
+}
+
 //アイテムを取得（リスト用）
 // export async function fetchListItem (
 //     end_point="", //FastApiエンドポイント指定

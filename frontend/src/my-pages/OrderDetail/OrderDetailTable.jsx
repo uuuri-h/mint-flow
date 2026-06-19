@@ -25,6 +25,8 @@ function OrderDetailTable({
         return userRole === departmentId;
     }
 
+    const canShow_PURCHASE = canShow(DEPARTMENT.PURCHASE);
+
     //サプライヤーリストを取得
     const [supplier_list, setSupplierList] = useState([]);
     useEffect(() => {
@@ -91,10 +93,13 @@ function OrderDetailTable({
         label: item.item_cd
     }));
 
+
     //セレクトボックス用にvalue:---, label: ---に変換
     const itemCostPriceList = (item_list || []).map((item) => ({
         value: item.item_id,
-        cost_price: item.cost_price,
+        cost_price: 
+            //条件式 ? 式1 (真の場合) : 式2 (偽の場合)
+            canShow_PURCHASE ? (item.cost_price) : ((item.sales_price)),
     }));
 
     //選択した型番やアイテム名（item_id)によって、金額、サプライヤ、メーカー等をセットする
@@ -178,7 +183,7 @@ function OrderDetailTable({
                     <thead>
                         <tr 
                         >
-                            {canShow(DEPARTMENT.PURCHASE) && <th className='th0'></th>}
+                            {canShow_PURCHASE && <th className='th0'></th>}
                             <th className='th1'>#</th>
                             <th className='th2'>型番</th>
                             <th className='th3'>アイテム名</th>
@@ -197,7 +202,7 @@ function OrderDetailTable({
                             <tr key={order.detail_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 
-                                {canShow(DEPARTMENT.PURCHASE) && (
+                                {canShow_PURCHASE && (
                                     <td className="td0"><input type="checkbox" className="check-box" /></td>
                                 )}
                                 <td className='td1'>{rowNo = rowNo+1}</td>
@@ -253,14 +258,22 @@ function OrderDetailTable({
                                 </td>
                                 <td className="td5">
                                     <span>￥ </span>
+                                    
                                     <FormInput
-                                        value={order.sales_price}
+                                        
+                                        //⭐️ ここを考え中。。。。
+                                        //購買部はcost_price（$原価）、その他の部署にはsales_priceを表示する。
+                                        //見たい金額が部署によって異なるため（営業部はcost_priceを使わない）　
+                                        // $や￥をつける　定数にするかも
+                                        value={canShow_PURCHASE ? (order.cost_price) : ((order.sales_price))}
                                         options={itemCostPriceList}
-                                        onChange= {(e) => updateDetailField(
+                                        onChange= {(e) => 
+                                            updateDetailField(
                                                 order.detail_id, 
-                                                "sales_price",
+                                                canShow_PURCHASE ? "cost_price" : "sales_price",
                                                 Number(e.target.value)
                                             )
+
                                         }
                                         width = "100px"
                                         type = "number"
