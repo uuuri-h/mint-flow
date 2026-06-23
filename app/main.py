@@ -43,7 +43,8 @@ header_data=[
         requester_dept_id=2,
         item_count=2,
         status=1,
-        total_amount=50000,
+        sales_price_total=50000,
+        cost_price_total =200,
         customer_id=1,
         customer_name="チョコミント株式会社",
         total_quantity=100,
@@ -59,7 +60,8 @@ header_data=[
         requester_dept_id=2,
         item_count=3,
         status=2,
-        total_amount=30000,
+        sales_price_total=30000,
+        cost_price_total =400,
         customer_id=1,
         customer_name="株式会社チョコレート",
         total_quantity=50,
@@ -164,7 +166,7 @@ def get_user(user_id: str):
         user_id =1,
         user_cd=user_id, #あとでフロントをcdに直す
         user_name="山田太郎",
-        department_id=1,
+        department_id=2,
         department_name="営業部",
     )
     

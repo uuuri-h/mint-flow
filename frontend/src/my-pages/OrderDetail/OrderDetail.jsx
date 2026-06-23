@@ -6,7 +6,9 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useOutletContext } from "react-router-dom";
+import { API_URL,STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT } from "../../my-constants";
 import axios from 'axios';
+import OrderBtn from '../../my-component/Button/OrderBtn';
 
 function OrderDetail({ user }) {
   const location = useLocation();
@@ -98,6 +100,11 @@ function OrderDetail({ user }) {
           updateDetailField={updateDetailField}
 
         />
+
+        <div className="table-footer">
+          {canShow(DEPARTMENT.PURCHASE) && <OrderBtn className="order-btn" user={user} />} 
+          {canShow(DEPARTMENT.PURCHASE) && <OrderBtn className="cancel-btn" user={user} />} 
+        </div>
       </div>
     </div>
   );

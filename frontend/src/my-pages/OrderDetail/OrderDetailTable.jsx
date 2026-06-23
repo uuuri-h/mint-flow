@@ -97,7 +97,7 @@ function OrderDetailTable({
     //セレクトボックス用にvalue:---, label: ---に変換
     const itemCostPriceList = (item_list || []).map((item) => ({
         value: item.item_id,
-        cost_price: 
+        label: 
             //条件式 ? 式1 (真の場合) : 式2 (偽の場合)
             canShow_PURCHASE ? (item.cost_price) : ((item.sales_price)),
     }));
@@ -198,7 +198,11 @@ function OrderDetailTable({
                     </thead>
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
-                        {orderDetail.map((order) => (
+                        {orderDetail.map((order) => {
+                                const inputCostValue = canShow_PURCHASE
+                                    ? order.cost_price
+                                    : order.sales_price;
+                            return (
                             <tr key={order.detail_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 
@@ -256,16 +260,13 @@ function OrderDetailTable({
                                         min="0"
                                     />
                                 </td>
+
+                                 {/* = {canShow_PURCHASE ? (order.cost_price) : ((order.sales_price))}; */}
                                 <td className="td5">
-                                    <span>￥ </span>
-                                    
+                                    {canShow_PURCHASE ? "＄ " : "￥ "}
                                     <FormInput
-                                        
-                                        //⭐️ ここを考え中。。。。
-                                        //購買部はcost_price（$原価）、その他の部署にはsales_priceを表示する。
-                                        //見たい金額が部署によって異なるため（営業部はcost_priceを使わない）　
-                                        // $や￥をつける　定数にするかも
-                                        value={canShow_PURCHASE ? (order.cost_price) : ((order.sales_price))}
+
+                                        value={inputCostValue}
                                         options={itemCostPriceList}
                                         onChange= {(e) => 
                                             updateDetailField(
@@ -283,7 +284,13 @@ function OrderDetailTable({
                                 <td className="td6"
                                     style={{width: "120px"}}
                                 >
-                                    ￥ {(order.sales_price * order.quantity).toLocaleString()}
+                                    {canShow_PURCHASE ? "＄ " : "￥ "}
+                                    {(
+                                        (canShow_PURCHASE
+                                            ? order.cost_price
+                                            : order.sales_price
+                                        ) * order.quantity
+                                    ).toLocaleString()}
                                 </td>
                                 <td className="td7">
                                     <FormSelect 
@@ -326,7 +333,8 @@ function OrderDetailTable({
                                     </button>
                                 </td>
                             </tr>
-                        ))}
+                            )
+                        })}
                     </tbody>
 
                 </table>

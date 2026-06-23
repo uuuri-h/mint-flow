@@ -21,6 +21,13 @@ function OrderTable({ user }) {
         return userRole === departmentId;
     }
 
+    //ログイン中のユーザーの権限（部署）によって、表示を分ける（部署id）と一致すれば表示する
+    function canShow(departmentId) {
+        return userRole === departmentId;
+    }
+    
+    const canShow_PURCHASE = canShow(DEPARTMENT.PURCHASE);
+
     const [page, setPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     {/* const[状態, 状態を更新する関数] = useState(初期値) */ }
@@ -63,7 +70,10 @@ function OrderTable({ user }) {
                     <thead>
                         <tr 
                         >
-                            {canShow(DEPARTMENT.PURCHASE) && <th className='th1'></th>}
+                            {canShow(DEPARTMENT.PURCHASE) &&
+                                <th className='th1'></th>
+                                
+                            }
                             <th className='th2'>依頼日</th>
                             <th className='th3'>依頼ID</th>
                             <th className='th4'>顧客名</th>
@@ -76,17 +86,25 @@ function OrderTable({ user }) {
                     </thead>
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
-                        {orders.map((order) => (
+                        {orders.map((order) => {
+                            const inputCostValue = canShow_PURCHASE
+                                ? order.cost_price_total
+                                : order.sales_price_total;
+                            
+                            return(
                             <tr key={order.request_cd}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
-                                {canShow(DEPARTMENT.PURCHASE) && (
+                                {canShow(DEPARTMENT.PURCHASE) &&
                                     <td className="td1"><input type="checkbox" className="check-box" /></td>
-                                )}
+                                }
                                 <td className="td2">{order.request_date}</td>
                                 <td className="td3">{order.request_cd}</td>
                                 <td className="td4">{order.customer_name}</td>
                                 <td className="td5">{order.item_count}</td>
-                                <td className="td6">￥{order.total_amount}</td>
+                                <td className="td6">
+                                    {canShow_PURCHASE ? "＄" : "￥"}
+                                    {(inputCostValue ?? 0).toLocaleString()}
+                                </td>
                                 <td className="td7">{order.delivery_date}</td>
                                 <td className="td9">
                                     <span className={`status ${STATUS_CLASS_MAP[order.status]}`}>
@@ -104,12 +122,13 @@ function OrderTable({ user }) {
                                     </button>
                                 </td>
                             </tr>
-                        ))}
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>
             <div className="table-footer">
-                {canShow(DEPARTMENT.PURCHASE) && <OrderBtn className="order-btn" user={user} />} 
+                {canShow_PURCHASE && <OrderBtn className="order-btn" user={user} />} 
             </div>
         </div>
     );

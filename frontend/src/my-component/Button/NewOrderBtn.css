@@ -1,7 +1,5 @@
 .new-order-btn-container {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+    display: contents;
 }
 
 .new-order-btn {

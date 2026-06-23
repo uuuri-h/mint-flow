@@ -18,6 +18,11 @@ export const STATUS_CLASS_MAP = {
     99: 'cancelled'
     };
 
+export const ITEM_STATUS = {
+    NEW_REQUEST : 0,
+    REQUESTING : 1,
+    COMPLETED : 2
+}
 
 export const ITEM_STATUS_MAP = {
     0: "新規",

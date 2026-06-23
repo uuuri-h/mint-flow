@@ -54,7 +54,8 @@ class RequestListItemSchema(BaseModel):
     request_date: date
     item_count: int
     status: int 
-    total_amount: int
+    sales_price_total : int
+    cost_price_total : int
     customer_id: int
     customer_name: str
     total_quantity: int 
