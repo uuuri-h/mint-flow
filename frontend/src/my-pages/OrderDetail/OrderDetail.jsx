@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { useOutletContext } from "react-router-dom";
 import { API_URL,STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT } from "../../my-constants";
 import axios from 'axios';
-import OrderBtn from '../../my-component/Button/OrderBtn';
+import MyBtn from '../../my-component/Button/NewOrderBtn';
 
 function OrderDetail({ user }) {
   const location = useLocation();
@@ -102,8 +102,18 @@ function OrderDetail({ user }) {
         />
 
         <div className="table-footer">
-          {canShow(DEPARTMENT.PURCHASE) && <OrderBtn className="order-btn" user={user} />} 
-          {canShow(DEPARTMENT.PURCHASE) && <OrderBtn className="cancel-btn" user={user} />} 
+          {canShow(DEPARTMENT.PURCHASE) && 
+            <MyBtn 
+                className="order-btn" 
+                text="発注する"
+            />
+          } 
+          {canShow(DEPARTMENT.PURCHASE) && 
+            <MyBtn 
+                className="cancel-btn" 
+                text="発注を取り消す"
+            />
+          } 
         </div>
       </div>
     </div>

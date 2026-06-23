@@ -3,7 +3,7 @@ import './OrderTable.css'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import OrderBtn from '../../my-component/Button/OrderBtn';
+import MyBtn from '../../my-component/Button/MyBtn';
 import { API_URL,STATUS_MAP, STATUS_CLASS_MAP,DEPARTMENT } from "../../my-constants";
 import { useNavigate } from 'react-router-dom'; // 追加: useNavigateをインポート
 
@@ -128,7 +128,12 @@ function OrderTable({ user }) {
                 </table>
             </div>
             <div className="table-footer">
-                {canShow_PURCHASE && <OrderBtn className="order-btn" user={user} />} 
+            {canShow(DEPARTMENT.PURCHASE) && 
+                <MyBtn 
+                    className="order-btn" 
+                    text="発注する"
+                />
+            } 
             </div>
         </div>
     );
