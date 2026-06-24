@@ -46,13 +46,16 @@
     background-color: #36a39c;
 }
 
-.delate-btn {
+.red-btn {
     background-color: #dc3545;
 }
 
-.delate-btn:hover {
+.red-btn:hover {
     background-color: rgb(177, 46, 59);
 }
+
+
+
 
 .pg-container {
     width: 100%;

@@ -113,7 +113,7 @@ function OrderTable({ user }) {
                                 </td>
                                 <td className="td10">
                                     <button 
-                                        className="button btn btn-primary"
+                                        className="button btn-primary"
                                         onClick={() => requestEdit(order.request_cd)}
                                         type="submit"
                                     >

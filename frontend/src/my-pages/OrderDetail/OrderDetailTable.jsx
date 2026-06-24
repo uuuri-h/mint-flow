@@ -325,7 +325,7 @@ function OrderDetailTable({
                                 </td>
                                 <td className="td10">
                                     <button 
-                                        className="button delate-btn"
+                                        className="button red-btn"
                                         onClick={() => detailRowDelate(order.detail_id)}
                                         type="button"
                                     >

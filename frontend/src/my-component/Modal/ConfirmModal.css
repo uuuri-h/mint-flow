@@ -33,7 +33,7 @@
 }
 
 .button-container {
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 20px;
 
   /*小要素同士の間隔を指定*/
@@ -46,6 +46,15 @@
 
 .CancelButton, .ConfirmButton {
   width: 90px;
+  height: 35px;
   margin: 0;
-  margin-top: 20px;
+  margin-top: 30px;
+}
+
+.ModalContent .CancelButton {
+  background-color: #868e96;
+}
+
+.ModalContent .CancelButton:hover {
+  background-color: #646a6f;
 }
