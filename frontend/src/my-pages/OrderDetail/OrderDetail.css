@@ -6,7 +6,8 @@
 
 .table-footer {
     display: flex;
-    margin: 10 0;
+    margin: 8 0;
+    padding-bottom: 10px;
     gap: 20px;
     justify-content: flex-end;
 }

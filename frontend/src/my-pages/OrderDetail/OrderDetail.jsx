@@ -27,10 +27,14 @@ function OrderDetail({ user }) {
       customer_id: "",
       request_date: "",
       requester_dept_id: "",   // ←追加
+      assigner_dept_id: "",
       requester_dept_name: "",
+      assigner_dept_name: "",
       delivery_date: "",
       requester_name: "",
+      assigner_: "",
       requester_id: "",
+      assigner_id: "",
       request_detail: "",
   });
 
@@ -105,13 +109,25 @@ function OrderDetail({ user }) {
 
           {canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
-                className="btn cancel-btn red-btn" 
+                className="btn cancel-order-btn red-btn" 
                 text="発注を取り消す"
+            />
+          } 
+          {!canShow(DEPARTMENT.PURCHASE) && 
+            <MyBtn 
+                className="btn cancel-request-btn red-btn" 
+                text="依頼を削除する"
             />
           } 
           {canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
                 className="btn order-btn" 
+                text="発注する"
+            />
+          } 
+          {!canShow(DEPARTMENT.PURCHASE) && 
+            <MyBtn 
+                className="btn request-btn" 
                 text="発注する"
             />
           } 

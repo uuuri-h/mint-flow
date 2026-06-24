@@ -103,13 +103,25 @@ function OrderDetailForms({
         console.log("selectedUser =" + selectedUser.user_name);
 
         //スプレット構文で、orderHeaderをコピーして、必要な値を更新し、上書き
-        setOrderHeader(prev => ({
-            ...prev,
-            requester_id: userId, 
-            requester_name: selectedUser.user_name,
-            requester_dept_id: selectedUser.department_id,
-            requester_dept_name: selectedUser.department_name,
-        }));
+
+        if (canShow_PURCHASE) {
+
+            setOrderHeader(prev => ({
+                ...prev,
+                requester_id: userId, 
+                requester_name: selectedUser.user_name,
+                requester_dept_id: selectedUser.department_id,
+                requester_dept_name: selectedUser.department_name,
+            }));
+        } else {
+            setOrderHeader(prev => ({
+                ...prev,
+                assigner_id: userId, 
+                assigner_name: selectedUser.user_name,
+                assigner_dept_id: selectedUser.department_id,
+                assigner_dept_name: selectedUser.department_name,
+            }));
+        }
     }
 
     const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
@@ -254,10 +266,10 @@ function OrderDetailForms({
                                 if (canShow_PURCHASE) return;
                                 setOrderHeader({
                                     ...orderHeader,
-                                    requester_dept_id: Number(e.target.value),
-                                    requester_dept_name: "",
-                                    requester_id: "",
-                                    requester_name: "",
+                                    assigner_dept_id: Number(e.target.value),
+                                    assigner_dept_name: "",
+                                    assigner_id: "",
+                                    assigner_name: "",
                                 });
                                 // setByDept();
                                 console.log("部署変更");
@@ -307,7 +319,6 @@ function OrderDetailForms({
                             // value={order_header?.request_detail || ''}
                             style={{width: '100%', height: '80px'}}
                             value={orderHeader.request_detail}
-                            disabled={canShow_PURCHASE}
                             onChange={(e) =>
                                 setOrderHeader({
                                     ...orderHeader,

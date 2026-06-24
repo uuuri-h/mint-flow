@@ -19,7 +19,7 @@ function OrderList({user}) {
             <div className="pg-header order-list-header">
                 <h1>発注依頼一覧</h1>
             </div>
-            {canShow(DEPARTMENT.SALES) && <NewOrderBtn user={user} />}
+            {canShow(DEPARTMENT.SALES) && <NewOrderBtn user={user}/>}
             <OrderTable user={user} />
         </div>
     );
