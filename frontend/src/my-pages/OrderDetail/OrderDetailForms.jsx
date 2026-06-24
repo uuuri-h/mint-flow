@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { STATUS_MAP, STATUS_CLASS_MAP } from "../../my-constants";
+import { STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT} from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
@@ -100,7 +100,7 @@ function OrderDetailForms({
         );
 
         if (!selectedUser) return;
-        console.log("user変更");
+        console.log("selectedUser =" + selectedUser.user_name);
 
         //スプレット構文で、orderHeaderをコピーして、必要な値を更新し、上書き
         setOrderHeader(prev => ({
@@ -112,11 +112,21 @@ function OrderDetailForms({
         }));
     }
 
+    const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+    
+    //ログイン中のユーザーの権限（部署）によって、表示を分ける（部署id）と一致すれば表示する
+    function canShow(departmentId) {
+        return userRole === departmentId;
+    }
+
+
     //部署選択時
     //あとで選択部署に所属するユーザーを、依頼主/依頼先ユーザーセレクトボックスに表示する（ひとまず選択されたら空にしておく）
     function setByDept() {
 
     }
+    
+    const canShow_PURCHASE = canShow(DEPARTMENT.PURCHASE);
 
     return (
         <div className="order-detail-forms-container">
@@ -135,7 +145,7 @@ function OrderDetailForms({
                             // value={order_header?.request_cd || ''}
                             value={orderHeader.request_cd}
 
-                            readOnly
+                            disabled
 
                         />
                     </div>
@@ -159,18 +169,21 @@ function OrderDetailForms({
                             name="request-date" 
                             // value={order_header?.request_date || ''}
                             value={orderHeader.request_date}
-                            onChange={(e) =>
+                            disabled={canShow_PURCHASE}
+                            onChange={(e) => {
+                                if (canShow_PURCHASE) return;
+
                                 setOrderHeader({
                                     ...orderHeader,
                                     request_date: e.target.value
                                 })
-                            }
+                            }}
                         />
                     </div>
 
                     <div className="form-item customer-nm-container">
                     <label className="form-label" htmlFor="customer-nm">
-                        顧客名:
+                        顧客名: 
                     </label>
 
                     <select
@@ -178,12 +191,16 @@ function OrderDetailForms({
                         id="customer-nm"
                         name="customer-nm"
                         value={orderHeader.customer_id}
-                        onChange={(e) =>
+                        disabled={canShow_PURCHASE}
+                        onChange={(e) => {
+                            if (canShow_PURCHASE) return;
+
                             setOrderHeader({
                                 ...orderHeader,
                                 customer_id: e.target.value
                             })
-                        }
+                        }}
+                        
                     >
                         <option value="">選択してください</option>
 
@@ -209,23 +226,32 @@ function OrderDetailForms({
                             name="delivery_date" 
                             // value={order_header?.request_date || ''}
                             value={orderHeader.delivery_date}
-                            onChange={(e) =>
+                            disabled={canShow_PURCHASE}
+                            onChange={(e) => {
+                                if (canShow_PURCHASE) return;
+
                                 setOrderHeader({
                                     ...orderHeader,
                                     delivery_date: e.target.value
                                 })
-                            }
+                            }}
                         />
                     </div>
  
                     <div className="form-item request-dept-container">
-                        <label className="form-label" htmlFor="request-dept">
-                            {}依頼主部署:
+                        <label className="form-label" htmlFor="requester">
+                            {/*購買の場合は依頼主、その他部署の場合は依頼先*/}
+                            {/*依頼先は購買部のみ選べるようにすること（セレクトボックスの表示）*/}
+                            {canShow_PURCHASE && ("依頼主部署:")}
+                            {! canShow_PURCHASE && ("依頼先部署:")}
                         </label>
                         <FormSelect 
-                            selectedValue={orderHeader.requester_dept_id}
+                            selectedValue={canShow_PURCHASE ? orderHeader.requester_dept_id : orderHeader.assigner_dept_id}
+                            // selectedValue={orderHeader.requester_dept_id}
                             options={departmentList}
+                            disabled={canShow_PURCHASE}
                             onChange={(e) => {
+                                if (canShow_PURCHASE) return;
                                 setOrderHeader({
                                     ...orderHeader,
                                     requester_dept_id: Number(e.target.value),
@@ -244,11 +270,18 @@ function OrderDetailForms({
                     </div>
 
                     <div className="form-item requester-nm-container">
-                        <label className="form-label" htmlFor="requester-nm">依頼主:</label>
+                        <label className="form-label" htmlFor="requester">
+                            {canShow_PURCHASE && ("依頼主")}
+                            {! canShow_PURCHASE && ("依頼先")}
+                        </label>
                         <FormSelect 
-                            selectedValue={orderHeader.requester_id}
+                            // selectedValue={orderHeader.requester_id}
+                            selectedValue={canShow_PURCHASE ? orderHeader.requester_id : orderHeader.assigner_id}
                             options={userList}
+                            disabled={canShow_PURCHASE}
                             onChange={(e) => {
+                                if (canShow_PURCHASE) return;
+
                                 const userId = Number(e.target.value);
                                 // setOrderHeader({
                                 //     ...orderHeader,
@@ -258,8 +291,8 @@ function OrderDetailForms({
                                 
                             }}
                             className="form-input" 
-                            id="request-dept" 
-                            name="request-dept" 
+                            id="requester" 
+                            name="requester" 
                             style={{width: '150px'}}
                         />
                     </div>
@@ -274,6 +307,7 @@ function OrderDetailForms({
                             // value={order_header?.request_detail || ''}
                             style={{width: '100%', height: '80px'}}
                             value={orderHeader.request_detail}
+                            disabled={canShow_PURCHASE}
                             onChange={(e) =>
                                 setOrderHeader({
                                     ...orderHeader,

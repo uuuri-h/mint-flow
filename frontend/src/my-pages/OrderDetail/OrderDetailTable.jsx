@@ -282,7 +282,6 @@ function OrderDetailTable({
                                     />
                                 </td>
                                 <td className="td6"
-                                    style={{width: "120px"}}
                                 >
                                     {canShow_PURCHASE ? "＄ " : "￥ "}
                                     {(
@@ -302,7 +301,7 @@ function OrderDetailTable({
                                                 Number(e.target.value)
                                             )
                                         }
-                                        style={{width: '130px'}}
+                                        style={{width: '100px'}}
                                     />
                                 </td>
                                 <td className="td8">
@@ -342,7 +341,7 @@ function OrderDetailTable({
             <div className='detail-table-footer'>
 
                 <button 
-                    className='button  row-add-btn'
+                    className='button row-add-btn'
                     type = 'button'
                     // onClick={setOrderDetail(AddNewRow)}
                     onClick={() => setOrderDetail(AddNewRow())}

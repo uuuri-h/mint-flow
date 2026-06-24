@@ -33,6 +33,7 @@
     /* table-layout: fixed;  */
     /* セルの幅を固定にする */
     font-size: 14px;
+    
 }
 
 .detail-table th, .detail-table td {
@@ -49,7 +50,6 @@
     white-space: nowrap; /* テキストの折り返しを防止 */
 
 }
-
 
 
 .detail-table tr:hover {
@@ -77,6 +77,12 @@
 .td10 {
     text-align: center;
     vertical-align: middle;
+}
+
+.th6,
+.td6 {
+    width: 150px;
+    min-width: 100px;
 }
 
 

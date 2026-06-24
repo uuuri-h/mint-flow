@@ -37,15 +37,15 @@ header_data=[
     RequestListItemSchema(
         request_cd="REQ26-0001",
         request_date="2024-12-01",
-        assigner_id=1,
-        assigner_dept_id=1,
-        requester_id=2,
-        requester_dept_id=2,
+        assigner_id=2,
+        assigner_dept_id=2,
+        requester_id=1,
+        requester_dept_id=1,
         item_count=2,
         status=1,
         sales_price_total=50000,
         cost_price_total =200,
-        customer_id=1,
+        customer_id=1,\
         customer_name="チョコミント株式会社",
         total_quantity=100,
         delivery_date="2024-12-31",
@@ -57,7 +57,7 @@ header_data=[
         assigner_id=2,
         assigner_dept_id=2,
         requester_id=1,
-        requester_dept_id=2,
+        requester_dept_id=1,
         item_count=3,
         status=2,
         sales_price_total=30000,
@@ -166,7 +166,7 @@ def get_user(user_id: str):
         user_id =1,
         user_cd=user_id, #あとでフロントをcdに直す
         user_name="山田太郎",
-        department_id=2,
+        department_id=1,
         department_name="営業部",
     )
     
