@@ -21,7 +21,7 @@ export const STATUS_CLASS_MAP = {
 export const ITEM_STATUS = {
     NEW_REQUEST : 0,
     REQUESTING : 1,
-    COMPLETED : 2
+    COMPLETED : 3
 }
 
 export const ITEM_STATUS_MAP = {

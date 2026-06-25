@@ -61,6 +61,8 @@ function OrderDetail({ user }) {
 
   const [status, setStatus] = useState(0);
   const request_cd = id
+
+  //発注依頼ヘッダ＋発注依頼詳細をセットで取得
   useEffect(() => {
       // ここでAPIから発注データを取得して状態に保存する処理を実装
       const fetchOrderDetail = async () => {
@@ -69,8 +71,13 @@ function OrderDetail({ user }) {
                   `http://localhost:8000/requests/${id}/details`
               );
 
+              //発注依頼ヘッダ (フォーム)
               setOrderHeader(response.data.header);
+
+              //発注依頼詳細をセット (テーブル)
               setOrderDetail(response.data.details);
+
+              //発注依頼ヘッダのステータス
               setStatus(response.data.header.status);
 
 
@@ -90,6 +97,18 @@ function OrderDetail({ user }) {
       fetchOrderDetail();
   }, [id]); //[id]が変わった時だけ実行
 
+  //requestOrder
+  const saveRequest = async () => {
+    if (!id) {
+        // 新規登録
+    } else if (status === STATUS.REQUESTING) {
+        // 更新
+    } else if (status === STATUS.APPROVED) {
+        // 発注
+    }
+};
+
+  //詳細データを更新する
   const updateDetailField = (
       detailId, 
       field, 
@@ -141,22 +160,28 @@ function OrderDetail({ user }) {
                 text="発注を取り消す"
             />
           } 
+
+          {/*発注済のアイテムがある場合、依頼の取り消しはできない為、ボタンを非表示にする*/}
           {!canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
                 className="btn cancel-request-btn red-btn" 
                 text="依頼を削除する"
+                onClick={deleteRequest}
             />
           } 
           {canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
                 className="btn order-btn" 
                 text="発注する"
+                onClick={saveRequest}
+                
             />
           } 
           {!canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
                 className="btn request-btn" 
                 text="依頼する"
+                onClick={saveRequest}
             />
           } 
         </div>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP, DEPARTMENT } from "../../my-constants";
+import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP, DEPARTMENT, ITEM_STATUS } from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
@@ -308,15 +308,19 @@ function OrderDetailTable({
                                         {ITEM_STATUS_MAP[order.status]}
                                     </span>
                                 </td>
-                                <td className="td10">
-                                    <button 
-                                        className="button red-btn"
-                                        onClick={() => detailRowDelate(order.detail_id)}
-                                        type="button"
-                                    >
-                                        削除
-                                    </button>
-                                </td>
+                                {console.log(`${order.status} + ${ITEM_STATUS.COMPLETED}`)}
+                                {canShow_PURCHASE || order.status != ITEM_STATUS.COMPLETED && (
+                                
+                                    <td className="td10">
+                                        <button 
+                                            className="button red-btn"
+                                            onClick={() => detailRowDelate(order.detail_id)}
+                                            type="button"
+                                        >
+                                            削除
+                                        </button>
+                                    </td>
+                                )}
                             </tr>
                             )
                         })}
