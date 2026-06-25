@@ -12,7 +12,7 @@ import MyBtn from '../../my-component/Button/MyBtn';
 
 function OrderDetail({ user }) {
   const location = useLocation();
-  const {id} = location.state || {}; 
+  const {id} = location.state || {};  //URLを変化させることなくページ遷移時に一時的なデータを渡す
 
   // const { user } = useOutletContext(); //contextからuserを取得
 
@@ -22,7 +22,7 @@ function OrderDetail({ user }) {
       return userRole === departmentId;
   }
 
-  const [orderHeader, setOrderHeader] = useState({
+  const emptyHeader = {
       request_cd: "",
       customer_id: "",
       request_date: "",
@@ -36,7 +36,23 @@ function OrderDetail({ user }) {
       requester_id: "",
       assigner_id: "",
       request_detail: "",
+};
+
+  //テーブルの空行を作る
+  const createEmptyRow = () => ({
+      detail_id: Date.now(), //keyが被らないようにするため。
+      item_id: "",
+      quantity: "",
+      sales_price: "",
+      cost_price: "",
+      maker_name: "",
+      supplier_id: "",
+      status: 0,
   });
+
+  const [orderHeader, setOrderHeader] = useState(
+      emptyHeader
+      );
 
   const [orderDetail, setOrderDetail] = useState([]);
   const [status, setStatus] = useState(0);
@@ -58,11 +74,16 @@ function OrderDetail({ user }) {
               console.error('発注依頼データの取得に失敗しました:', error);
           }
       };
-      if (id) {
-        fetchOrderDetail();
+      if (! id) {
+        setOrderHeader(emptyHeader);
+        setOrderDetail([]);
+        setOrderDetail([createEmptyRow()]);
+        setStatus(0);
+        return;
       }
 
-  }, []); 
+      fetchOrderDetail();
+  }, [id]); //[id]が変わった時だけ実行
 
   const updateDetailField = (
       detailId, 
@@ -98,10 +119,12 @@ function OrderDetail({ user }) {
           setStatus = {setStatus}
         />
         <OrderDetailTable 
+          id = {id}
           user={user} 
           orderDetail={orderDetail}
           setOrderDetail={setOrderDetail}
           updateDetailField={updateDetailField}
+          createEmptyRow = {createEmptyRow}
 
         />
 

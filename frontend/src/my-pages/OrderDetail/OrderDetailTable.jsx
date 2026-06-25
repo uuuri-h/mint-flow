@@ -9,10 +9,12 @@ import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
 function OrderDetailTable({
+    id,
     user,
     orderDetail,
     setOrderDetail,
-    updateDetailField
+    updateDetailField,
+    createEmptyRow
 }) {
 
     let totalItems = orderDetail.length;
@@ -118,19 +120,6 @@ function OrderDetailTable({
 
     }
 
-
-    //テーブルの空行を作る
-    const createEmptyRow = () => ({
-        detail_id: Date.now(), //keyが被らないようにするため。
-        item_id: "",
-        quantity: "",
-        sales_price: "",
-        cost_price: "",
-        maker_name: "",
-        supplier_id: "",
-        status: 0,
-    });
-
     //テーブル左下の行追加ボタン「＋」が押された時の処理
     function AddNewRow () {
 
@@ -145,11 +134,13 @@ function OrderDetailTable({
     }
 
     //新規登録の時(アイテムがない時)に一行空の行を入れる処理
-    useEffect(() => {
-        if (totalItems === 0) {
-            setOrderDetail(AddNewRow());
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (totalItems === 0) {
+    //         console.log("nai")
+    //         setOrderDetail(AddNewRow());
+    //     }
+    // }, [id, totalItems]);
+
 
     //テーブルの削除ボタンが押された時の処理
     const detailRowDelate = async(detail_id) => {

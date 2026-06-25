@@ -166,7 +166,7 @@ def get_user(user_id: str):
         user_id =1,
         user_cd=user_id, #あとでフロントをcdに直す
         user_name="山田太郎",
-        department_id=2,
+        department_id=1,
         department_name="営業部",
     )
     
