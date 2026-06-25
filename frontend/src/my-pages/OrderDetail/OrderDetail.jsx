@@ -14,19 +14,25 @@ function OrderDetail({ user }) {
   const location = useLocation();
   const {id} = location.state || {};  //URLを変化させることなくページ遷移時に一時的なデータを渡す
 
-  // const { user } = useOutletContext(); //contextからuserを取得
-
   //営業部の場合はチェックボックスを非表示
   const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
   function canShow(departmentId) {
       return userRole === departmentId;
   }
 
+  //今日の日付を取得
+  // .padStart(2, "0")　で「6」を［06」にしている
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const date = String(currentDate.getDate()).padStart(2, "0");
+
+  //ヘッダーの空行
   const emptyHeader = {
       request_cd: "",
       customer_id: "",
-      request_date: "",
-      requester_dept_id: "",   // ←追加
+      request_date: `${year}-${month}-${date}`,
+      requester_dept_id: "", 
       assigner_dept_id: "",
       requester_dept_name: "",
       assigner_dept_name: "",
@@ -50,11 +56,9 @@ function OrderDetail({ user }) {
       status: 0,
   });
 
-  const [orderHeader, setOrderHeader] = useState(
-      emptyHeader
-      );
-
+  const [orderHeader, setOrderHeader] = useState(emptyHeader);
   const [orderDetail, setOrderDetail] = useState([]);
+
   const [status, setStatus] = useState(0);
   const request_cd = id
   useEffect(() => {
@@ -74,6 +78,8 @@ function OrderDetail({ user }) {
               console.error('発注依頼データの取得に失敗しました:', error);
           }
       };
+
+      //一覧から取得したidがない＝新規の場合はフォームとテーブルをリセット
       if (! id) {
         setOrderHeader(emptyHeader);
         setOrderDetail([]);
@@ -81,7 +87,6 @@ function OrderDetail({ user }) {
         setStatus(0);
         return;
       }
-
       fetchOrderDetail();
   }, [id]); //[id]が変わった時だけ実行
 
@@ -151,7 +156,7 @@ function OrderDetail({ user }) {
           {!canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
                 className="btn request-btn" 
-                text="発注する"
+                text="依頼する"
             />
           } 
         </div>

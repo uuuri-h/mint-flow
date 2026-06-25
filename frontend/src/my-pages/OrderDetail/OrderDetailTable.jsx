@@ -133,15 +133,6 @@ function OrderDetailTable({
         return newList
     }
 
-    //新規登録の時(アイテムがない時)に一行空の行を入れる処理
-    // useEffect(() => {
-    //     if (totalItems === 0) {
-    //         console.log("nai")
-    //         setOrderDetail(AddNewRow());
-    //     }
-    // }, [id, totalItems]);
-
-
     //テーブルの削除ボタンが押された時の処理
     const detailRowDelate = async(detail_id) => {
 
@@ -182,7 +173,7 @@ function OrderDetailTable({
                             <th className='th5'>金額</th>
                             <th className='th6'>合計金額</th>
                             <th className='th7'>メーカー名</th>
-                            <th className='th8'>仕入先</th>
+                            {canShow_PURCHASE && <th className='th8'>仕入先</th>}
                             <th className='th9'>発注ステータス</th>
                             <th className='th10'></th>
                         </tr>
@@ -295,19 +286,23 @@ function OrderDetailTable({
                                         style={{width: '100px'}}
                                     />
                                 </td>
-                                <td className="td8">
-                                    <FormSelect 
-                                        selectedValue={order.supplier_id}
-                                        options={supplierOptions}
-                                        onChange= {(e) => updateDetailField(
-                                                order.detail_id, 
-                                                "supplier_id",
-                                                Number(e.target.value)
-                                            )
-                                        }
-                                        style={{width: '130px'}}
-                                    />
-                                </td>
+
+                                {/*仕入れ先は購買部のみ表示する*/}
+                                {canShow_PURCHASE && 
+                                    <td className="td8">
+                                        <FormSelect 
+                                            selectedValue={order.supplier_id}
+                                            options={supplierOptions}
+                                            onChange= {(e) => updateDetailField(
+                                                    order.detail_id, 
+                                                    "supplier_id",
+                                                    Number(e.target.value)
+                                                )
+                                            }
+                                            style={{width: '130px'}}
+                                        />
+                                    </td>
+                                }
                                 <td className="td9">
                                     <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
                                         {ITEM_STATUS_MAP[order.status]}
