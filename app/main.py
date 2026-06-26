@@ -42,7 +42,7 @@ header_data=[
         requester_id=1,
         requester_dept_id=1,
         item_count=2,
-        status=1,
+        header_status=1,
         sales_price_total=50000,
         cost_price_total =200,
         customer_id=1,\
@@ -59,7 +59,7 @@ header_data=[
         requester_id=1,
         requester_dept_id=1,
         item_count=3,
-        status=2,
+        header_status=2,
         sales_price_total=30000,
         cost_price_total =400,
         customer_id=1,
@@ -79,7 +79,7 @@ detail_data = [
         sales_price=1000,
         cost_price=5.2,
         supplier_id=1,
-        status=3,
+        item_status=3,
     ),
     RequestDetailSchema(
         request_cd="REQ26-0001",
@@ -89,7 +89,7 @@ detail_data = [
         sales_price=2000,
         cost_price=10,
         supplier_id=1,
-        status=1,
+        item_status=1,
     ),
     RequestDetailSchema(
         request_cd="REQ26-0002",
@@ -99,7 +99,7 @@ detail_data = [
         sales_price=1500,
         cost_price=10.2,
         supplier_id=1,
-        status=1,
+        item_status=1,
     ),
     RequestDetailSchema(
         request_cd="REQ26-0002",
@@ -109,7 +109,7 @@ detail_data = [
         sales_price=1000,
         cost_price=5.1,
         supplier_id=1,
-        status=3,
+        item_status=3,
     ),
     RequestDetailSchema(
         request_cd="REQ26-0002",
@@ -119,7 +119,7 @@ detail_data = [
         sales_price=20000,
         cost_price=175,
         supplier_id=1,
-        status=1,
+        item_status=1,
     )
 ]
 
@@ -166,7 +166,7 @@ def get_user(user_id: str):
         user_id =1,
         user_cd=user_id, #あとでフロントをcdに直す
         user_name="山田太郎",
-        department_id=2,
+        department_id=1,
         department_name="営業部",
     )
     

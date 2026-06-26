@@ -53,13 +53,13 @@ function OrderDetail({ user }) {
       cost_price: "",
       maker_name: "",
       supplier_id: "",
-      status: 0,
+      item_status: 0,
   });
 
   const [orderHeader, setOrderHeader] = useState(emptyHeader);
   const [orderDetail, setOrderDetail] = useState([]);
 
-  const [status, setStatus] = useState(0);
+  const [headerStatus, setStatus] = useState(0);
   const request_cd = id
 
   //発注依頼ヘッダ・発注依頼詳細をセットで取得
@@ -78,7 +78,8 @@ function OrderDetail({ user }) {
               setOrderDetail(response.data.details);
 
               //発注依頼ヘッダのステータス
-              setStatus(response.data.header.status);
+              setStatus(response.data.header.header_status);
+              console.log(headerStatus);
 
 
           } catch (error) {
@@ -102,9 +103,9 @@ function OrderDetail({ user }) {
     if (!id) {
         // ● 発注依頼新規登録
 
-    } else if (status === STATUS.REQUESTING || STATUS.PARTIAL) {
+    } else if (headerStatus === STATUS.REQUESTING || STATUS.PARTIAL) {
         // ● 発注依頼更新 ：　依頼内容を更新する
-        // ● 発注/発注の取り消し　：　アイテムステータスの更新（REQUESTING/COMPLETED）
+        // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
 
     } 
 };
@@ -113,7 +114,7 @@ function OrderDetail({ user }) {
   const deleteRequest = async () => {
     if (id) {
       // ● 依頼ヘッダ削除(依頼自体の取り下げ)　：　発注済でない場合のみ可能
-      if (! status === STATUS.COMPLETED) {
+      if (! headerStatus === STATUS.COMPLETED) {
       }
     }
   }
@@ -149,7 +150,7 @@ function OrderDetail({ user }) {
           user={user}     
           orderHeader={orderHeader}
           setOrderHeader={setOrderHeader}
-          status = {status}
+          headerStatus = {headerStatus}
           setStatus = {setStatus}
         />
         <OrderDetailTable 

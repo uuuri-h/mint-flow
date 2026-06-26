@@ -325,8 +325,8 @@ function OrderDetailTable({
 
                                 {/*ステータス*/}
                                 <td className="td9">
-                                    <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
-                                        {ITEM_STATUS_MAP[order.status]}
+                                    <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.item_status]}`}>
+                                        {ITEM_STATUS_MAP[order.item_status]}
                                     </span>
                                 </td>
                                 {console.log(`${order.status} + ${ITEM_STATUS.COMPLETED}`)}

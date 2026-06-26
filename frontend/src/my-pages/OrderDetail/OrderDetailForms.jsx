@@ -12,7 +12,7 @@ function OrderDetailForms({
     user, 
     orderHeader, 
     setOrderHeader,
-    status,
+    headerStatus,
     setStatus,
     updateDetailField,
 }) {
@@ -165,9 +165,9 @@ function OrderDetailForms({
                     <div className="form-item request-status-container">
                         <p className="form-label" htmlFor="request-status">依頼ステータス:</p>
                         <div 
-                            className={`status ${STATUS_CLASS_MAP[status]}`}
+                            className={`status ${STATUS_CLASS_MAP[headerStatus]}`}
                         >
-                            {STATUS_MAP[status]}
+                            {STATUS_MAP[headerStatus]}
                         </div>
                     </div>
 
@@ -258,10 +258,10 @@ function OrderDetailForms({
                             {! canShow_PURCHASE && ("依頼先部署:")}
                         </label>
                         <FormSelect 
-                            selectedValue={canShow_PURCHASE ? orderHeader.requester_dept_id : orderHeader.assigner_dept_id}
+                            selectedValue={canShow_PURCHASE ? orderHeader.requester_dept_id : DEPARTMENT.PURCHASE}
                             // selectedValue={orderHeader.requester_dept_id}
                             options={departmentList}
-                            disabled={canShow_PURCHASE}
+                            disabled={true}
                             onChange={(e) => {
                                 if (canShow_PURCHASE) return;
                                 setOrderHeader({

@@ -18,7 +18,7 @@ class InsertAndUpdateRequestDetailSchema(BaseModel):
     sales_price: int = Field(..., example=1000)
     cost_price: float = Field(..., example=1000)
     supplier_id: int = Field(..., example=1)
-    status: int = Field(..., example=1)
+    item_status: int = Field(..., example=1)
     
 
 # ヘッダ返却用
@@ -53,7 +53,7 @@ class RequestListItemSchema(BaseModel):
     assigner_dept_id:int
     request_date: date
     item_count: int
-    status: int 
+    header_status: int 
     sales_price_total : int
     cost_price_total : int
     customer_id: int
