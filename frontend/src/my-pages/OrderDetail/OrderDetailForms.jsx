@@ -93,49 +93,11 @@ function OrderDetailForms({
         label: item.department_name,
     }));
 
-    //ユーザー選択時
-    function setByUser(userId) {
-        const selectedUser = user_list.find(
-            user => user.user_id === userId
-        );
-
-        if (!selectedUser) return;
-        console.log("selectedUser =" + selectedUser.user_name);
-
-        //スプレット構文で、orderHeaderをコピーして、必要な値を更新し、上書き
-
-        if (canShow_PURCHASE) {
-
-            setOrderHeader(prev => ({
-                ...prev,
-                requester_id: userId, 
-                requester_name: selectedUser.user_name,
-                requester_dept_id: selectedUser.department_id,
-                requester_dept_name: selectedUser.department_name,
-            }));
-        } else {
-            setOrderHeader(prev => ({
-                ...prev,
-                assigner_id: userId, 
-                assigner_name: selectedUser.user_name,
-                assigner_dept_id: selectedUser.department_id,
-                assigner_dept_name: selectedUser.department_name,
-            }));
-        }
-    }
-
     const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
     
     //ログイン中のユーザーの権限（部署）によって、表示を分ける（部署id）と一致すれば表示する
     function canShow(departmentId) {
         return userRole === departmentId;
-    }
-
-
-    //部署選択時
-    //あとで選択部署に所属するユーザーを、依頼主/依頼先ユーザーセレクトボックスに表示する（ひとまず選択されたら空にしておく）
-    function setByDept() {
-
     }
     
     const canShow_PURCHASE = canShow(DEPARTMENT.PURCHASE);
@@ -295,11 +257,10 @@ function OrderDetailForms({
                                 if (canShow_PURCHASE) return;
 
                                 const userId = Number(e.target.value);
-                                // setOrderHeader({
-                                //     ...orderHeader,
-                                //     userId
-                                // });
-                                setByUser(userId);
+                                setOrderHeader({
+                                    ...orderHeader,
+                                    userId
+                                });
                                 
                             }}
                             className="form-input" 
