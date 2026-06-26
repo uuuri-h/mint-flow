@@ -17,6 +17,7 @@ function OrderDetailTable({
     createEmptyRow
 }) {
 
+    //テーブルのアイテム数を取得
     let totalItems = orderDetail.length;
     let rowNo = 0;
 
@@ -122,6 +123,13 @@ function OrderDetailTable({
 
     //テーブル左下の行追加ボタン「＋」が押された時の処理
     function AddNewRow () {
+
+        //テーブルに追加できる行は10行までとする
+        if (totalItems >= 10) {
+            //setOrderDetail(undefined);にならないようにorderDetailを返す
+            alert("テーブルに追加できるのは10件までです。")
+            return orderDetail;
+        }
 
         // 今入っているデータ
         const currentList = orderDetail;
@@ -330,7 +338,7 @@ function OrderDetailTable({
                                     </span>
                                 </td>
                                 {console.log(`${order.status} + ${ITEM_STATUS.COMPLETED}`)}
-                                {canShow_PURCHASE || order.status != ITEM_STATUS.COMPLETED && (
+                                {canShow_PURCHASE || order.item_status != ITEM_STATUS.COMPLETED && (
                                 
                                     <td className="td10">
                                         <button 

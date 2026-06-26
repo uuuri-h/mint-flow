@@ -79,7 +79,7 @@ detail_data = [
         sales_price=1000,
         cost_price=5.2,
         supplier_id=1,
-        item_status=3,
+        item_status=1,
     ),
     RequestDetailSchema(
         request_cd="REQ26-0001",

@@ -107,8 +107,8 @@ function OrderTable({ user }) {
                                 </td>
                                 <td className="td7">{order.delivery_date}</td>
                                 <td className="td9">
-                                    <span className={`status ${STATUS_CLASS_MAP[order.status]}`}>
-                                        {STATUS_MAP[order.status]}
+                                    <span className={`status ${STATUS_CLASS_MAP[order.header_status]}`}>
+                                        {STATUS_MAP[order.header_status]}
                                     </span>
                                 </td>
                                 <td className="td10">

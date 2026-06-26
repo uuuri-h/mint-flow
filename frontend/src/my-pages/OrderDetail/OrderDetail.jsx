@@ -174,12 +174,16 @@ function OrderDetail({ user }) {
           } 
 
           {/*発注済のアイテムがある場合、依頼の取り消しはできない為、ボタンを非表示にする*/}
-          {!canShow(DEPARTMENT.PURCHASE) && 
+          {! canShow(DEPARTMENT.PURCHASE) && 
+            orderHeader.header_status !== STATUS.COMPLETED  &&
+            orderHeader.header_status !== STATUS.PARTIAL && 
+            (
             <MyBtn 
                 className="btn cancel-request-btn red-btn" 
                 text="依頼を削除する"
                 onClick={deleteRequest}
             />
+            )
           } 
           {canShow(DEPARTMENT.PURCHASE) && 
             <MyBtn 
