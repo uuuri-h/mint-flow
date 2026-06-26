@@ -170,7 +170,7 @@ function OrderDetailTable({
                             <th className='th2'>型番</th>
                             <th className='th3'>アイテム名</th>
                             <th className='th4'>数量</th>
-                            <th className='th5'>金額</th>
+                            <th className='th5'>{canShow_PURCHASE ? "原価 " : "販売原価 "}</th>
                             <th className='th6'>合計金額</th>
                             <th className='th7'>メーカー名</th>
                             {canShow_PURCHASE && <th className='th8'>仕入先</th>}
@@ -218,6 +218,7 @@ function OrderDetailTable({
                                     <FormSelect 
                                         selectedValue={order.item_id}
                                         options={itemNmOptions}
+                                        // disabled={canShow_PURCHASE}
                                         onChange= {(e) => updateDetailField(
                                                 order.detail_id, 
                                                 "item_id",
@@ -247,9 +248,9 @@ function OrderDetailTable({
                                 <td className="td5">
                                     {canShow_PURCHASE ? "＄ " : "￥ "}
                                     <FormInput
-
                                         value={inputCostValue}
                                         options={itemCostPriceList}
+                                        disabled={! canShow_PURCHASE}
                                         onChange= {(e) => 
                                             updateDetailField(
                                                 order.detail_id, 

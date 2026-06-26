@@ -16,7 +16,14 @@ export const STATUS_CLASS_MAP = {
     2: 'partial',
     3: 'completed',
     99: 'cancelled'
-    };
+};
+
+export const STATUS = {
+    NEW_REQUEST : 0,
+    REQUESTING : 1,
+    PARTIAL : 2,
+    COMPLETED : 3
+}
 
 export const ITEM_STATUS = {
     NEW_REQUEST : 0,

@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useOutletContext } from "react-router-dom";
-import { API_URL,STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT } from "../../my-constants";
+import { API_URL,STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT, ITEM_STATUS, STATUS } from "../../my-constants";
 import axios from 'axios';
 import MyBtn from '../../my-component/Button/MyBtn';
 
@@ -62,7 +62,7 @@ function OrderDetail({ user }) {
   const [status, setStatus] = useState(0);
   const request_cd = id
 
-  //発注依頼ヘッダ＋発注依頼詳細をセットで取得
+  //発注依頼ヘッダ・発注依頼詳細をセットで取得
   useEffect(() => {
       // ここでAPIから発注データを取得して状態に保存する処理を実装
       const fetchOrderDetail = async () => {
@@ -97,16 +97,26 @@ function OrderDetail({ user }) {
       fetchOrderDetail();
   }, [id]); //[id]が変わった時だけ実行
 
-  //requestOrder
+  //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
   const saveRequest = async () => {
     if (!id) {
-        // 新規登録
-    } else if (status === STATUS.REQUESTING) {
-        // 更新
-    } else if (status === STATUS.APPROVED) {
-        // 発注
-    }
+        // ● 発注依頼新規登録
+
+    } else if (status === STATUS.REQUESTING || STATUS.PARTIAL) {
+        // ● 発注依頼更新 ：　依頼内容を更新する
+        // ● 発注/発注の取り消し　：　アイテムステータスの更新（REQUESTING/COMPLETED）
+
+    } 
 };
+
+// 
+  const deleteRequest = async () => {
+    if (id) {
+      // ● 依頼ヘッダ削除(依頼自体の取り下げ)　：　発注済でない場合のみ可能
+      if (! status === STATUS.COMPLETED) {
+      }
+    }
+  }
 
   //詳細データを更新する
   const updateDetailField = (
@@ -158,6 +168,7 @@ function OrderDetail({ user }) {
             <MyBtn 
                 className="btn cancel-order-btn red-btn" 
                 text="発注を取り消す"
+                onClick={saveRequest}
             />
           } 
 
