@@ -184,18 +184,25 @@ function OrderDetailTable({
                                 const inputCostValue = canShow_PURCHASE
                                     ? order.cost_price
                                     : order.sales_price;
+
+                                const selectedItem = item_list.find(
+                                    item => item.item_id === order.item_id
+                                );
                             return (
                             <tr key={order.detail_id}>
-                                {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 
+                                {/*チェックボックス*/}
                                 {canShow_PURCHASE && (
                                     <td className="td0"><input type="checkbox" className="check-box" /></td>
                                 )}
                                 <td className='td1'>{rowNo = rowNo+1}</td>
+
+                                {/*アイテムコード（型番）*/}
                                 <td className="td2">
                                     <FormSelect 
                                         selectedValue={order.item_id}
                                         options={itemCdOptions}
+                                        disabled={canShow_PURCHASE}
                                         onChange= {(e) => {
                                             const itemId = Number(e.target.value);
                                             updateDetailField(
@@ -209,22 +216,31 @@ function OrderDetailTable({
                                                 itemId
                                             );
                                         }}
-                                        style={{width: '130px'}}
+                                        style={{width: '110px'}}
 
                                     />
 
                                 </td>
+                                
+                                {/*アイテム名*/}
                                 <td className="td3">
                                     <FormSelect 
                                         selectedValue={order.item_id}
                                         options={itemNmOptions}
-                                        // disabled={canShow_PURCHASE}
-                                        onChange= {(e) => updateDetailField(
+                                        disabled={canShow_PURCHASE}
+                                        onChange= {(e) => {
+                                            const itemId = Number(e.target.value);
+                                            updateDetailField(
                                                 order.detail_id, 
                                                 "item_id",
-                                                Number(e.target.value)
-                                            )
-                                        }
+                                                itemId,
+                                            );
+
+                                            setByItem(
+                                                order.detail_id,
+                                                itemId
+                                            );
+                                        }}
                                         style={{width: '130px'}}
                                     />
                                 </td>
@@ -243,7 +259,8 @@ function OrderDetailTable({
                                         min="0"
                                     />
                                 </td>
-
+                                
+                                {/*原価・販売原価*/}
                                  {/* = {canShow_PURCHASE ? (order.cost_price) : ((order.sales_price))}; */}
                                 <td className="td5">
                                     {canShow_PURCHASE ? "＄ " : "￥ "}
@@ -259,11 +276,13 @@ function OrderDetailTable({
                                             )
 
                                         }
-                                        width = "100px"
+                                        width = "90px"
                                         type = "number"
                                         min="0"
                                     />
                                 </td>
+
+                                {/*合計金額*/}
                                 <td className="td6"
                                 >
                                     {canShow_PURCHASE ? "＄ " : "￥ "}
@@ -274,20 +293,19 @@ function OrderDetailTable({
                                         ) * order.quantity
                                     ).toLocaleString()}
                                 </td>
+
+                                {/*メーカー名*/}
+                                {/* メーカーは専用テーブルを持たず、itemテーブルで管理しています */}
                                 <td className="td7">
-                                    <FormSelect 
-                                        selectedValue={order.supplier_id}
-                                        options={MakerOptions}
-                                        onChange= {(e) => updateDetailField(
-                                                order.detail_id, 
-                                                "supplier_id",
-                                                Number(e.target.value)
-                                            )
-                                        }
-                                        style={{width: '100px'}}
+                                    <input
+                                        className="form-input"
+                                        value={selectedItem?.maker_name ?? ""}
+                                        style={{width: '130px'}}
+                                        readOnly
                                     />
                                 </td>
-
+                                
+                                {/*仕入れ先名*/}
                                 {/*仕入れ先は購買部のみ表示する*/}
                                 {canShow_PURCHASE && 
                                     <td className="td8">
@@ -304,6 +322,8 @@ function OrderDetailTable({
                                         />
                                     </td>
                                 }
+
+                                {/*ステータス*/}
                                 <td className="td9">
                                     <span className={`item-status ${ITEM_STATUS_CLASS_MAP[order.status]}`}>
                                         {ITEM_STATUS_MAP[order.status]}
@@ -331,14 +351,16 @@ function OrderDetailTable({
             </div>
             <div className='detail-table-footer'>
 
+            {! canShow_PURCHASE && 
                 <button 
                     className='button row-add-btn'
                     type = 'button'
                     // onClick={setOrderDetail(AddNewRow)}
                     onClick={() => setOrderDetail(AddNewRow())}
                 >
-                    ＋
+                    ＋      
                 </button>
+            }
             </div>
         </div>
     )
