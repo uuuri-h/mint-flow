@@ -47,20 +47,23 @@ class RequestResponseSchema(BaseModel):
 #一覧1行分
 class RequestListItemSchema(BaseModel):
     request_cd: str
+    request_detail: str
+    header_status: int 
+    delivery_date: date
+    request_date: date
+
     requester_id: int
     requester_dept_id: int
+
     assigner_id:int
     assigner_dept_id:int
-    request_date: date
-    item_count: int
-    header_status: int 
-    sales_price_total : int
-    cost_price_total : int
+
     customer_id: int
     customer_name: str
-    total_quantity: int 
-    delivery_date: date
-    request_detail: str
+
+    sales_price_total : int
+    cost_price_total : int
+    item_count: int
 
 ## 一覧画面表示用
 class RequestListResponseSchema(BaseModel):

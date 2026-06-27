@@ -49,9 +49,7 @@ function OrderDetailForms({
                     `http://localhost:8000/department/departments`
                 );
 
-
                 setDepartmentList(response.data.departments)
-
 
             } catch (error) {
                 console.error('部署データの取得に失敗しました:', error);
@@ -61,7 +59,7 @@ function OrderDetailForms({
         fetchDepartment();
     }, []); 
 
-    //ユーザーリストを取得
+    //ユーザーリストを取得　
     const [user_list, setUserList] = useState([]);  
     useEffect(() => {
         const fetchUser = async () => {

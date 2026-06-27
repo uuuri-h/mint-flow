@@ -10,7 +10,6 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
-from app.schemas.order import OrderCreateSchema, OrderSchema, ResponseSchema as OrderResponseSchema
 from app.schemas.item import ItemSchema, ItemListSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
 from app.schemas.supplier import SupplierSchema, SupplierListSchema
@@ -47,7 +46,6 @@ header_data=[
         cost_price_total =200,
         customer_id=1,\
         customer_name="チョコミント株式会社",
-        total_quantity=100,
         delivery_date="2024-12-31",
         request_detail="12月以降に出荷してください。"
     ),
@@ -64,7 +62,6 @@ header_data=[
         cost_price_total =400,
         customer_id=1,
         customer_name="株式会社チョコレート",
-        total_quantity=50,
         delivery_date="2025-01-15",
         request_detail="最短で納入お願いします。"
     )
@@ -392,32 +389,6 @@ def get_request_summaries():
     return header_data
 
 
-
-#===発注用のエンドポイント===
-# 発注登録
-@app.post("/orders/", response_model=OrderResponseSchema)
-def create_order(
-        order_data: OrderCreateSchema
-    ):
-    # ここで発注登録のロジックを実装
-    return OrderResponseSchema(message="発注が正常に処理されました。")    
-
-# 発注更新
-@app.put("/orders/{order_id}", response_model=OrderResponseSchema)
-def update_order(
-        order_id: str, 
-        order_data: OrderCreateSchema
-    ):
-    # ここで発注更新のロジックを実装
-    return OrderResponseSchema(message="発注情報が正常に更新されました。") 
-
-# 発注情報取得
-@app.get("/orders/{order_id}", response_model=OrderSchema)
-def get_order(order_id: str):
-    # ここで発注情報取得のロジックを実装
-    return OrderSchema(order_id=order_id, order_user_cd=26011, order_date="2024-12-31")  
-
-
 #===アイテムのエンドポイント===
 # アイテム情報取得
 
@@ -430,7 +401,6 @@ def get_items():
                 item_cd="SKT-001",
                 item_name="台形スカート",
                 maker_name="Mille Fleur",
-                supplier_id=1,
                 sales_price=4980,
                 cost_price=12.5,
             ),
@@ -439,7 +409,6 @@ def get_items():
                 item_cd="BLS-002",
                 item_name="レースブラウス",
                 maker_name="Rose Garden",
-                supplier_id=2,
                 sales_price=3980,
                 cost_price=8.7,
             ),
@@ -448,7 +417,6 @@ def get_items():
                 item_cd="OP-003",
                 item_name="花柄ワンピース",
                 maker_name="Lily Closet",
-                supplier_id=3,
                 sales_price=7980,
                 cost_price=18.2,
             ),
