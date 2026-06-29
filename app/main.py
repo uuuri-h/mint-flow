@@ -34,6 +34,7 @@ app.add_middleware(
 #仮のデータ（データーベースの代わり）
 header_data=[
     RequestListItemSchema(
+        request_id=1,
         request_cd="REQ26-0001",
         request_date="2024-12-01",
         assigner_id=2,
@@ -50,6 +51,7 @@ header_data=[
         request_detail="12月以降に出荷してください。"
     ),
     RequestListItemSchema(
+        request_id=2,
         request_cd="REQ26-0002",
         request_date="2024-12-05",
         assigner_id=2,
@@ -69,6 +71,7 @@ header_data=[
 
 detail_data = [
     RequestDetailSchema(
+        request_id=1,
         request_cd="REQ26-0001",
         detail_id = 1,
         item_id=3,
@@ -79,6 +82,7 @@ detail_data = [
         item_status=1,
     ),
     RequestDetailSchema(
+        request_id=1,
         request_cd="REQ26-0001",
         detail_id = 2,
         item_id=2,
@@ -89,6 +93,7 @@ detail_data = [
         item_status=1,
     ),
     RequestDetailSchema(
+        request_id=2,
         request_cd="REQ26-0002",
         detail_id = 1,
         item_id=1,
@@ -99,6 +104,7 @@ detail_data = [
         item_status=1,
     ),
     RequestDetailSchema(
+        request_id=2,
         request_cd="REQ26-0002",
         detail_id = 2,
         item_id=2,
@@ -109,6 +115,7 @@ detail_data = [
         item_status=3,
     ),
     RequestDetailSchema(
+        request_id=2,
         request_cd="REQ26-0002",
         detail_id = 3,
         item_id= 3,
@@ -305,17 +312,17 @@ def get_request_summaries_response():
     )
     
 #依頼の明細取得
-@app.get("/requests/{request_cd}/details")
-def get_request_detail(request_cd: str):
+@app.get("/requests/{request_id}/details")
+def get_request_detail(request_id: int):
 
     header = next(
-        (h for h in header_data if h.request_cd == request_cd),
+        (h for h in header_data if h.request_id == request_id),
         None
     )
 
     details = [
         d for d in detail_data
-        if d.request_cd == request_cd
+        if d.request_id == request_id
     ]
 
     return {
@@ -338,13 +345,7 @@ def update_request(
         request_data: RequestCreateSchema
     ):
     # ここで依頼更新のロジックを実装
-    return RequestResponseSchema(message="依頼情報が正常に更新されました。")    
-
-# 依頼情報取得
-@app.get("/requests/{request_cd}", response_model=RequestSchema)
-def get_request(request_cd: str):
-    # ここで依頼情報取得のロジックを実装
-    return RequestSchema(request_cd=request_cd, request_user_cd=26011, client_name="ABC株式会社", deadline="2024-12-31", priority=1)     
+    return RequestResponseSchema(message="依頼情報が正常に更新されました。")        
 
 #依頼削除
 @app.delete("/requests/{request_cd}", response_model=RequestResponseSchema)
@@ -359,11 +360,6 @@ def get_request_list():
     # ここで依頼一覧取得のロジックを実装
     return header_data
 
-#依頼詳細取得(詳細画面の取得用で使う)
-@app.get("/requests/{request_cd}/details", response_model=RequestListResponseSchema)
-def get_request_details(request_cd: str):  
-    # ここで依頼詳細取得のロジックを実装
-    requests=header_data
 
     
     for request in requests :
@@ -422,22 +418,6 @@ def get_items():
             ),
         ]
     )
-
-# @app.get("/customer/{customer_id}", response_model=ItemSchema)
-# def get_customer(customer_id: str):
-#     return ItemSchema(
-#         item_id=3,
-#         item_cd="OP-003",
-#         item_name="花柄ワンピース",
-#         maker_name="Lily Closet",
-#         supplier_id=1,
-#         sales_price=7980,
-#         cost_price=18.2,
-            
-#     )
-    
-
-
 
 #===顧客用のエンドポイント===
 # 顧客情報取得

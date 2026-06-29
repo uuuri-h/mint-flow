@@ -92,7 +92,7 @@ function OrderTable({ user }) {
                                 : order.sales_price_total;
                             
                             return(
-                            <tr key={order.request_cd}>
+                            <tr key={order.request_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
                                 {canShow(DEPARTMENT.PURCHASE) &&
                                     <td className="td1"><input type="checkbox" className="check-box" /></td>
@@ -114,10 +114,9 @@ function OrderTable({ user }) {
                                 <td className="td10">
                                     <button 
                                         className="button btn-primary"
-                                        onClick={() => requestEdit(order.request_cd)}
+                                        onClick={() => requestEdit(order.request_id)}
                                         type="submit"
                                     >
-                                     {/* onClick={() => requestEdit(request.request_cd)}　 */}
                                         編集
                                     </button>
                                 </td>

@@ -114,7 +114,6 @@ function OrderDetailForms({
                             id="request-id" 
                             name="request-id" 
                             style={{width: '150px'}}
-                            // value={order_header?.request_cd || ''}
                             value={orderHeader.request_cd}
 
                             disabled

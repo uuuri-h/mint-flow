@@ -28,11 +28,9 @@ class RequestSchema(InsertAndUpdateRequestSchema):
 
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
+    request_id: int
     request_cd: str = Field(..., example="REQ26-0001")
     detail_id:int = Field(..., example=1)
-    # item_partsnum: str = Field(..., example="ITM26-0001")
-    # item_name: str = Field(..., example="スカート")
-
 
 #POST登録APIで受ける
 class RequestCreateSchema(BaseModel):
@@ -46,6 +44,7 @@ class RequestResponseSchema(BaseModel):
     
 #一覧1行分
 class RequestListItemSchema(BaseModel):
+    request_id: int
     request_cd: str
     request_detail: str
     header_status: int 

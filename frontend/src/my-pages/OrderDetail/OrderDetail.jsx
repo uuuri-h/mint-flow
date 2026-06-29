@@ -29,6 +29,7 @@ function OrderDetail({ user }) {
 
   //ヘッダーの空行
   const emptyHeader = {
+      request_id: "",
       request_cd: "",
       customer_id: "",
       request_date: `${year}-${month}-${date}`,
@@ -60,7 +61,7 @@ function OrderDetail({ user }) {
   const [orderDetail, setOrderDetail] = useState([]);
 
   const [headerStatus, setStatus] = useState(0);
-  const request_cd = id
+  const request_id = id
 
   //発注依頼ヘッダ・発注依頼詳細をセットで取得
   useEffect(() => {

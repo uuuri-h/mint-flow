@@ -50,7 +50,6 @@ export const DEPARTMENT = {
     MANUFACTURER: 4,
 };
 
-
 // export const SCREEN_MODE = {
 //     CREATE: "create",
 //     EDIT: "edit",
