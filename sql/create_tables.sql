@@ -1,7 +1,15 @@
+
+--updated_at : 更新時には自動更新されない!!のでSQLAlchemy側で↓を書く
+-- updated_at = Column(
+--     DateTime,
+--     default=datetime.now,
+--     onupdate=datetime.now
+-- )
+
 -- 部署
 CREATE TABLE department (
     department_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    department_name VARCHAR(15) NOT NULL,
+    department_name VARCHAR(30) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -9,8 +17,8 @@ CREATE TABLE department (
 -- ユーザー
 CREATE TABLE users (
     user_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_cd VARCHAR(10) NOT NULL,
-    user_name VARCHAR(15) NOT NULL,
+    user_cd VARCHAR(10) NOT NULL UNIQUE,
+    user_name VARCHAR(50) NOT NULL,
     department_id INTEGER NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -20,7 +28,7 @@ CREATE TABLE users (
 -- 顧客
 CREATE TABLE customer (
     customer_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    customer_name VARCHAR(20) NOT NULL,
+    customer_name VARCHAR(50) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -28,7 +36,7 @@ CREATE TABLE customer (
 -- サプライヤー
 CREATE TABLE supplier (
     supplier_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    supplier_name VARCHAR(20) NOT NULL,
+    supplier_name VARCHAR(50) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -36,11 +44,11 @@ CREATE TABLE supplier (
 -- アイテム
 CREATE TABLE item (
     item_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    item_cd VARCHAR(30) NOT NULL,
-    item_name VARCHAR(25) NOT NULL,
-    maker_name VARCHAR(20) NOT NULL,
-    cost_price DECIMAL(10,2) NOT NULL,
-    sales_price DECIMAL(10,2) NOT NULL,
+    item_cd VARCHAR(50) NOT NULL UNIQUE,
+    item_name VARCHAR(50) NOT NULL,
+    maker_name VARCHAR(50) NOT NULL,
+    cost_price DECIMAL(10,2) NOT NULL CHECK (cost_price >= 0),
+    sales_price DECIMAL(10,2) NOT NULL CHECK (sales_price >= 0),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -67,9 +75,9 @@ CREATE TABLE request_detail (
     detail_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     request_id INTEGER NOT NULL,
     item_id INTEGER NOT NULL,
-    quantity INTEGER NOT NULL,
-    cost_price DECIMAL(10,2) NOT NULL,
-    sales_price DECIMAL(10,2) NOT NULL,
+    quantity INTEGER NOT NULL CHECK (quantity > 0),
+    cost_price DECIMAL(10,2) NOT NULL CHECK (cost_price >= 0),
+    sales_price DECIMAL(10,2) NOT NULL CHECK (sales_price >= 0),
     supplier_id INTEGER NOT NULL,
     item_status INTEGER NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
