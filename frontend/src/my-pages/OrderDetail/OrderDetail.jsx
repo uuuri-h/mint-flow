@@ -42,7 +42,7 @@ function OrderDetail({ user }) {
       assigner_: "",
       requester_id: "",
       assigner_id: "",
-      request_detail: "",
+      request_comment: "",
 };
 
   //テーブルの空行を作る

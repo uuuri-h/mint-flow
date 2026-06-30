@@ -48,7 +48,7 @@ header_data=[
         customer_id=1,\
         customer_name="チョコミント株式会社",
         delivery_date="2024-12-31",
-        request_detail="12月以降に出荷してください。"
+        request_comment="12月以降に出荷してください。"
     ),
     RequestListItemSchema(
         request_id=2,
@@ -65,7 +65,7 @@ header_data=[
         customer_id=1,
         customer_name="株式会社チョコレート",
         delivery_date="2025-01-15",
-        request_detail="最短で納入お願いします。"
+        request_comment="最短で納入お願いします。"
     )
 ]
 
@@ -313,7 +313,7 @@ def get_request_summaries_response():
     
 #依頼の明細取得
 @app.get("/requests/{request_id}/details")
-def get_request_detail(request_id: int):
+def get_request_comment(request_id: int):
 
     header = next(
         (h for h in header_data if h.request_id == request_id),

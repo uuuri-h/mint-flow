@@ -5,26 +5,25 @@ from datetime import date
 
 # ヘッダ登録・更新
 class InsertAndUpdateRequestSchema(BaseModel):
-    request_user_cd: str = Field(..., example="26011")
+    requester_id: int = Field(..., example=1)
+    assigner_id: int = Field(..., example=2)
     customer_id: int = Field(..., example=1)
-    # customer_name: str
-    deadline: date = Field(..., example="2024-12-31")
-    # priority: int = Field(..., example=1) 
+    request_comment: str | None = Field(default=None, example="至急対応をお願いします。")
+    delivery_date: date = Field(..., example="2024-12-31")
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):
     item_id: int = Field(..., example= 1)
     quantity: int = Field(..., example=20)
-    sales_price: int = Field(..., example=1000)
-    cost_price: float = Field(..., example=1000)
+    sales_price: float = Field(..., example=1000.00)
+    cost_price: float = Field(..., example=800.00)
     supplier_id: int = Field(..., example=1)
     item_status: int = Field(..., example=1)
-    
 
 # ヘッダ返却用
 class RequestSchema(InsertAndUpdateRequestSchema):
+    request_id: int
     request_cd: str = Field(..., example="REQ26-0001")
-
 
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
@@ -46,7 +45,7 @@ class RequestResponseSchema(BaseModel):
 class RequestListItemSchema(BaseModel):
     request_id: int
     request_cd: str
-    request_detail: str
+    request_comment: str
     header_status: int 
     delivery_date: date
     request_date: date
@@ -60,15 +59,14 @@ class RequestListItemSchema(BaseModel):
     customer_id: int
     customer_name: str
 
-    sales_price_total : int
-    cost_price_total : int
+    sales_price_total: float
+    cost_price_total: float
     item_count: int
 
 ## 一覧画面表示用
 class RequestListResponseSchema(BaseModel):
     requests: list[RequestListItemSchema]
-    
-    
+
 # レスポンスで使用するスキーマ
 class ResponseSchema(BaseModel):
     message: str = Field(..., 

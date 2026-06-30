@@ -52,7 +52,7 @@ VALUES
 
 
 TRUNCATE TABLE
-    request_detail,
+    request_comment,
     request_header,
     item,
     supplier,

@@ -63,6 +63,7 @@ CREATE TABLE request_header (
     delivery_date DATE NOT NULL,
     request_date DATE NOT NULL,
     header_status INTEGER NOT NULL,
+    request_comment, Varchar(500), 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
@@ -71,7 +72,7 @@ CREATE TABLE request_header (
 );
 
 -- 依頼詳細
-CREATE TABLE request_detail (
+CREATE TABLE request_comment (
     detail_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     request_id INTEGER NOT NULL,
     item_id INTEGER NOT NULL,

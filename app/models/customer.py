@@ -1,4 +1,12 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime 
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Date,
+    DateTime,
+    Numeric,
+    ForeignKey
+)
 from db import Base 
 from datetime import datetime 
 
@@ -18,7 +26,7 @@ class Customer(Base):
     customer_name =Column(String(50), nullable=False)
     
     #作成日時
-    created_at = Column(DateTime, default=datetime.now)
-    
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
+
     #更新日時
-    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)

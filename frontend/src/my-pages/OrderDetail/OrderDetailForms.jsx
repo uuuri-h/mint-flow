@@ -274,13 +274,13 @@ function OrderDetailForms({
                             className="form-textarea" 
                             id="request-remarks" 
                             name="request-remarks"
-                            // value={order_header?.request_detail || ''}
+                            // value={order_header?.request_comment || ''}
                             style={{width: '100%', height: '80px'}}
-                            value={orderHeader.request_detail}
+                            value={orderHeader.request_comment}
                             onChange={(e) =>
                                 setOrderHeader({
                                     ...orderHeader,
-                                    request_detail: e.target.value
+                                    request_comment: e.target.value
                                 })
                             }
                         >
