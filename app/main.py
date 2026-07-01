@@ -8,6 +8,7 @@ from jwt.exceptions import InvalidTokenError
 
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
+
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
 from app.schemas.item import ItemSchema, ItemListSchema
@@ -150,18 +151,6 @@ app.add_middleware(
 #     return {"message": "Hello from FastAPI!"}
 
 #===ユーザー用のエンドポイント===
-
-# ユーザー登録
-@app.post("/users/", response_model=UserResponseSchema)
-def create_user(user: InsertAndUpdateUserSchema):
-    # ここでユーザー登録のロジックを実装
-    return UserResponseSchema(message="ユーザー登録が正常に処理されました。")
-
-# ユーザー更新
-@app.put("/users/{user_id}", response_model=UserResponseSchema)
-def update_user(user_id: str, user: InsertAndUpdateUserSchema):
-    # ここでユーザー更新のロジックを実装
-    return UserResponseSchema(message="ユーザー情報が正常に更新されました。")
 
 # ユーザー情報取得
 @app.get("/users/{user_id}", response_model=UserSchema)
