@@ -7,7 +7,7 @@ from typing import List
 class InsertAndUpdateUserSchema(BaseModel):
     user_cd: str = Field(..., example="26011")
     user_name: str = Field(..., example="山田太郎")
-    password: str = Field(..., example="Mint1234")
+    department_id: int = Field(..., example=2)
 
 
 #ログインで使用するスキーマ(パスワードとIDを受け取る)

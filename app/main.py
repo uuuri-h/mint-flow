@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated
 import jwt #JWTライブラリをインポート
 
+
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt.exceptions import InvalidTokenError
@@ -17,6 +18,11 @@ from app.schemas.supplier import SupplierSchema, SupplierListSchema
 from app.schemas.department import DepartmentSchema, DepartmentListSchema
 
 from fastapi.middleware.cors import CORSMiddleware
+
+from cruds.user import get_user_by_id
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from db import get_db
 
 
 app = FastAPI()
@@ -154,15 +160,21 @@ app.add_middleware(
 
 # ユーザー情報取得
 @app.get("/users/{user_id}", response_model=UserSchema)
-def get_user(user_id: str):
-    return UserSchema(
-        user_id =1,
-        user_cd=user_id, #あとでフロントをcdに直す
-        user_name="山田太郎",
-        department_id=1,
-        department_name="営業部",
-    )
-    
+def get_user_by_id(
+    user_id: int,
+    db: Session = Depends(get_db)
+):
+    return get_user_by_id(db, user_id)
+
+
+@app.get("/users/cd/{user_cd}", response_model=UserSchema)
+def get_user_by_cd(
+    user_cd: str,
+    db: Session = Depends(get_db)
+):
+    return get_user_by_cd(db, user_cd)
+
+
 @app.get("/user/users", response_model=UserListSchema)
 def get_departments():
     return UserListSchema(

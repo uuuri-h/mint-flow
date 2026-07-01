@@ -20,6 +20,7 @@ CREATE TABLE users (
     user_cd VARCHAR(10) NOT NULL UNIQUE,
     user_name VARCHAR(50) NOT NULL,
     department_id INTEGER NOT NULL,
+    password VARCHAR(255) NOT NULL
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (department_id) REFERENCES department(department_id)
