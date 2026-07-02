@@ -7,7 +7,7 @@ from sqlalchemy import (
     Numeric,
     ForeignKey
 )
-from db import Base 
+from app.db import Base 
 from datetime import datetime 
 
 

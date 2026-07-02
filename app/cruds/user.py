@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-import models.user as user_model
-import models.department as department_model
-import schemas.user as user_schema
+import app.models.user as user_model
+import app.models.department as department_model
+import app.schemas.user as user_schema
 
 # =================================================================
 # CRUD処理　：　ユーザー

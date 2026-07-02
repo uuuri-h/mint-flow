@@ -13,12 +13,12 @@ VALUES
 ('製造部');
 
 INSERT INTO users VALUES 
-(default, '260001', '佐藤 太郎', 1, default, default),
-(default, '260002', '斎藤 衣織', 2, default, default),
-(default, '260003', '加藤 翔', 2, default, default),
-(default, '260004', '林 玲央', 3, default, default),
-(default, '260005', '山本 颯太', 3, default, default),
-(default, '260006', '鈴木 花', 4, default, default);
+(default, '260001', '佐藤 太郎', 1, 'password1', default, default),
+(default, '260002', '斎藤 衣織', 2, 'password2', default, default),
+(default, '260003', '加藤 翔', 2, 'password3', default, default),
+(default, '260004', '林 玲央', 3, 'password4', default, default),
+(default, '260005', '山本 颯太', 3, 'password5', default, default),
+(default, '260006', '鈴木 花', 4, 'password6', default, default);
 
 INSERT INTO customer (customer_name)
 VALUES

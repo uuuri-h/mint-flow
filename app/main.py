@@ -19,10 +19,10 @@ from app.schemas.department import DepartmentSchema, DepartmentListSchema
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from cruds.user import get_user_by_id
+from app.cruds.user import get_user_by_cd
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from db import get_db
+from app.db import get_db
 
 
 app = FastAPI()
@@ -159,20 +159,12 @@ app.add_middleware(
 #===ユーザー用のエンドポイント===
 
 # ユーザー情報取得
-@app.get("/users/{user_id}", response_model=UserSchema)
-def get_user_by_id(
-    user_id: int,
-    db: Session = Depends(get_db)
-):
-    return get_user_by_id(db, user_id)
-
-
-@app.get("/users/cd/{user_cd}", response_model=UserSchema)
-def get_user_by_cd(
-    user_cd: str,
-    db: Session = Depends(get_db)
-):
-    return get_user_by_cd(db, user_cd)
+# @app.get("/users/{user_id}", response_model=UserSchema)
+# def get_user_by_id(
+#     user_id: int,
+#     db: Session = Depends(get_db)
+# ):
+#     return get_user_by_id(db, user_id)
 
 
 @app.get("/user/users", response_model=UserListSchema)
@@ -209,19 +201,29 @@ def get_departments():
             )
         ]
     )
+    
+
+# user_cdでユーザー情報取得
+def get_user_by_cd(
+    user_cd: str,
+    db: Session = Depends(get_db)
+):
+    return get_user_by_cd(db, user_cd)
 
 #-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
 #ログイン(パスワードとIDを受け取る→トークンを返す)
 @app.post("/login/", response_model=TokenResponseSchema)
 def login(login_data: LoginSchema):
     
-    # ユーザーの存在確認
-    user = get_user(login_data.user_cd)  # ユーザー情報を取得する関数を呼び出す
+    # ユーザー情報を取得する関数を呼び出す
+    user = get_user_by_cd(login_data.user_cd, login_data.db)  
     
+    # ユーザーの存在確認
     if not user:
         raise HTTPException(status_code=400, detail="ユーザーが見つかりません")
-    #if login_data.password != verify_password(login_data.password, user.hashed_password) :  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
-    if login_data.password != "Mint1234":  # パスワードの検証（ここでは固定のパスワードを使用していますが、実際にはデータベースから取得したハッシュ化されたパスワードと比較する必要があります）
+    
+    # パスワードの検証
+    if login_data.password != user.password:  
         raise HTTPException(
             status_code=400, 
             detail="パスワードが正しくありません"
@@ -298,7 +300,7 @@ async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authoriza
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = get_user(user_cd) #ここでユーザー情報を取得する関数を呼び出すこともできる
+    user = get_user_by_cd(user_cd, db) #ここでユーザー情報を取得する関数を呼び出すこともできる
 
     return user
 
