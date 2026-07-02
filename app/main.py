@@ -19,7 +19,7 @@ from app.schemas.department import DepartmentSchema, DepartmentListSchema
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.cruds.user import get_user_by_cd
+from app.cruds.user import get_user_by_cd, get_user_login_info
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.db import get_db
@@ -158,15 +158,6 @@ app.add_middleware(
 
 #===ユーザー用のエンドポイント===
 
-# ユーザー情報取得
-# @app.get("/users/{user_id}", response_model=UserSchema)
-# def get_user_by_id(
-#     user_id: int,
-#     db: Session = Depends(get_db)
-# ):
-#     return get_user_by_id(db, user_id)
-
-
 @app.get("/user/users", response_model=UserListSchema)
 def get_departments():
     return UserListSchema(
@@ -212,7 +203,7 @@ def login(
     db: Session = Depends(get_db)):
     
     # ユーザー情報を取得する関数を呼び出す
-    user = get_user_by_cd(db, login_data.user_cd) 
+    user = get_user_login_info(db, login_data.user_cd) 
     
     # ユーザーの存在確認
     if not user:
