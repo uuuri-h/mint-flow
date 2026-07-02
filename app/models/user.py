@@ -6,10 +6,10 @@ from datetime import datetime
 # user ユーザー用モデル
 #=============================================================== 
 
-class User(Base):
+class Users(Base):
     
     #ユーザー名
-    __tablename__ = "user"
+    __tablename__ = "users"
     
     #ユーザーid : PK ：　自動インクリメント
     user_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -19,6 +19,9 @@ class User(Base):
     
     #ユーザー名 : 未入力不可
     user_name =Column(String(50), nullable=False)
+    
+    #パスワード : 未入力不可
+    password = Column(String(255), nullable=False)
     
     #部署id : 未入力不可
     department_id = Column(Integer, nullable=False)

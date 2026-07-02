@@ -203,20 +203,16 @@ def get_departments():
     )
     
 
-# user_cdでユーザー情報取得
-def get_user_by_cd(
-    user_cd: str,
-    db: Session = Depends(get_db)
-):
-    return get_user_by_cd(db, user_cd)
 
 #-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
 #ログイン(パスワードとIDを受け取る→トークンを返す)
 @app.post("/login/", response_model=TokenResponseSchema)
-def login(login_data: LoginSchema):
+def login(
+    login_data: LoginSchema,
+    db: Session = Depends(get_db)):
     
     # ユーザー情報を取得する関数を呼び出す
-    user = get_user_by_cd(login_data.user_cd, login_data.db)  
+    user = get_user_by_cd(db, login_data.user_cd) 
     
     # ユーザーの存在確認
     if not user:
@@ -267,7 +263,10 @@ def create_access_token(data: dict):
 
 #ログイン後のトークン取得,ログイン済確認
 @app.get("/users/me/")
-async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authorizationヘッダーから WT自動取得
+async def get_user_me(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Session = Depends(get_db)
+    ): #Authorizationヘッダーから WT自動取得
     #JWTをデコードしてペイロードを取得 (payloadはJWTの中に入っているデータ (ユーザーIDなど)を表す)
     #oath2_schemeはAuthorizationヘッダーからJWTを自動的に取得してくれる　例: Authorization: Bearer <JWTトークン>
     
@@ -300,7 +299,7 @@ async def get_user_me(token: Annotated[str, Depends(oauth2_scheme)]): #Authoriza
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = get_user_by_cd(user_cd, db) #ここでユーザー情報を取得する関数を呼び出すこともできる
+    user = get_user_by_cd(db, user_cd) #ここでユーザー情報を取得する関数を呼び出すこともできる
 
     return user
 

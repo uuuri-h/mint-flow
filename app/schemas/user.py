@@ -12,8 +12,8 @@ class InsertAndUpdateUserSchema(BaseModel):
 
 #ログインで使用するスキーマ(パスワードとIDを受け取る)
 class LoginSchema(BaseModel):
-    user_cd: str = Field(..., example="260011")
-    password: str = Field(..., example="Mint1234")
+    user_cd: str = Field(..., example="260001")
+    password: str = Field(..., example="password1")
     
 
 #ログイン時に使うスキーマ（レスポンスでJWTを返す）

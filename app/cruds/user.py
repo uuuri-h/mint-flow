@@ -21,17 +21,17 @@ def get_user_by_id(
     """
     result = db.execute(
         select(
-            user_model.User.user_id,
-            user_model.User.user_cd,
-            user_model.User.user_name,
-            user_model.User.department_id,
+            user_model.Users.user_id,
+            user_model.Users.user_cd,
+            user_model.Users.user_name,
+            user_model.Users.department_id,
             department_model.Department.department_name,
         )
         .join(
             department_model.Department,
-            user_model.User.department_id == department_model.Department.department_id,
+            user_model.Users.department_id == department_model.Department.department_id,
         )
-        .where(user_model.User.user_id == user_id)
+        .where(user_model.Users.user_id == user_id)
         )
     # user = result.scalar_one_or_none()
     user = result.mappings().one_or_none()
@@ -44,7 +44,7 @@ def get_user_by_id(
 def get_user_by_cd(
     db: Session, 
     user_cd: str
-) -> user_schema.UserSchema | None:
+) -> user_schema.LoginSchema | None:
     """
     ユーザーCDでユーザーを取得する関数
     :param db: DBセッション
@@ -53,22 +53,23 @@ def get_user_by_cd(
     """
     result = db.execute(
         select(
-            user_model.User.user_id,
-            user_model.User.user_cd,
-            user_model.User.user_name,
-            user_model.User.department_id,
+            user_model.Users.user_id,
+            user_model.Users.user_cd,
+            user_model.Users.user_name,
+            user_model.Users.department_id,
+            user_model.Users.password,
             department_model.Department.department_name,
         )
         .join(
             department_model.Department,
-            user_model.User.department_id == department_model.Department.department_id,
+            user_model.Users.department_id == department_model.Department.department_id,
         )
-        .where(user_model.User.user_cd == user_cd)
+        .where(user_model.Users.user_cd == user_cd)
         )
     # user = result.scalar_one_or_none()
     user = result.mappings().one_or_none()
+    print(f"⭐️ユーザー情報: {user}") # デバッグ用にユーザー情報を出力
     if user is None:
         return None
-    
-    # return user_schema.UserSchema.model_validate(user)
-    return user_schema.UserSchema.model_validate(user)
+
+    return user
