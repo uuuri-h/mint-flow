@@ -21,7 +21,7 @@ export const SidebarData = (user) => {
     },
 ];
     
-    if (user?.department_id === DEPARTMENT.SALES) { // 営業のユーザーにのみ表示
+    if (user?.department_id != DEPARTMENT.PURCHASING) { // 購買部以外のユーザーに表示
         menu.push({
             title: "新規依頼",
             icon: <AddIcon />,
