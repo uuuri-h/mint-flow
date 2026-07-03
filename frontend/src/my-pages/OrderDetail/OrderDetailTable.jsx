@@ -337,7 +337,6 @@ function OrderDetailTable({
                                         {ITEM_STATUS_MAP[order.item_status]}
                                     </span>
                                 </td>
-                                {console.log(`${order.status} + ${ITEM_STATUS.COMPLETED}`)}
                                 {canShow_PURCHASE || order.item_status != ITEM_STATUS.COMPLETED && (
                                 
                                     <td className="td10">

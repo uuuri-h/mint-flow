@@ -230,8 +230,6 @@ function OrderDetailForms({
                                     assigner_id: "",
                                     assigner_name: "",
                                 });
-                                // setByDept();
-                                console.log("部署変更");
                             }}
                             className="form-input" 
                             id="request-dept" 

@@ -80,8 +80,6 @@ function OrderDetail({ user }) {
 
               //発注依頼ヘッダのステータス
               setStatus(response.data.header.header_status);
-              console.log(headerStatus);
-
 
           } catch (error) {
               console.error('発注依頼データの取得に失敗しました:', error);

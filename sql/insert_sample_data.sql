@@ -50,7 +50,10 @@ VALUES
 (default, 'MIL-010', 'Cable Clamp', 'Zenith Components', 9.80, 2200.00, default, default);
 
 
-
+-- ==❣️テーブル削除とリセット==
+-- TRUNCATE TABLE：テーブルのデータを全件削除
+-- RESTART IDENTITY：SERIALやIDENTITYの連番を1からリセット
+-- CASCADE：外部キーで関連するテーブルも一緒に削除
 TRUNCATE TABLE
     request_comment,
     request_header,

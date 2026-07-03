@@ -39,7 +39,7 @@ def get_user_by_cd(
     if user is None:
         return None
 
-    return user
+    return user_schema.UserSchema.model_validate(user)
 
 def get_user_login_info(
     db: Session, 

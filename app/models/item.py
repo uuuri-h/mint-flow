@@ -35,7 +35,7 @@ class Item(Base):
     cost_price = Column(Numeric, nullable=False)
     
     #販売原価(円): 未入力不可 
-    cost_price = Column(Numeric, nullable=False)
+    sales_price = Column(Numeric, nullable=False)
     
     #作成日時
     created_at = Column(DateTime, default=datetime.now, nullable=False)

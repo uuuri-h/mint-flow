@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-import app.models.user as user_model
+import app.models.department as department_model
 import app.models.department as department_model
 import app.schemas.department as department_schema
 
@@ -11,9 +11,17 @@ import app.schemas.department as department_schema
 def get_dept_list(
     db: Session,
 ) -> department_schema.DepartmentListSchema | None:
-    
-    
+    """
+    部署一覧を取得する関数
+    :param db: DBセッション
+    :return: 部署一覧（DepartmentListスキーマ）
+    """
     result = db.execute(
-        
+        select(
+            department_model.Department.department_id,
+            department_model.Department.department_name,
+        )
     )
+    dept_list = result.mappings().all()
     
+    return department_schema.DepartmentListSchema(departments=dept_list)

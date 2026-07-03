@@ -10,6 +10,7 @@ function OrderList({user}) {
 
     //営業部の場合はチェックボックスを非表示
     const userRole = user ? user.department_id : null; // ユーザーデータから役割を取得
+    
     function canShow(departmentId) {
         return userRole === departmentId;
     }
@@ -19,7 +20,7 @@ function OrderList({user}) {
             <div className="pg-header order-list-header">
                 <h1>発注依頼一覧</h1>
             </div>
-            {! canShow(DEPARTMENT.PURCHASING) && <NewOrderBtn user={user}/>}
+            {! canShow(DEPARTMENT.PURCHASE) && <NewOrderBtn user={user}/>}
             <OrderTable user={user} />
         </div>
     );

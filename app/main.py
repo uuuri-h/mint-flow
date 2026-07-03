@@ -20,6 +20,11 @@ from app.schemas.department import DepartmentSchema, DepartmentListSchema
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.cruds.user import get_user_by_cd, get_user_login_info, get_user_list
+from app.cruds.department import get_dept_list
+from app.cruds.supplier import get_supplier_list
+from app.cruds.customer import get_customer_list
+from app.cruds.item import get_item_list
+
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.db import get_db
@@ -259,7 +264,6 @@ async def get_user_me(
         )
 
     user = get_user_by_cd(db, user_cd) 
-
     return user
 
 
@@ -350,122 +354,43 @@ def get_request_summaries():
 # アイテム情報取得
 
 @app.get("/item/items", response_model=ItemListSchema)
-def get_items():
-    return ItemListSchema(
-        items=[
-            ItemSchema(
-                item_id=1,
-                item_cd="SKT-001",
-                item_name="台形スカート",
-                maker_name="Mille Fleur",
-                sales_price=4980,
-                cost_price=12.5,
-            ),
-            ItemSchema(
-                item_id=2,
-                item_cd="BLS-002",
-                item_name="レースブラウス",
-                maker_name="Rose Garden",
-                sales_price=3980,
-                cost_price=8.7,
-            ),
-            ItemSchema(
-                item_id=3,
-                item_cd="OP-003",
-                item_name="花柄ワンピース",
-                maker_name="Lily Closet",
-                sales_price=7980,
-                cost_price=18.2,
-            ),
-        ]
-    )
+def get_items(
+    db: Session = Depends(get_db)  
+):
+    return get_item_list(db)
+    
+#===サプライヤー用のエンドポイント===
+# サプライヤー情報取得
+@app.get("/supplier/suppliers", response_model=SupplierListSchema)
+def get_suppliers(
+    db: Session = Depends(get_db)
+):
+    return get_supplier_list(db)
 
 #===顧客用のエンドポイント===
 # 顧客情報取得
-
 @app.get("/customer/customers", response_model=CustomerListSchema)
-def get_customers():
-    return CustomerListSchema(
-        customers=[
-            CustomerSchema(
-                customer_id=1,
-                customer_name="チョコミント株式会社",
-            ),
-            CustomerSchema(
-                customer_id=2,
-                customer_name="株式会社チョコレート",
-            ),
-            CustomerSchema(
-                customer_id=3,
-                customer_name="ミント株式会社",
-            )
-        ]
-    )
+def get_customers(
+    db: Session = Depends(get_db)
+):
+    return get_customer_list(db)
 
-@app.get("/customer/{customer_id}", response_model=CustomerSchema)
-def get_customer(customer_id: str):
-    return CustomerSchema(
-        customer_id=customer_id,
-        customer_name="チョコミント株式会社",
-    )
-    
-
-
+#===サプライヤー用のエンドポイント===
+# サプライヤー情報取得
 @app.get("/supplier/suppliers", response_model=SupplierListSchema)
-def get_suppliers():
-    return SupplierListSchema(
-        suppliers=[
-            SupplierSchema(
-                supplier_id=0,
-                supplier_name="未選択",
-            ),
-            SupplierSchema(
-                supplier_id=1,
-                supplier_name="ChocoMint",
-            ),
-            SupplierSchema(
-                supplier_id=2,
-                supplier_name="Chocolate",
-            ),
-            SupplierSchema(
-                supplier_id=3,
-                supplier_name="MINT",
-            )
-        ]
-    )
+def get_suppliers(
+    db: Session = Depends(get_db)
+):
+    return get_supplier_list(db)
 
-@app.get("/supplier/{supplier_id}", response_model=SupplierSchema)
-def get_supplier(supplier_id: str):
-    return SupplierSchema(
-        supplier_id=supplier_id,
-        supplier_name="ChocoMint",
-    )
-    
-    
 
+#===部署用のエンドポイント===
+# 部署情報取得
 @app.get("/department/departments", response_model=DepartmentListSchema)
-def get_departments():
-    return DepartmentListSchema(
-        departments=[
-            DepartmentSchema(
-                department_id=0,
-                department_name="管理者",
-            ),
-            DepartmentSchema(
-                department_id=1,
-                department_name="営業",
-            ),
-            DepartmentSchema(
-                department_id=2,
-                department_name="購買",
-            ),
-            DepartmentSchema(
-                department_id=3,
-                department_name="製造",
-            )
-        ]
-    )
-    
+def get_departments(
+    db: Session = Depends(get_db)
+):
+    return get_dept_list(db)
 
 #バリデーションエラーのカスタムハンドラ
 @app.exception_handler(ValidationError)
