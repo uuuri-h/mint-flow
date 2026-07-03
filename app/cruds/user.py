@@ -33,7 +33,7 @@ def get_user_by_cd(
         )
         .where(user_model.Users.user_cd == user_cd)
         )
-    # user = result.scalar_one_or_none()
+
     user = result.mappings().one_or_none()
 
     if user is None:
@@ -49,7 +49,7 @@ def get_user_login_info(
     ユーザーCDでユーザーを取得する関数
     :param db: DBセッション
     :param user_cd: ユーザーCD 
-    :return: ユーザー情報（Userスキーマ）
+    :return: ユーザーログイン情報（Loginスキーマ）
     """
     result = db.execute(
         select(
@@ -58,9 +58,47 @@ def get_user_login_info(
         )
         .where(user_model.Users.user_cd == user_cd)
         )
-    # user = result.scalar_one_or_none()
+
     user = result.mappings().one_or_none()
     if user is None:
         return None
 
     return user
+
+def get_user_list(
+    db: Session, 
+) -> user_schema.UserListSchema | None:
+    #UserSchema(users=[UserSchema(...), UserSchema(...)]) ]　の形で返す
+    """
+    ユーザー一覧を取得する関数
+    :param db: DBセッション
+    :return: ユーザー情報（Userスキーマ）
+    """
+    result = db.execute(
+        select(
+            user_model.Users.user_id,
+            user_model.Users.user_cd,
+            user_model.Users.user_name,
+            user_model.Users.department_id,
+            department_model.Department.department_name,
+        )
+        .join(
+            department_model.Department,
+            user_model.Users.department_id == department_model.Department.department_id,
+        )
+    )
+
+    user_list = []
+    users = result.mappings().all()
+
+    #UserSchemaに1件ずつ変換する
+    for user in users:
+        user_list.append(
+            user_schema.UserSchema.model_validate(user)
+        )
+
+    #UserListSchemaにまとめる
+    return user_schema.UserListSchema(
+        users=user_list
+    )
+    

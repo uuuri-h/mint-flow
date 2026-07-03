@@ -19,7 +19,7 @@ from app.schemas.department import DepartmentSchema, DepartmentListSchema
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.cruds.user import get_user_by_cd, get_user_login_info
+from app.cruds.user import get_user_by_cd, get_user_login_info, get_user_list
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.db import get_db
@@ -152,48 +152,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# @app.get("/api/data")
-# def read_data():
-#     return {"message": "Hello from FastAPI!"}
-
-#===ユーザー用のエンドポイント===
+# =================================================================
+# 　ユーザー
+# =================================================================
 
 @app.get("/user/users", response_model=UserListSchema)
-def get_departments():
-    return UserListSchema(
-        users=[
-            UserSchema(
-                user_id=1,
-                user_cd = "260011",
-                user_name ="山田太郎",
-                department_id = 1,
-                department_name = "営業",
-            ),
-            UserSchema(
-                user_id=2,
-                user_cd = "260022",
-                user_name ="山田花子",
-                department_id = 2,
-                department_name = "購買",
-            ),
-            UserSchema(
-                user_id=3,
-                user_cd = "260033",
-                user_name ="猫飼ねこ",
-                department_id = 3,
-                department_name = "製造",
-            ),
-            UserSchema(
-                user_id=4,
-                user_cd = "260012",
-                user_name ="犬飼いぬ",
-                department_id = 3,
-                department_name = "営業",
-            )
-        ]
-    )
-    
-
+def get_users(
+    db: Session = Depends(get_db)
+):
+    users = get_user_list(db)
+    return users
 
 #-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
 #ログイン(パスワードとIDを受け取る→トークンを返す)
@@ -290,7 +258,7 @@ async def get_user_me(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = get_user_by_cd(db, user_cd) #ここでユーザー情報を取得する関数を呼び出すこともできる
+    user = get_user_by_cd(db, user_cd) 
 
     return user
 
