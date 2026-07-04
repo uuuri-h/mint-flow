@@ -252,10 +252,18 @@ function OrderDetailForms({
                                 if (canShow_PURCHASE) return;
 
                                 const userId = Number(e.target.value);
-                                setOrderHeader({
-                                    ...orderHeader,
-                                    userId
-                                });
+
+                                if (canShow_PURCHASE) {
+                                    setOrderHeader({
+                                        ...orderHeader,
+                                        requester_id: userId,
+                                    });
+                                } else {
+                                    setOrderHeader({
+                                        ...orderHeader,
+                                        assigner_id: userId,
+                                    });
+                                }
                                 
                             }}
                             className="form-input" 

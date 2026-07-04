@@ -50,6 +50,73 @@ VALUES
 (default, 'MIL-010', 'Cable Clamp', 'Zenith Components', 9.80, 2200.00, default, default);
 
 
+-- ===========================
+-- request_header
+-- ===========================
+INSERT INTO request_header (
+    request_cd,
+    customer_id,
+    requester_id,
+    assigner_id,
+    delivery_date,
+    request_date,
+    header_status,
+    request_comment
+)
+VALUES
+(
+    'REQ2026001',
+    1,
+    1,
+    2,
+    '2026-07-20',
+    '2026-07-04',
+    1,
+    '至急対応をお願いします。'
+),
+(
+    'REQ2026002',
+    2,
+    1,
+    2,
+    '2026-07-25',
+    '2026-07-04',
+    2,
+    '見積回答済みです。'
+),
+(
+    'REQ2026003',
+    3,
+    2,
+    2,
+    '2026-07-30',
+    '2026-07-05',
+    3,
+    '発注済みです。'
+);
+
+-- ===========================
+-- request_detail
+-- ===========================
+INSERT INTO request_detail (
+    request_id,
+    item_id,
+    quantity,
+    cost_price,
+    sales_price,
+    supplier_id,
+    item_status
+)
+VALUES
+(1, 1, 100, 8.50, 12.00, 1, 1),
+(1, 2, 50, 15.00, 22.00, 2, 1),
+
+(2, 3, 30, 25.00, 35.00, 3, 2),
+(2, 4, 80, 5.50, 8.00, 1, 2),
+
+(3, 5, 20, 45.00, 60.00, 2, 3);
+
+
 -- ==❣️テーブル削除とリセット==
 -- TRUNCATE TABLE：テーブルのデータを全件削除
 -- RESTART IDENTITY：SERIALやIDENTITYの連番を1からリセット

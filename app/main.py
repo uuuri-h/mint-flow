@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
-from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestListItemSchema
+from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestHeaderSchema
 from app.schemas.item import ItemSchema, ItemListSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
 from app.schemas.supplier import SupplierSchema, SupplierListSchema
@@ -45,7 +45,7 @@ app.add_middleware(
 
 #仮のデータ（データーベースの代わり）
 header_data=[
-    RequestListItemSchema(
+    RequestHeaderSchema(
         request_id=1,
         request_cd="REQ26-0001",
         request_date="2024-12-01",
@@ -62,7 +62,7 @@ header_data=[
         delivery_date="2024-12-31",
         request_comment="12月以降に出荷してください。"
     ),
-    RequestListItemSchema(
+    RequestHeaderSchema(
         request_id=2,
         request_cd="REQ26-0002",
         request_date="2024-12-05",
@@ -84,7 +84,6 @@ header_data=[
 detail_data = [
     RequestDetailSchema(
         request_id=1,
-        request_cd="REQ26-0001",
         detail_id = 1,
         item_id=3,
         quantity=50,
@@ -95,7 +94,6 @@ detail_data = [
     ),
     RequestDetailSchema(
         request_id=1,
-        request_cd="REQ26-0001",
         detail_id = 2,
         item_id=2,
         quantity=50,
@@ -106,7 +104,6 @@ detail_data = [
     ),
     RequestDetailSchema(
         request_id=2,
-        request_cd="REQ26-0002",
         detail_id = 1,
         item_id=1,
         quantity=20,
@@ -117,7 +114,6 @@ detail_data = [
     ),
     RequestDetailSchema(
         request_id=2,
-        request_cd="REQ26-0002",
         detail_id = 2,
         item_id=2,
         quantity=30,
@@ -128,7 +124,6 @@ detail_data = [
     ),
     RequestDetailSchema(
         request_id=2,
-        request_cd="REQ26-0002",
         detail_id = 3,
         item_id= 3,
         quantity=12,
@@ -320,31 +315,19 @@ def delete_request(request_cd: str):
 
 
 #依頼一覧取得(詳細画面の取得用で使う)
-@app.get("/requests/", response_model=list[RequestListItemSchema])
+@app.get("/requests/", response_model=list[RequestHeaderSchema])
 def get_request_list():
     # ここで依頼一覧取得のロジックを実装
     return header_data
-
-
-    
-    for request in requests :
-        if request.request_cd == request_cd :
-            #Pydanticのモデルは引数名付きで渡す必要がある。
-            return RequestListResponseSchema(
-                requests =  [request]        
-            )
     
 #依頼詳細取得(一覧画面の取得用で使う)
-@app.get("/requests/{request_cd}/summary", response_model=RequestListItemSchema)
+@app.get("/requests/{request_cd}/summary", response_model=RequestHeaderSchema)
 def get_request_summary(request_cd: str):  
     # ここで依頼一覧取得のロジックを実装
     return header_data
-    
-
-
 
 #依頼一覧取得(一覧画面の取得用で使う)
-@app.get("/requests/summary", response_model=list[RequestListItemSchema])
+@app.get("/requests/summary", response_model=list[RequestHeaderSchema])
 def get_request_summaries():  
     # ここで依頼一覧取得のロジックを実装
     return header_data
