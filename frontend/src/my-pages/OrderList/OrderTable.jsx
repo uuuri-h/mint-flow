@@ -36,10 +36,14 @@ function OrderTable({ user }) {
         // ここでAPIから発注データを取得して状態に保存する処理を実装
         const fetchOrders = async () => {
             try {
+                const token = localStorage.getItem("token"); 
                 const response = await axios.get(
-                    'http://localhost:8000/requests/summaries'
+                    'http://localhost:8000/requests/summaries', {
+                        headers : {
+                            Authorization: `Bearer ${token}`,
+                        }
+                    }
                 );
-
 
                 setOrders(response.data.requests)
                 setTotalItems(response.data.requests.length) 

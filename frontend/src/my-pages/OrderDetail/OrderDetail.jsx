@@ -68,8 +68,14 @@ function OrderDetail({ user }) {
       // ここでAPIから発注データを取得して状態に保存する処理を実装
       const fetchOrderDetail = async () => {
           try {
+            const token = localStorage.getItem("token");
               const response = await axios.get(
-                  `http://localhost:8000/requests/${id}/details`
+                  `http://localhost:8000/requests/${id}/details`,
+                  {
+                      headers: {
+                          Authorization: `Bearer ${token}`
+                      }
+                  }
               );
 
               //発注依頼ヘッダ (フォーム)

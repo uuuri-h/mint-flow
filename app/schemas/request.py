@@ -28,7 +28,6 @@ class RequestSchema(InsertAndUpdateRequestSchema):
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
     request_id: int
-    # request_cd: str = Field(..., example="REQ26-0001")
     detail_id:int = Field(..., example=1)
 
 #POST登録APIで受ける
@@ -43,25 +42,34 @@ class RequestResponseSchema(BaseModel):
     
 #一覧1行分
 class RequestHeaderSchema(BaseModel):
+    # 基本情報
     request_id: int
     request_cd: str
-    request_comment: str
-    header_status: int 
-    delivery_date: date
-    request_date: date
+    header_status: int
 
-    requester_id: int
-    requester_dept_id: int
-
-    assigner_id:int
-    assigner_dept_id:int
-
+    # 顧客
     customer_id: int
     customer_name: str
 
+    # 日付
+    request_date: date
+    delivery_date: date
+
+    # 依頼者
+    requester_id: int
+    requester_dept_id: int
+
+    # 依頼先
+    assigner_id: int
+    assigner_dept_id: int
+
+    # 金額・件数
+    item_count: int
     sales_price_total: float
     cost_price_total: float
-    item_count: int
+
+    # コメント
+    request_comment: str
 
 ## 一覧画面表示用
 class RequestListResponseSchema(BaseModel):

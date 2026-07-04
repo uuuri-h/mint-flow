@@ -24,6 +24,7 @@ from app.cruds.department import get_dept_list
 from app.cruds.supplier import get_supplier_list
 from app.cruds.customer import get_customer_list
 from app.cruds.item import get_item_list
+from app.cruds.request import get_request_list, get_request_header, get_request_detail
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
@@ -42,44 +43,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-#仮のデータ（データーベースの代わり）
-header_data=[
-    RequestHeaderSchema(
-        request_id=1,
-        request_cd="REQ26-0001",
-        request_date="2024-12-01",
-        assigner_id=2,
-        assigner_dept_id=2,
-        requester_id=1,
-        requester_dept_id=1,
-        item_count=2,
-        header_status=1,
-        sales_price_total=50000,
-        cost_price_total =200,
-        customer_id=1,\
-        customer_name="チョコミント株式会社",
-        delivery_date="2024-12-31",
-        request_comment="12月以降に出荷してください。"
-    ),
-    RequestHeaderSchema(
-        request_id=2,
-        request_cd="REQ26-0002",
-        request_date="2024-12-05",
-        assigner_id=2,
-        assigner_dept_id=2,
-        requester_id=1,
-        requester_dept_id=1,
-        item_count=3,
-        header_status=2,
-        sales_price_total=30000,
-        cost_price_total =400,
-        customer_id=1,
-        customer_name="株式会社チョコレート",
-        delivery_date="2025-01-15",
-        request_comment="最短で納入お願いします。"
-    )
-]
 
 detail_data = [
     RequestDetailSchema(
@@ -153,7 +116,7 @@ app.add_middleware(
 )
 
 # =================================================================
-# 　ユーザー
+# 　ユーザー　
 # =================================================================
 
 @app.get("/user/users", response_model=UserListSchema)
@@ -220,6 +183,49 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
+def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Session = Depends(get_db),
+):
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="トークンの有効期限が切れています",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="無効なトークンです",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user_cd: str = payload.get("sub")
+
+    if user_cd is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="ユーザーIDが見つかりません",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user = get_user_by_cd(db, user_cd)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="ユーザーが見つかりません",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        
+    user = get_user_by_cd(db, user_cd) 
+    return user
+
 #ログイン後のトークン取得,ログイン済確認
 @app.get("/users/me/")
 async def get_user_me(
@@ -228,62 +234,45 @@ async def get_user_me(
     ): #Authorizationヘッダーから WT自動取得
     #JWTをデコードしてペイロードを取得 (payloadはJWTの中に入っているデータ (ユーザーIDなど)を表す)
     #oath2_schemeはAuthorizationヘッダーからJWTを自動的に取得してくれる　例: Authorization: Bearer <JWTトークン>
-    
-    try:
-        payload = jwt.decode(
-            token,
-            SECRET_KEY,
-            algorithms=[ALGORITHM]
-        )
-    except jwt.ExpiredSignatureError: #JWTの有効期限が切れている場合の例外をキャッチ
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="トークンの有効期限が切れています",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except InvalidTokenError: #JWTのデコードに失敗した場合の例外をキャッチ
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="無効なトークンです",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    user_cd: str = payload.get("sub") #ペイロードからユーザーIDを取得　subはJWTの持ち主を表す(JWT標準項目)
-    
-    #user_cdが存在しない場合
-    if user_cd is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="ユーザーIDが見つかりません",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
 
-    user = get_user_by_cd(db, user_cd) 
-    return user
+    return get_current_user(token, db)
 
 
-#===依頼用のエンドポイント===
-#依頼一覧取得(一覧画面の取得用で使う)
+# =================================================================
+# 　依頼（詳細・ヘッダー）
+# =================================================================
+
+#依頼一覧取得(依頼一覧画面の取得用で使う)
 @app.get("/requests/summaries", response_model=RequestListResponseSchema)   
-def get_request_summaries_response():  
-    # ここで依頼一覧取得のロジックを実装
-    return RequestListResponseSchema(
-        requests= header_data
+def get_request_summaries_response(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):  
+    return get_request_list(
+        db,
+        current_user, 
     )
     
-#依頼の明細取得
+#依頼の明細取得　(詳細画面の取得用で使う)
 @app.get("/requests/{request_id}/details")
-def get_request_comment(request_id: int):
+def get_request_comment(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user),
+    request_id: int = None,
+):
 
-    header = next(
-        (h for h in header_data if h.request_id == request_id),
-        None
+    header = get_request_header(
+        db,
+        current_user,
+        request_id,
     )
 
-    details = [
-        d for d in detail_data
-        if d.request_id == request_id
-    ]
+    details = get_request_detail (
+        db,
+        current_user,
+        request_id,
+    )
+    print(details)
 
     return {
         "header": header,
@@ -313,25 +302,9 @@ def delete_request(request_cd: str):
     # ここで依頼削除のロジックを実装
     return RequestResponseSchema(message="依頼が正常に削除されました。")
 
-
-#依頼一覧取得(詳細画面の取得用で使う)
-@app.get("/requests/", response_model=list[RequestHeaderSchema])
-def get_request_list():
-    # ここで依頼一覧取得のロジックを実装
-    return header_data
-    
-#依頼詳細取得(一覧画面の取得用で使う)
-@app.get("/requests/{request_cd}/summary", response_model=RequestHeaderSchema)
-def get_request_summary(request_cd: str):  
-    # ここで依頼一覧取得のロジックを実装
-    return header_data
-
-#依頼一覧取得(一覧画面の取得用で使う)
-@app.get("/requests/summary", response_model=list[RequestHeaderSchema])
-def get_request_summaries():  
-    # ここで依頼一覧取得のロジックを実装
-    return header_data
-
+# =================================================================
+# 　マスタ
+# =================================================================
 
 #===アイテムのエンドポイント===
 # アイテム情報取得
