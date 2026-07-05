@@ -130,14 +130,14 @@ function OrderTable({ user }) {
                     </tbody>
                 </table>
             </div>
-            <div className="table-footer">
+            {/* <div className="table-footer">
             {canShow(DEPARTMENT.PURCHASE) && 
                 <MyBtn 
                     className="order-btn" 
                     text="発注する"
                 />
             } 
-            </div>
+            </div> */}
         </div>
     );
 }

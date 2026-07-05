@@ -279,13 +279,13 @@ def get_request_comment(
         "details": details
     }
 
-# 依頼登録
+# 依頼新規登録
 @app.post("/requests/", response_model=RequestResponseSchema)
 def create_request(
         request_data: RequestCreateSchema
     ):
-    # ここで依頼登録のロジックを実装
-    return RequestResponseSchema(message="依頼登録が正常に処理されました。") 
+    # ここで依頼新規登録のロジックを実装
+    return RequestResponseSchema(message="依頼新規登録が正常に処理されました。") 
 
 # 依頼更新
 @app.put("/requests/{request_cd}", response_model=RequestResponseSchema)

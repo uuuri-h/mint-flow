@@ -107,7 +107,39 @@ function OrderDetail({ user }) {
   const saveRequest = async () => {
     if (!id) {
         // ● 発注依頼新規登録
-
+        async function createRequest() {
+          try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${API_URL}/requests`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                header: orderHeader,
+                details: orderDetail
+              })
+            });
+              if (response.ok) {
+                displayMessage('発注依頼が正常に登録されました。', 'success');
+                //フォームの更新
+                const data = await response.json();
+                setOrderHeader(data.header);
+                setOrderDetail(data.details);
+                setStatus(data.header.header_status);
+              } else {
+                if (response.status === 422) {
+                  displayMessage('入力内容に不備があります。', 'error');
+                } else {
+                  const errorData = await response.json();
+                  displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
+                }
+            }
+          } catch (error) {
+            displayMessage(`発注依頼の登録中にエラーが発生しました: ${error.message}`, 'error');
+          }
+        }
     } else if (headerStatus === STATUS.REQUESTING || STATUS.PARTIAL) {
         // ● 発注依頼更新 ：　依頼内容を更新する
         // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
