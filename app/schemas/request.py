@@ -5,7 +5,6 @@ from datetime import date
 
 # ヘッダ登録・更新
 class InsertAndUpdateRequestSchema(BaseModel):
-    requester_id: int = Field(..., example=1)
     assigner_id: int = Field(..., example=2)
     customer_id: int = Field(..., example=1)
     request_comment: str | None = Field(default=None, example="至急対応をお願いします。")
@@ -17,7 +16,7 @@ class InsertAndUpdateRequestDetailSchema(BaseModel):
     quantity: int = Field(..., example=20)
     sales_price: float = Field(..., example=1000.00)
     cost_price: float = Field(..., example=800.00)
-    supplier_id: int = Field(..., example=1)
+    supplier_id: int | None = Field(default=None, example=1)
     item_status: int = Field(..., example=1)
 
 # ヘッダ返却用

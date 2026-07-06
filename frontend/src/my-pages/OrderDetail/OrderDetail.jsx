@@ -49,9 +49,9 @@ function OrderDetail({ user }) {
   const createEmptyRow = () => ({
       detail_id: Date.now(), //keyが被らないようにするため。
       item_id: "",
-      quantity: "",
-      sales_price: "",
-      cost_price: "",
+      quantity: 0,
+      sales_price: 0,
+      cost_price: 0,
       maker_name: "",
       supplier_id: "",
       item_status: 0,
@@ -103,46 +103,61 @@ function OrderDetail({ user }) {
       fetchOrderDetail();
   }, [id]); //[id]が変わった時だけ実行
 
+
+    const createRequest = async () => {
+    try {
+      console.log(JSON.stringify({
+          header: orderHeader,
+          details: orderDetail
+      }, null, 2));
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/requests/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          header: orderHeader,
+          details: orderDetail
+        })
+      });
+        if (response.ok) {
+          displayMessage('発注依頼が正常に登録されました。', 'success');
+          //フォームの更新
+          const data = await response.json();
+          setOrderHeader(data.header);
+          setOrderDetail(data.details);
+          setStatus(data.header.header_status);
+        } else {
+          if (response.status === 422) {
+            const errorData = await response.json();
+            console.log(errorData);
+            alert(JSON.stringify(errorData, null, 2)); // 一旦これでOK
+            displayMessage('入力内容に不備があります。', 'error');
+          } else {
+            const errorData = await response.json();
+            displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
+          }
+      }
+    } catch (error) {
+      displayMessage(`発注依頼の登録中にエラーが発生しました: ${error.message}`, 'error');
+    }
+  }
+
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
   const saveRequest = async () => {
+    
+    // ● 発注依頼新規登録
     if (!id) {
-        // ● 発注依頼新規登録
-        async function createRequest() {
-          try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`${API_URL}/requests`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({
-                header: orderHeader,
-                details: orderDetail
-              })
-            });
-              if (response.ok) {
-                displayMessage('発注依頼が正常に登録されました。', 'success');
-                //フォームの更新
-                const data = await response.json();
-                setOrderHeader(data.header);
-                setOrderDetail(data.details);
-                setStatus(data.header.header_status);
-              } else {
-                if (response.status === 422) {
-                  displayMessage('入力内容に不備があります。', 'error');
-                } else {
-                  const errorData = await response.json();
-                  displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
-                }
-            }
-          } catch (error) {
-            displayMessage(`発注依頼の登録中にエラーが発生しました: ${error.message}`, 'error');
-          }
-        }
-    } else if (headerStatus === STATUS.REQUESTING || STATUS.PARTIAL) {
-        // ● 発注依頼更新 ：　依頼内容を更新する
-        // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
+      await createRequest();
+        
+    // ● 発注依頼更新 ：　依頼内容を更新する
+    // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
+    } else if (
+      headerStatus === STATUS.REQUESTING || 
+      headerStatus === STATUS.PARTIAL
+    ) {
 
     } 
 };

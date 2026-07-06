@@ -5,8 +5,10 @@ import app.models.request as request_model
 import app.models.department as department_model
 import app.models.user as user_model
 import app.models.customer as customer_model
+from datetime import date
 
-from app.constants import DEPARTMENT
+
+from app.constants import DEPARTMENT, STATUS
 
 import app.schemas.request as request_schema
 
@@ -304,3 +306,63 @@ def get_request_detail(
     ]
 
     return detail_list
+
+def create_request_data(
+    db: Session,
+    request_data: request_schema.InsertAndUpdateRequestSchema,
+    requester_id: int
+):
+    
+    # リクエストヘッダーを作成
+    header = request_model.RequestHeader(
+        assigner_id=request_data.header.assigner_id,
+        request_cd=create_request_cd(db),   # 採番
+        customer_id=request_data.header.customer_id,
+        request_comment=request_data.header.request_comment,
+        delivery_date=request_data.header.delivery_date,
+        requester_id=requester_id,
+        request_date=date.today(),          # 今日
+        header_status=STATUS.REQUESTING,    # 初期ステータス
+    )
+    db.add(header)
+    db.commit()
+    db.refresh(header)
+
+    # リクエスト詳細を作成
+    details = []
+    for detail_data in request_data.details:
+        detail = request_model.RequestDetail(
+            request_id=header.request_id,
+            item_id=detail_data.item_id,
+            quantity=detail_data.quantity,
+            sales_price=detail_data.sales_price,
+            cost_price=detail_data.cost_price,
+            supplier_id=detail_data.supplier_id,
+            item_status=detail_data.item_status
+        )
+        db.add(detail)
+        details.append(detail)
+    db.commit()
+
+    return header, details
+
+
+def create_request_cd(db: Session) -> str:
+    """
+    依頼コードを採番する関数
+    :param db: DBセッション
+    :return: 採番された依頼コード
+    """
+    # 現在の最大の依頼コードを取得
+    max_request_cd = db.query(func.max(request_model.RequestHeader.request_cd)).scalar()
+
+    if max_request_cd is None:
+        # 依頼コードがまだ存在しない場合、初期値を設定
+        new_request_cd = "REQ26-0001"
+    else:
+        # 最大の依頼コードから新しい依頼コードを生成
+        prefix, number = max_request_cd.split('-')
+        new_number = str(int(number) + 1).zfill(4)
+        new_request_cd = f"{prefix}-{new_number}"
+
+    return new_request_cd
