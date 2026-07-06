@@ -44,59 +44,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-detail_data = [
-    RequestDetailSchema(
-        request_id=1,
-        detail_id = 1,
-        item_id=3,
-        quantity=50,
-        sales_price=1000,
-        cost_price=5.2,
-        supplier_id=1,
-        item_status=1,
-    ),
-    RequestDetailSchema(
-        request_id=1,
-        detail_id = 2,
-        item_id=2,
-        quantity=50,
-        sales_price=2000,
-        cost_price=10,
-        supplier_id=1,
-        item_status=1,
-    ),
-    RequestDetailSchema(
-        request_id=2,
-        detail_id = 1,
-        item_id=1,
-        quantity=20,
-        sales_price=1500,
-        cost_price=10.2,
-        supplier_id=1,
-        item_status=1,
-    ),
-    RequestDetailSchema(
-        request_id=2,
-        detail_id = 2,
-        item_id=2,
-        quantity=30,
-        sales_price=1000,
-        cost_price=5.1,
-        supplier_id=1,
-        item_status=3,
-    ),
-    RequestDetailSchema(
-        request_id=2,
-        detail_id = 3,
-        item_id= 3,
-        quantity=12,
-        sales_price=20000,
-        cost_price=175,
-        supplier_id=1,
-        item_status=1,
-    )
-]
-
 # ここではOAuth2PasswordBearerを使用して、トークンベースの認証を行うためのエンドポイントを定義しています。
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login/" #JWTを取得するためのエンドポイントURLを指定 
@@ -119,11 +66,57 @@ app.add_middleware(
 # 　ユーザー　
 # =================================================================
 
+
+def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Session = Depends(get_db),
+):
+    try:
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="トークンの有効期限が切れています",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except InvalidTokenError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="無効なトークンです",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user_cd: str = payload.get("sub")
+
+    if user_cd is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="ユーザーIDが見つかりません",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    user = get_user_by_cd(db, user_cd)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="ユーザーが見つかりません",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+        
+    user = get_user_by_cd(db, user_cd) 
+    return user
+
+
 @app.get("/user/users", response_model=UserListSchema)
 def get_users(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
-    users = get_user_list(db)
+    users = get_user_list(db, current_user)
     return users
 
 #-- login　→ token発行　　→ クライアントがJWT保持　→ 毎回JWTを送信　
@@ -182,49 +175,6 @@ def create_access_token(data: dict):
 
     return encoded_jwt
 
-
-def get_current_user(
-    token: Annotated[str, Depends(oauth2_scheme)],
-    db: Session = Depends(get_db),
-):
-    try:
-        payload = jwt.decode(
-            token,
-            SECRET_KEY,
-            algorithms=[ALGORITHM]
-        )
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="トークンの有効期限が切れています",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except InvalidTokenError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="無効なトークンです",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    user_cd: str = payload.get("sub")
-
-    if user_cd is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="ユーザーIDが見つかりません",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    user = get_user_by_cd(db, user_cd)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="ユーザーが見つかりません",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-        
-    user = get_user_by_cd(db, user_cd) 
-    return user
 
 #ログイン後のトークン取得,ログイン済確認
 @app.get("/users/me/")

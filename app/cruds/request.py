@@ -325,8 +325,7 @@ def create_request_data(
         header_status=STATUS.REQUESTING,    # 初期ステータス
     )
     db.add(header)
-    db.commit()
-    db.refresh(header)
+    db.flush()  # request_idだけ取得
 
     # リクエスト詳細を作成
     details = []
@@ -343,6 +342,7 @@ def create_request_data(
         db.add(detail)
         details.append(detail)
     db.commit()
+    db.refresh(header)
 
     return header, details
 

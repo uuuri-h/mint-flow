@@ -4,6 +4,8 @@ import app.models.user as user_model
 import app.models.department as department_model
 import app.schemas.user as user_schema
 
+from app.constants import DEPARTMENT
+
 # =================================================================
 # CRUD処理　：　ユーザー
 # =================================================================
@@ -67,6 +69,7 @@ def get_user_login_info(
 
 def get_user_list(
     db: Session, 
+    current_user,
 ) -> user_schema.UserListSchema | None:
     #UserSchema(users=[UserSchema(...), UserSchema(...)]) ]　の形で返す
     """
@@ -74,7 +77,7 @@ def get_user_list(
     :param db: DBセッション
     :return: ユーザー情報（Userスキーマ）
     """
-    result = db.execute(
+    sql = (
         select(
             user_model.Users.user_id,
             user_model.Users.user_cd,
@@ -86,7 +89,17 @@ def get_user_list(
             department_model.Department,
             user_model.Users.department_id == department_model.Department.department_id,
         )
+
     )
+    
+    # 営業なら購買部だけ表示
+    if current_user.department_id != DEPARTMENT.PURCHASE:
+        sql = sql.where(
+            user_model.Users.department_id == DEPARTMENT.PURCHASE
+        )
+    
+    
+    result = db.execute(sql)
 
     user_list = []
     users = result.mappings().all()

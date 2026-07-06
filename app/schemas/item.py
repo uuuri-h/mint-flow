@@ -14,6 +14,7 @@ class ItemSchema(BaseModel):
     item_id: int = Field(..., example=1)
     item_cd: str = Field(..., example="ITM26-0001") #これは型番
     item_name: str = Field(..., example="コネクター")
+    supplier_id: int = Field(..., example=1)
     maker_name: str = Field(..., example="ABC社")  # メーカー
     sales_price: float = Field(..., example=1000.00)
     cost_price: float = Field(..., example=800.00)

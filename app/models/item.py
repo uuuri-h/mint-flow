@@ -25,6 +25,9 @@ class Item(Base):
     #アイテムcd(型番) : 未入力不可 : ユニーク
     item_cd =Column(String(50), nullable=False, unique=True)
     
+    #サプライヤーid : 未入力不可
+    supplier_id =Column(Integer, nullable=False)
+    
     #アイテム名 : 未入力不可
     item_name =Column(String(50), nullable=False)
     

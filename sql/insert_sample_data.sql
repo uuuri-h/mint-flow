@@ -38,16 +38,16 @@ VALUES
 
 INSERT INTO item
 VALUES
-(default, 'MIL-001', 'Circular Connector', 'Nova Connect', 25.50, 5800.00, default, default),
-(default, 'MIL-002', 'Jam Nut Receptacle', 'Nova Connect', 18.20, 4200.00, default, default),
-(default, 'MIL-003', 'Plug Connector', 'Orion Electronics', 32.10, 7600.00, default, default),
-(default, 'MIL-004', 'Backshell', 'Zenith Components', 15.80, 3600.00, default, default),
-(default, 'MIL-005', 'Protective Cap', 'Apex Systems', 8.50, 1900.00, default, default),
-(default, 'MIL-006', 'Contact Pin', 'Nova Connect', 1.25, 320.00, default, default),
-(default, 'MIL-007', 'Contact Socket', 'Nova Connect', 1.30, 340.00, default, default),
-(default, 'MIL-008', 'EMI Adapter', 'Stellar Precision', 27.90, 6400.00, default, default),
-(default, 'MIL-009', 'Dummy Receptacle', 'Orion Electronics', 21.50, 5100.00, default, default),
-(default, 'MIL-010', 'Cable Clamp', 'Zenith Components', 9.80, 2200.00, default, default);
+(default, 'MIL-001', 'Circular Connector', 'Nova Connect', 1, 25.50, 5800.00, default, default),
+(default, 'MIL-002', 'Jam Nut Receptacle', 'Nova Connect', 1, 18.20, 4200.00, default, default),
+(default, 'MIL-003', 'Plug Connector', 'Orion Electronics', 2, 32.10, 7600.00, default, default),
+(default, 'MIL-004', 'Backshell', 'Zenith Components', 2, 15.80, 3600.00, default, default),
+(default, 'MIL-005', 'Protective Cap', 'Apex Systems', 3, 8.50, 1900.00, default, default),
+(default, 'MIL-006', 'Contact Pin', 'Nova Connect', 3, 1.25, 320.00, default, default),
+(default, 'MIL-007', 'Contact Socket', 'Nova Connect', 3, 1.30, 340.00, default, default),
+(default, 'MIL-008', 'EMI Adapter', 'Stellar Precision', 4,  27.90, 6400.00, default, default),
+(default, 'MIL-009', 'Dummy Receptacle', 'Orion Electronics', 4, 21.50, 5100.00, default, default),
+(default, 'MIL-010', 'Cable Clamp', 'Zenith Components', 5, 9.80, 2200.00, default, default);
 
 
 -- ===========================
@@ -65,7 +65,7 @@ INSERT INTO request_header (
 )
 VALUES
 (
-    'REQ2026001',
+    'REQ26-0001',
     1,
     1,
     2,
@@ -75,7 +75,7 @@ VALUES
     '至急対応をお願いします。'
 ),
 (
-    'REQ2026002',
+    'REQ26-0002',
     2,
     1,
     2,
@@ -85,7 +85,7 @@ VALUES
     '見積回答済みです。'
 ),
 (
-    'REQ2026003',
+    'REQ26-0003',
     3,
     2,
     2,

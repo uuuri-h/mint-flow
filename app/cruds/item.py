@@ -21,6 +21,7 @@ def get_item_list(
             item_model.Item.item_id,
             item_model.Item.item_cd,
             item_model.Item.item_name,
+            item_model.Item.supplier_id,
             item_model.Item.maker_name,
             item_model.Item.sales_price,
             item_model.Item.cost_price,

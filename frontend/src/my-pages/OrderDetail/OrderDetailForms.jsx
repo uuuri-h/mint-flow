@@ -64,9 +64,14 @@ function OrderDetailForms({
     useEffect(() => {
         const fetchUser = async () => {
             try {
+                const token = localStorage.getItem("token");
                 const response = await axios.get(
-                    
-                    `http://localhost:8000/user/users`
+                    `http://localhost:8000/user/users`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
                 );
                 
                 setUserList(response.data.users);
@@ -115,7 +120,7 @@ function OrderDetailForms({
                             name="request-id" 
                             style={{width: '150px'}}
                             value={orderHeader.request_cd}
-
+                            placeholder='登録後に採番'
                             disabled
 
                         />
@@ -140,7 +145,7 @@ function OrderDetailForms({
                             name="request-date" 
                             // value={order_header?.request_date || ''}
                             value={orderHeader.request_date}
-                            disabled={canShow_PURCHASE}
+                            disabled
                             onChange={(e) => {
                                 if (canShow_PURCHASE) return;
 

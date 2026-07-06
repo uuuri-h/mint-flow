@@ -48,6 +48,8 @@ CREATE TABLE item (
     item_cd VARCHAR(50) NOT NULL UNIQUE,
     item_name VARCHAR(50) NOT NULL,
     maker_name VARCHAR(50) NOT NULL,
+    supplier_id INTEGER NOT NULL,
+    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id),
     cost_price DECIMAL(10,2) NOT NULL CHECK (cost_price >= 0),
     sales_price DECIMAL(10,2) NOT NULL CHECK (sales_price >= 0),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
