@@ -9,6 +9,10 @@ class InsertAndUpdateRequestSchema(BaseModel):
     customer_id: int = Field(..., example=1)
     request_comment: str | None = Field(default=None, example="至急対応をお願いします。")
     delivery_date: date = Field(..., example="2024-12-31")
+    
+class CreateRequestResponseSchema(BaseModel):
+    request_id: int
+    message: str
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):

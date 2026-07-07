@@ -58,41 +58,48 @@ function OrderDetail({ user }) {
       item_status: ITEM_STATUS.NEW_REQUEST,
   });
 
+  const { id: locationId } = location.state || {};
+  const [requestId, setRequestId] = useState(locationId);
+
   const [orderHeader, setOrderHeader] = useState(emptyHeader);
   const [orderDetail, setOrderDetail] = useState([]);
 
   const [headerStatus, setStatus] = useState(0);
   const request_id = id
 
+
+
+  // ここでAPIから発注データを取得して状態に保存する処理を実装
+  const fetchOrderDetail = async (requestIdArg = null) => {
+    const idToFetch = requestIdArg ?? requestId; // 引数があればそれを使い、なければURLから取得したidを使う
+      if (!idToFetch) return;
+      try {
+        const token = localStorage.getItem("token");
+          const response = await axios.get(
+              `http://localhost:8000/requests/${idToFetch}/details`,
+              {
+                  headers: {
+                      Authorization: `Bearer ${token}`
+                  }
+              }
+          );
+
+          //発注依頼ヘッダ (フォーム)
+          setOrderHeader(response.data.header);
+
+          //発注依頼詳細をセット (テーブル)
+          setOrderDetail(response.data.details);
+
+          //発注依頼ヘッダのステータス
+          setStatus(response.data.header.header_status);
+
+      } catch (error) {
+          console.error('発注依頼データの取得に失敗しました:', error);
+      }
+  };
+
   //発注依頼ヘッダ・発注依頼詳細をセットで取得
   useEffect(() => {
-      // ここでAPIから発注データを取得して状態に保存する処理を実装
-      const fetchOrderDetail = async () => {
-          try {
-            const token = localStorage.getItem("token");
-              const response = await axios.get(
-                  `http://localhost:8000/requests/${id}/details`,
-                  {
-                      headers: {
-                          Authorization: `Bearer ${token}`
-                      }
-                  }
-              );
-
-              //発注依頼ヘッダ (フォーム)
-              setOrderHeader(response.data.header);
-
-              //発注依頼詳細をセット (テーブル)
-              setOrderDetail(response.data.details);
-
-              //発注依頼ヘッダのステータス
-              setStatus(response.data.header.header_status);
-
-          } catch (error) {
-              console.error('発注依頼データの取得に失敗しました:', error);
-          }
-      };
-
       //一覧から取得したidがない＝新規の場合はフォームとテーブルをリセット
       if (! id) {
         setOrderHeader(emptyHeader);
@@ -124,21 +131,18 @@ function OrderDetail({ user }) {
         })
       });
 
-
         if (response.ok) {
           // displayMessage('発注依頼が正常に登録されました。', 'success');
           alert('発注依頼が正常に登録されました。', 'success')
 
           //フォームの更新
           const data = await response.json();
-          console.log(data)
+
+          setRequestId(data.request_id); // ←追加
 
           // data.request_id を使って取得
           await fetchOrderDetail(data.request_id);
 
-          setOrderHeader(data.header);
-          setOrderDetail(data.details);
-          setStatus(data.header.header_status);
         } else {
           if (response.status === 422) {
             const errorData = await response.json();
@@ -161,7 +165,7 @@ function OrderDetail({ user }) {
   const saveRequest = async () => {
     
     // ● 発注依頼新規登録
-    if (!id) {
+    if (!requestId) {
       await createRequest();
         
     // ● 発注依頼更新 ：　依頼内容を更新する

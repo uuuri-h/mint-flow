@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
-from app.schemas.request import RequestCreateSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestHeaderSchema
+from app.schemas.request import RequestCreateSchema, CreateRequestResponseSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestHeaderSchema
 from app.schemas.item import ItemSchema, ItemListSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
 from app.schemas.supplier import SupplierSchema, SupplierListSchema
@@ -230,14 +230,14 @@ def get_request_comment(
     }
 
 # 依頼新規登録
-@app.post("/requests/create", response_model=RequestResponseSchema)
+@app.post("/requests/create", response_model=CreateRequestResponseSchema)
 def create_request(
         request_data: RequestCreateSchema,
         db: Session = Depends(get_db),
         current_user = Depends(get_current_user)
         
     ):
-    header = create_request_data(
+    header, detail = create_request_data(
         db=db,
         request_data=request_data,
         requester_id=current_user.user_id,
