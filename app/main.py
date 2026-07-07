@@ -237,13 +237,17 @@ def create_request(
         current_user = Depends(get_current_user)
         
     ):
-    create_request_data(
+    header = create_request_data(
         db=db,
         request_data=request_data,
         requester_id=current_user.user_id,
     )
-    # ここで依頼新規登録のロジックを実装
-    return RequestResponseSchema(message="依頼新規登録が正常に処理されました。") 
+    # 修正＠
+    return {
+        "request_id": header.request_id,
+        "message": "登録しました"
+    }
+    # return RequestResponseSchema(message="依頼新規登録が正常に処理されました。") 
 
 # 依頼更新
 @app.put("/requests/{request_cd}", response_model=RequestResponseSchema)

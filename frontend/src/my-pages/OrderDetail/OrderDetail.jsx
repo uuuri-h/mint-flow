@@ -42,6 +42,7 @@ function OrderDetail({ user }) {
       assigner_: "",
       requester_id: "",
       assigner_id: "",
+      header_status: STATUS.NEW_REQUEST,
       request_comment: "",
 };
 
@@ -54,7 +55,7 @@ function OrderDetail({ user }) {
       cost_price: 0,
       maker_name: "",
       supplier_id: "",
-      item_status: 0,
+      item_status: ITEM_STATUS.NEW_REQUEST,
   });
 
   const [orderHeader, setOrderHeader] = useState(emptyHeader);
@@ -103,7 +104,7 @@ function OrderDetail({ user }) {
       fetchOrderDetail();
   }, [id]); //[id]が変わった時だけ実行
 
-
+    //依頼新規登録
     const createRequest = async () => {
     try {
       console.log(JSON.stringify({
@@ -122,10 +123,19 @@ function OrderDetail({ user }) {
           details: orderDetail
         })
       });
+
+
         if (response.ok) {
-          displayMessage('発注依頼が正常に登録されました。', 'success');
+          // displayMessage('発注依頼が正常に登録されました。', 'success');
+          alert('発注依頼が正常に登録されました。', 'success')
+
           //フォームの更新
           const data = await response.json();
+          console.log(data)
+
+          // data.request_id を使って取得
+          await fetchOrderDetail(data.request_id);
+
           setOrderHeader(data.header);
           setOrderDetail(data.details);
           setStatus(data.header.header_status);
@@ -133,15 +143,17 @@ function OrderDetail({ user }) {
           if (response.status === 422) {
             const errorData = await response.json();
             console.log(errorData);
-            alert(JSON.stringify(errorData, null, 2)); // 一旦これでOK
-            displayMessage('入力内容に不備があります。', 'error');
+            // alert(JSON.stringify(errorData, null, 2)); // 一旦これでOK
+            // displayMessage('入力内容に不備があります。', 'error');
           } else {
             const errorData = await response.json();
-            displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
+            // displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
+            alert('発注依頼の登録に失敗しました', 'error')
           }
       }
     } catch (error) {
-      displayMessage(`発注依頼の登録中にエラーが発生しました: ${error.message}`, 'error');
+      // displayMessage(`発注依頼の登録中にエラーが発生しました: ${error.message}`, 'error');
+      alert(`発注依頼の登録中にエラーが発生しました: ${error.message}`, 'error')
     }
   }
 
