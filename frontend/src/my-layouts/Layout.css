@@ -14,7 +14,6 @@
     /* min-height: 0; は子要素が親からはみ出しても、縮んでいいようにするためのスタイル */
     min-height: 0;
     overflow-y: auto;
-
     overflow-x: hidden; /* 横スクロールは非表示にする */
 }
 
@@ -114,8 +113,8 @@
 }
 
 .form-input.input-error {
-    border: 2px solid #ff4d4f;
-    background: #f3c0b9;
+    border: 2px solid #dc3545;
+    /* background: #f3c0b9; */
 }
 
 .form-item select.form-input {

@@ -68,7 +68,7 @@ function OrderDetail({ user }) {
   const request_id = id
 
   const [errors, setErrors] = useState({});
-
+  const [errorMessage, setErrorMessage] = useState("");
 
 
   // ここでAPIから発注データを取得して状態に保存する処理を実装
@@ -113,7 +113,7 @@ function OrderDetail({ user }) {
       fetchOrderDetail();
   }, [id]); //[id]が変わった時だけ実行
 
-    //依頼新規登録
+     // ● 発注依頼新規登録
     const createRequest = async () => {
     try {
       // console.log(JSON.stringify({
@@ -167,6 +167,8 @@ function OrderDetail({ user }) {
 
             console.log("422発生", errorMap);
 
+            setErrorMessage("* 入力に不備があります。" );
+
             setErrors(errorMap);
             return;
 
@@ -182,16 +184,18 @@ function OrderDetail({ user }) {
     }
   }
 
-  //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
-  const saveRequest = async () => {
-    
-    // ● 発注依頼新規登録
-    if (!requestId) {
-      await createRequest();
-        
     // ● 発注依頼更新 ：　依頼内容を更新する
     // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
+
+  //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
+  const saveRequest = async () => {
+    if (!requestId) {
+       // ● 発注依頼新規登録
+      await createRequest();
+        
     } else if (
+      // ● 発注依頼更新 ：　依頼内容を更新する
+      // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
       headerStatus === STATUS.REQUESTING || 
       headerStatus === STATUS.PARTIAL
     ) {
@@ -235,6 +239,12 @@ function OrderDetail({ user }) {
         <h1>発注依頼詳細</h1>
       </div>
       <div className="order-detail-body">
+        {/* {errorMessage && (<div>{errorMessage}</div>)} */}
+        {errorMessage && (
+            <div className="error-message">
+                {errorMessage}
+            </div>
+        )}
         <OrderDetailForms 
           user={user}     
           orderHeader={orderHeader}
@@ -263,6 +273,7 @@ function OrderDetail({ user }) {
                 className="btn cancel-order-btn red-btn" 
                 text="発注を取り消す"
                 onClick={saveRequest}
+                // disabled = {!errors}
             />
           } 
 

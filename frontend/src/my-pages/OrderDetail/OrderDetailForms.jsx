@@ -164,7 +164,7 @@ function OrderDetailForms({
                     </label>
 
                     <select
-                        className="form-input"
+                        className={`form-input ${!!errors.customer_id ? "input-error" : ""}`}
                         id="customer-nm"
                         name="customer-nm"
                         value={orderHeader.customer_id}
@@ -196,7 +196,7 @@ function OrderDetailForms({
                     <div className="form-item request-date-container">
                         <label className="form-label" htmlFor="delivery_date">納期:</label>
                         <input 
-                            className="form-input" 
+                            className={`form-input ${!!errors.delivery_date ? "input-error" : ""}`}
                             type="date" 
                             id="delivery_date" 
                             style={{width: '150px'}}
