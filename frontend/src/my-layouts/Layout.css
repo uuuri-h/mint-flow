@@ -113,6 +113,11 @@
     outline: none;
 }
 
+.form-input.input-error {
+    border: 2px solid #ff4d4f;
+    background: #f3c0b9;
+}
+
 .form-item select.form-input {
     background-color: #ffffff;
     appearance: none;

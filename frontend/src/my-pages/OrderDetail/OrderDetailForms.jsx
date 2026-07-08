@@ -15,6 +15,8 @@ function OrderDetailForms({
     headerStatus,
     setStatus,
     updateDetailField,
+    errors = {},
+    setErrors
 }) {
 
     // 顧客リスト取得
@@ -104,7 +106,6 @@ function OrderDetailForms({
     }
     
     const canShow_PURCHASE = canShow(DEPARTMENT.PURCHASE);
-
     return (
         <div className="order-detail-forms-container">
             <div className="order-detail-forms">
@@ -253,6 +254,11 @@ function OrderDetailForms({
                             selectedValue={canShow_PURCHASE ? orderHeader.requester_id : orderHeader.assigner_id}
                             options={userList}
                             disabled={canShow_PURCHASE}
+                            hasError={
+                                canShow_PURCHASE
+                                    ? !!errors.requester_id
+                                    : !!errors.assigner_id
+                            }
                             onChange={(e) => {
                                 if (canShow_PURCHASE) return;
 
@@ -271,7 +277,6 @@ function OrderDetailForms({
                                 }
                                 
                             }}
-                            className="form-input" 
                             id="requester" 
                             name="requester" 
                             style={{width: '150px'}}

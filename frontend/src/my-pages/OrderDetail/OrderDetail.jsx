@@ -67,6 +67,8 @@ function OrderDetail({ user }) {
   const [headerStatus, setStatus] = useState(0);
   const request_id = id
 
+  const [errors, setErrors] = useState({});
+
 
 
   // ここでAPIから発注データを取得して状態に保存する処理を実装
@@ -114,10 +116,10 @@ function OrderDetail({ user }) {
     //依頼新規登録
     const createRequest = async () => {
     try {
-      console.log(JSON.stringify({
-          header: orderHeader,
-          details: orderDetail
-      }, null, 2));
+      // console.log(JSON.stringify({
+      //     header: orderHeader,
+      //     details: orderDetail
+      // }, null, 2));
       const token = localStorage.getItem("token");
       const response = await fetch(`${API_URL}/requests/create`, {
         method: 'POST',
@@ -146,9 +148,28 @@ function OrderDetail({ user }) {
         } else {
           if (response.status === 422) {
             const errorData = await response.json();
-            console.log(errorData);
-            // alert(JSON.stringify(errorData, null, 2)); // 一旦これでOK
-            // displayMessage('入力内容に不備があります。', 'error');
+
+            const errorMap = {};
+            
+
+            errorData.detail.forEach(error => {
+              const loc = error.loc;
+
+              if (loc[1] === "header") {
+                // header.customer_id
+                errorMap[loc[2]] = error.msg;
+
+              } else if (loc[1] === "details") {
+                // details.0.quantity
+                errorMap[`details.${loc[2]}.${loc[3]}`] = error.msg;
+              }
+            });
+
+            console.log("422発生", errorMap);
+
+            setErrors(errorMap);
+            return;
+
           } else {
             const errorData = await response.json();
             // displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
@@ -220,6 +241,8 @@ function OrderDetail({ user }) {
           setOrderHeader={setOrderHeader}
           headerStatus = {headerStatus}
           setStatus = {setStatus}
+          errors = {errors}
+          setErrors ={setErrors}
         />
         <OrderDetailTable 
           id = {id}
@@ -228,6 +251,8 @@ function OrderDetail({ user }) {
           setOrderDetail={setOrderDetail}
           updateDetailField={updateDetailField}
           createEmptyRow = {createEmptyRow}
+          errors = {errors}
+          setErrors ={setErrors}
 
         />
 

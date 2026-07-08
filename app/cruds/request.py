@@ -344,7 +344,10 @@ def create_request_data(
     db.commit()
     db.refresh(header)
 
-    return header, details
+    return {
+        "header": header,
+        "details" : details
+    }
 
 
 def create_request_cd(db: Session) -> str:
@@ -364,5 +367,6 @@ def create_request_cd(db: Session) -> str:
         prefix, number = max_request_cd.split('-')
         new_number = str(int(number) + 1).zfill(4)
         new_request_cd = f"{prefix}-{new_number}"
+        
 
     return new_request_cd

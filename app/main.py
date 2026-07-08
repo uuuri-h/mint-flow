@@ -10,6 +10,17 @@ from jwt.exceptions import InvalidTokenError
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
+app = FastAPI()
+
+items = {"foo": "The Foo Wrestlers"}
+
+
+@app.get("/items/{item_id}")
+async def read_item(item_id: str):
+    if item_id not in items:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"item": items[item_id]}
+
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
 from app.schemas.request import RequestCreateSchema, CreateRequestResponseSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestHeaderSchema
 from app.schemas.item import ItemSchema, ItemListSchema
@@ -223,6 +234,8 @@ def get_request_comment(
         request_id,
     )
     # print(details)
+    
+    
 
     return {
         "header": header,
@@ -237,12 +250,13 @@ def create_request(
         current_user = Depends(get_current_user)
         
     ):
+    
     header, detail = create_request_data(
         db=db,
         request_data=request_data,
         requester_id=current_user.user_id,
     )
-    # 修正＠
+
     return {
         "request_id": header.request_id,
         "message": "登録しました"

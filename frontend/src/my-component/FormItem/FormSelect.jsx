@@ -4,6 +4,7 @@ import React from 'react'
 function FormSelect({
     selectedValue,
     options,
+    hasError = false,
     onChange,
     ...props
 }) {
@@ -11,8 +12,9 @@ function FormSelect({
     return (
         <div className='form-item'>
             <select
-                className="form-input"
                 value={selectedValue}
+                className={`form-input ${hasError ? "input-error" : ""}`}
+
                 onChange={onChange}
                 {...props}
             >

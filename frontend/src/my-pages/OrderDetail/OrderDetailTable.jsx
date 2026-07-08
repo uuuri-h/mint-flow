@@ -14,8 +14,11 @@ function OrderDetailTable({
     orderDetail,
     setOrderDetail,
     updateDetailField,
-    createEmptyRow
+    createEmptyRow,
+    errors = {},
+    setErrors
 }) {
+
 
     //テーブルのアイテム数を取得
     let totalItems = orderDetail.length;
@@ -188,7 +191,8 @@ function OrderDetailTable({
                     </thead>
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
-                        {orderDetail.map((order) => {
+                        {orderDetail.map((order, index) => {
+                                console.log(index, errors[`details.${index}.item_id`]);
                                 const inputCostValue = canShow_PURCHASE
                                     ? order.cost_price
                                     : order.sales_price;
@@ -211,6 +215,7 @@ function OrderDetailTable({
                                         selectedValue={order.item_id}
                                         options={itemCdOptions}
                                         disabled={canShow_PURCHASE}
+                                        hasError={!!errors[`details.${index}.item_id`]}
                                         onChange= {(e) => {
                                             const itemId = Number(e.target.value);
                                             updateDetailField(
@@ -236,6 +241,7 @@ function OrderDetailTable({
                                         selectedValue={order.item_id}
                                         options={itemNmOptions}
                                         disabled={canShow_PURCHASE}
+                                        hasError={!!errors[`details.${index}.item_id`]}
                                         onChange= {(e) => {
                                             const itemId = Number(e.target.value);
                                             updateDetailField(
@@ -256,6 +262,7 @@ function OrderDetailTable({
                                         
                                     <FormInput 
                                         value={order.quantity}
+                                        hasError={!!errors[`details.${index}.quantity`]}
                                         onChange= {(e) => updateDetailField(
                                                 order.detail_id, 
                                                 "quantity",
@@ -276,6 +283,13 @@ function OrderDetailTable({
                                         value={inputCostValue}
                                         options={itemCostPriceList}
                                         disabled={! canShow_PURCHASE}
+
+                                        hasError={
+                                            canShow_PURCHASE
+                                                ? !!errors[`details.${index}.cost_price`]
+                                                : !!errors[`details.${index}.sales_price`]
+                                        }
+
                                         onChange= {(e) => 
                                             updateDetailField(
                                                 order.detail_id, 
@@ -320,6 +334,7 @@ function OrderDetailTable({
                                         <FormSelect 
                                             selectedValue={order.supplier_id}
                                             options={supplierOptions}
+                                            hasError={!!errors[`details.${index}.supplier_id`]}
                                             onChange= {(e) => updateDetailField(
                                                     order.detail_id, 
                                                     "supplier_id",

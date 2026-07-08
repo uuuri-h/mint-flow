@@ -5,8 +5,8 @@ from datetime import date
 
 # ヘッダ登録・更新
 class InsertAndUpdateRequestSchema(BaseModel):
-    assigner_id: int = Field(..., example=2)
-    customer_id: int = Field(..., example=1)
+    assigner_id: int = Field(..., ge=1, example=2)
+    customer_id: int = Field(..., ge=1, example=1)
     request_comment: str | None = Field(default=None, example="至急対応をお願いします。")
     delivery_date: date = Field(..., example="2024-12-31")
     
@@ -16,8 +16,8 @@ class CreateRequestResponseSchema(BaseModel):
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):
-    item_id: int = Field(..., example= 1)
-    quantity: int = Field(..., example=20)
+    item_id: int = Field(..., ge=1, example= 1)
+    quantity: int = Field(..., ge=1, example=20)
     sales_price: float = Field(..., example=1000.00)
     cost_price: float = Field(..., example=800.00)
     supplier_id: int | None = Field(default=None, example=1)
