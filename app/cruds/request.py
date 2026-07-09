@@ -316,8 +316,6 @@ def create_request_data(
     request_data: request_schema.CreateRequestHeaderSchema,
     requester_id: int
 ):
-    print("😮‍💨")
-    print(request_data.details)
     # リクエストヘッダーを作成
     header = request_model.RequestHeader(
         assigner_id=request_data.header.assigner_id,
@@ -329,6 +327,7 @@ def create_request_data(
         request_date=date.today(),          # 今日
         header_status=STATUS.REQUESTING,    # 初期ステータス
     )
+    
     db.add(header)
     db.flush()  # request_idだけ取得
 
@@ -382,13 +381,8 @@ def update_request_data(
     request_data: request_schema.UpdateRequestHeaderSchema,
     user_department_id: int
 ):
-    
     newHeader = request_data.header
     newDetail = request_data.details
-    
-    print("❤️")
-    print(type(newHeader))
-    print(newHeader)
     
     #　更新する詳細データを取得
     currentData = db.query(request_model.RequestHeader).filter(
@@ -398,45 +392,71 @@ def update_request_data(
     
     if currentData is None:
         raise HTTPException(status_code=404, detail="発注依頼が見つかりません")
-        
+    
     # リクエストヘッダーを更新
     if user_department_id != DEPARTMENT.PURCHASE :
         currentData.assigner_id=newHeader.assigner_id
         currentData.customer_id=newHeader.customer_id
         currentData.delivery_date=newHeader.delivery_date
         
+
+    #備考
     currentData.request_comment=newHeader.request_comment
-    currentData.header_status=STATUS.REQUESTING    # 初期ステータス
-    
-    
-    #削除するリクエスト詳細を取得
-    deleteDetails = db.query(request_model.RequestDetail).filter(
-        request_model.RequestDetail.request_id == newHeader.request_id
-    ).all()
 
-    #リクエスト詳細を削除
-    for detail in deleteDetails:
-        db.delete(detail)
-        
-        
-    
-    # リクエスト詳細を作成
-    details = []
-    for detail_data in newDetail:
-        detail = request_model.RequestDetail(
-            request_id=newHeader.request_id,
-            item_id=detail_data.item_id,
-            quantity=detail_data.quantity,
-            sales_price=detail_data.sales_price,
-            cost_price=detail_data.cost_price,
-            supplier_id=detail_data.supplier_id,
-            item_status=ITEM_STATUS.REQUESTING
+    if user_department_id != DEPARTMENT.PURCHASE :
+        #アイテムのステータスが発注済の件数をカウント
+        completedItemCnt = sum(
+            1 for detail in newDetail
+            if detail.item_status == ITEM_STATUS.COMPLETED
         )
-        db.add(detail)
-        details.append(detail)
 
-    db.commit()
-    db.refresh(currentData)
+        #ヘッダーのステータス更新　
+        # 代入先 = 値1 if 条件 else 値2
+        currentData.header_status = (
+            STATUS.COMPLETED
+            if completedItemCnt == len(newDetail)
+            else STATUS.REQUESTING
+        )
+        
+        
+        #削除/更新するリクエスト詳細を取得
+        deleteDetails = db.query(request_model.RequestDetail).filter(
+            request_model.RequestDetail.request_id == newHeader.request_id
+        ).all()
+        
+        #リクエスト詳細を削除
+        for detail in deleteDetails:
+            db.delete(detail)    
+        
+        # リクエスト詳細を作成
+        details = []
+        for detail_data in newDetail:
+            detail = request_model.RequestDetail(
+                request_id=newHeader.request_id,
+                item_id=detail_data.item_id,
+                quantity=detail_data.quantity,
+                sales_price=detail_data.sales_price,
+                cost_price=detail_data.cost_price,
+                supplier_id=detail_data.supplier_id,
+                item_status=ITEM_STATUS.REQUESTING
+            )
+            db.add(detail)
+            details.append(detail)
+
+        db.commit()
+        db.refresh(currentData)
+    else :
+        for newDetailData in newDetail:
+            currentDetail = db.query(request_model.RequestDetail).filter(
+                request_model.RequestDetail.detail_id == newDetailData.detail_id
+            ).first()
+
+            currentDetail.quantity = newDetailData.quantity
+            currentDetail.cost_price = newDetailData.cost_price
+            currentDetail.supplier_id=newDetailData.supplier_id
+            
+            #ここでアイテムステータスを変更
+            
 
     return {
         "header": currentData,
