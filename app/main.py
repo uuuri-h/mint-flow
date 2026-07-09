@@ -264,7 +264,7 @@ def create_request(
     # return RequestResponseSchema(message="依頼新規登録が正常に処理されました。") 
 
 # 依頼更新
-@app.put("/requests/{request_cd}", response_model=RequestResponseSchema)
+@app.put("/requests/update/{request_id}", response_model=RequestResponseSchema)
 def update_request(
         request_cd: str, 
         request_data: RequestCreateSchema,

@@ -100,6 +100,24 @@ function OrderDetail({ user }) {
       }
   };
 
+  function convertErrorData (errorData) {
+    const errorMap = {};
+    errorData.detail.forEach(error => {
+    const loc = error.loc;
+
+    if (loc[1] === "header") {
+      // header.customer_id
+      errorMap[loc[2]] = error.msg;
+
+    } else if (loc[1] === "details") {
+      // details.0.quantity
+      errorMap[`details.${loc[2]}.${loc[3]}`] = error.msg;
+    }
+  });
+    return errorMap;
+  }
+
+
   //発注依頼ヘッダ・発注依頼詳細をセットで取得
   useEffect(() => {
       //一覧から取得したidがない＝新規の場合はフォームとテーブルをリセット
@@ -115,23 +133,19 @@ function OrderDetail({ user }) {
 
      // ● 発注依頼新規登録
     const createRequest = async () => {
-    try {
-      // console.log(JSON.stringify({
-      //     header: orderHeader,
-      //     details: orderDetail
-      // }, null, 2));
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/requests/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          header: orderHeader,
-          details: orderDetail
-        })
-      });
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${API_URL}/requests/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            header: orderHeader,
+            details: orderDetail
+          })
+        });
 
         if (response.ok) {
           // displayMessage('発注依頼が正常に登録されました。', 'success');
@@ -149,26 +163,10 @@ function OrderDetail({ user }) {
           if (response.status === 422) {
             const errorData = await response.json();
 
-            const errorMap = {};
-            
-
-            errorData.detail.forEach(error => {
-              const loc = error.loc;
-
-              if (loc[1] === "header") {
-                // header.customer_id
-                errorMap[loc[2]] = error.msg;
-
-              } else if (loc[1] === "details") {
-                // details.0.quantity
-                errorMap[`details.${loc[2]}.${loc[3]}`] = error.msg;
-              }
-            });
-
-            console.log("422発生", errorMap);
+            // const errorMap = {};
+            const errorMap = convertErrorData(errorData)
 
             setErrorMessage("* 入力に不備があります。" );
-
             setErrors(errorMap);
             return;
 
@@ -186,6 +184,45 @@ function OrderDetail({ user }) {
 
     // ● 発注依頼更新 ：　依頼内容を更新する
     // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
+    const updateRequest = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${API_URL}/requests/update/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            header: orderHeader,
+            details: orderDetail
+          })
+        });
+
+        if (response.ok) {
+          alert('発注依頼が正常に更新されました。', 'success')
+          //フォームの更新
+          const data = await response.json();
+
+          setRequestId(data.request_id); // ←追加
+
+          // data.request_id を使って取得
+          await fetchOrderDetail(data.request_id);
+          
+        } else {
+          if (response.status === 222) {
+            const erorData = await response.json();
+            const errorMap = {};
+
+          }
+
+
+        }
+ 
+      } catch (error) {
+        alert(`発注依頼の更新中にエラーが発生しました: ${error.message}`, 'error')
+      }
+    }
 
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
   const saveRequest = async () => {
