@@ -4,15 +4,22 @@ from datetime import date
 # ===RequestSchema定義===
 
 # ヘッダ登録・更新
-class InsertAndUpdateRequestSchema(BaseModel):
+class CreateRequestHeaderSchema(BaseModel):
     assigner_id: int = Field(..., ge=1, example=2)
     customer_id: int = Field(..., ge=1, example=1)
     request_comment: str | None = Field(default=None, example="至急対応をお願いします。")
     delivery_date: date = Field(..., example="2024-12-31")
     
-class CreateRequestResponseSchema(BaseModel):
+class RequestResultSchema(BaseModel):
     request_id: int
     message: str
+    
+class UpdateRequestHeaderSchema(BaseModel):
+    request_id: int
+    assigner_id: int
+    customer_id: int
+    request_comment: str | None
+    delivery_date: date
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):
@@ -24,9 +31,13 @@ class InsertAndUpdateRequestDetailSchema(BaseModel):
     item_status: int = Field(..., example=1)
 
 # ヘッダ返却用
-class RequestSchema(InsertAndUpdateRequestSchema):
+class RequestSchema(CreateRequestHeaderSchema):
     request_id: int
     request_cd: str = Field(..., example="REQ26-0001")
+    
+class UpdateRequestSchema(BaseModel):
+    header: UpdateRequestHeaderSchema
+    details: list[InsertAndUpdateRequestDetailSchema]
 
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
@@ -35,7 +46,7 @@ class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
 
 #POST登録APIで受ける
 class RequestCreateSchema(BaseModel):
-    header: InsertAndUpdateRequestSchema
+    header: CreateRequestHeaderSchema
     details: list[InsertAndUpdateRequestDetailSchema]
     
 #依頼情報を取得する際のスキーマ　（詳細画面の取得用で使う）

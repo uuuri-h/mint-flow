@@ -120,6 +120,7 @@ function OrderDetailTable({
         if (!selectedItem) return;
 
         updateDetailField(detail_id, "sales_price", selectedItem.sales_price);
+        updateDetailField(detail_id, "cost_price", selectedItem.cost_price);
         updateDetailField(detail_id, "supplier_id", selectedItem.supplier_id);
 
     }
@@ -192,7 +193,7 @@ function OrderDetailTable({
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
                         {orderDetail.map((order, index) => {
-                                console.log(index, errors[`details.${index}.item_id`]);
+                                console.log(orderDetail);
                                 const inputCostValue = canShow_PURCHASE
                                     ? order.cost_price
                                     : order.sales_price;

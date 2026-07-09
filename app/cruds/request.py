@@ -7,8 +7,10 @@ import app.models.user as user_model
 import app.models.customer as customer_model
 from datetime import date
 
+from fastapi import HTTPException
 
-from app.constants import DEPARTMENT, STATUS
+
+from app.constants import DEPARTMENT, STATUS, ITEM_STATUS
 
 import app.schemas.request as request_schema
 
@@ -307,12 +309,15 @@ def get_request_detail(
 
     return detail_list
 
+
+#新規登録
 def create_request_data(
     db: Session,
-    request_data: request_schema.InsertAndUpdateRequestSchema,
+    request_data: request_schema.CreateRequestHeaderSchema,
     requester_id: int
 ):
-    
+    print("😮‍💨")
+    print(request_data.details)
     # リクエストヘッダーを作成
     header = request_model.RequestHeader(
         assigner_id=request_data.header.assigner_id,
@@ -337,7 +342,7 @@ def create_request_data(
             sales_price=detail_data.sales_price,
             cost_price=detail_data.cost_price,
             supplier_id=detail_data.supplier_id,
-            item_status=detail_data.item_status
+            item_status=ITEM_STATUS.REQUESTING
         )
         db.add(detail)
         details.append(detail)
@@ -370,3 +375,70 @@ def create_request_cd(db: Session) -> str:
         
 
     return new_request_cd
+
+
+def update_request_data(
+    db: Session,
+    request_data: request_schema.UpdateRequestHeaderSchema,
+    user_department_id: int
+):
+    
+    newHeader = request_data.header
+    newDetail = request_data.details
+    
+    print("❤️")
+    print(type(newHeader))
+    print(newHeader)
+    
+    #　更新する詳細データを取得
+    currentData = db.query(request_model.RequestHeader).filter(
+        request_model.RequestHeader.request_id == newHeader.request_id
+    ).first()
+    
+    
+    if currentData is None:
+        raise HTTPException(status_code=404, detail="発注依頼が見つかりません")
+        
+    # リクエストヘッダーを更新
+    if user_department_id != DEPARTMENT.PURCHASE :
+        currentData.assigner_id=newHeader.assigner_id
+        currentData.customer_id=newHeader.customer_id
+        currentData.delivery_date=newHeader.delivery_date
+        
+    currentData.request_comment=newHeader.request_comment
+    currentData.header_status=STATUS.REQUESTING    # 初期ステータス
+    
+    
+    #削除するリクエスト詳細を取得
+    deleteDetails = db.query(request_model.RequestDetail).filter(
+        request_model.RequestDetail.request_id == newHeader.request_id
+    ).all()
+
+    #リクエスト詳細を削除
+    for detail in deleteDetails:
+        db.delete(detail)
+        
+        
+    
+    # リクエスト詳細を作成
+    details = []
+    for detail_data in newDetail:
+        detail = request_model.RequestDetail(
+            request_id=newHeader.request_id,
+            item_id=detail_data.item_id,
+            quantity=detail_data.quantity,
+            sales_price=detail_data.sales_price,
+            cost_price=detail_data.cost_price,
+            supplier_id=detail_data.supplier_id,
+            item_status=ITEM_STATUS.REQUESTING
+        )
+        db.add(detail)
+        details.append(detail)
+
+    db.commit()
+    db.refresh(currentData)
+
+    return {
+        "header": currentData,
+        "details" : details
+    }

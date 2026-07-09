@@ -22,11 +22,19 @@ async def read_item(item_id: str):
     return {"item": items[item_id]}
 
 from app.schemas.user import InsertAndUpdateUserSchema, UserSchema, UserListSchema, ResponseSchema as UserResponseSchema, LoginSchema, TokenResponseSchema
-from app.schemas.request import RequestCreateSchema, CreateRequestResponseSchema, RequestSchema, ResponseSchema as RequestResponseSchema, RequestDetailSchema, RequestListResponseSchema, RequestHeaderSchema
 from app.schemas.item import ItemSchema, ItemListSchema
 from app.schemas.customer import CustomerSchema, CustomerListSchema
 from app.schemas.supplier import SupplierSchema, SupplierListSchema
 from app.schemas.department import DepartmentSchema, DepartmentListSchema
+
+from app.schemas.request import (
+    RequestCreateSchema,
+    UpdateRequestSchema,
+    RequestResponseSchema,
+    RequestListResponseSchema,
+    ResponseSchema,
+    RequestResultSchema
+)
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -35,7 +43,7 @@ from app.cruds.department import get_dept_list
 from app.cruds.supplier import get_supplier_list
 from app.cruds.customer import get_customer_list
 from app.cruds.item import get_item_list
-from app.cruds.request import get_request_list, get_request_header, get_request_detail, create_request_data
+from app.cruds.request import get_request_list, get_request_header, get_request_detail, create_request_data, update_request_data
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
@@ -243,7 +251,7 @@ def get_request_comment(
     }
 
 # 依頼新規登録
-@app.post("/requests/create", response_model=CreateRequestResponseSchema)
+@app.post("/requests/create", response_model=RequestResultSchema)
 def create_request(
         request_data: RequestCreateSchema,
         db: Session = Depends(get_db),
@@ -251,27 +259,45 @@ def create_request(
         
     ):
     
-    header, detail = create_request_data(
+    result = create_request_data(
         db=db,
         request_data=request_data,
         requester_id=current_user.user_id,
     )
+    
+    header = result["header"]
+    details = result["details"]
 
     return {
         "request_id": header.request_id,
         "message": "登録しました"
     }
-    # return RequestResponseSchema(message="依頼新規登録が正常に処理されました。") 
 
 # 依頼更新
-@app.put("/requests/update/{request_id}", response_model=RequestResponseSchema)
+@app.put("/requests/update/{request_id}", response_model=RequestResultSchema)
 def update_request(
-        request_cd: str, 
-        request_data: RequestCreateSchema,
+        request_data: UpdateRequestSchema,
+        db: Session = Depends(get_db),
         current_user = Depends(get_current_user)
+        
     ):
-    # ここで依頼更新のロジックを実装
-    return RequestResponseSchema(message="依頼情報が正常に更新されました。")        
+    
+    print("🐈")
+    print(request_data)
+    
+    result = update_request_data(
+        db=db,
+        request_data=request_data,
+        user_department_id=current_user.department_id,
+    )
+    
+    header = result["header"]
+    details = result["details"]
+
+    return {
+        "request_id": header.request_id,
+        "message": "更新しました"
+    }     
 
 #依頼削除
 @app.delete("/requests/{request_cd}", response_model=RequestResponseSchema)

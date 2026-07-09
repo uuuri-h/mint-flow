@@ -70,6 +70,12 @@ function OrderDetail({ user }) {
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
 
+  //エラーのリセット
+  function resetErrors() {
+    setErrors({});
+    setErrorMessage("");
+  }
+
 
   // ここでAPIから発注データを取得して状態に保存する処理を実装
   const fetchOrderDetail = async (requestIdArg = null) => {
@@ -100,6 +106,7 @@ function OrderDetail({ user }) {
       }
   };
 
+  //422エラーを文字列のキーに変換
   function convertErrorData (errorData) {
     const errorMap = {};
     errorData.detail.forEach(error => {
@@ -159,11 +166,11 @@ function OrderDetail({ user }) {
           // data.request_id を使って取得
           await fetchOrderDetail(data.request_id);
 
+          resetErrors();
+
         } else {
           if (response.status === 422) {
             const errorData = await response.json();
-
-            // const errorMap = {};
             const errorMap = convertErrorData(errorData)
 
             setErrorMessage("* 入力に不備があります。" );
@@ -188,7 +195,7 @@ function OrderDetail({ user }) {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/requests/update/${id}`, {
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -208,17 +215,25 @@ function OrderDetail({ user }) {
 
           // data.request_id を使って取得
           await fetchOrderDetail(data.request_id);
+
+          resetErrors();
           
         } else {
-          if (response.status === 222) {
-            const erorData = await response.json();
-            const errorMap = {};
+          if (response.status === 422) {
+            const errorData = await response.json();
+            const errorMap = convertErrorData(errorData)
 
+            setErrorMessage("* 入力に不備があります。" );
+            setErrors(errorMap);
+            return;
+
+          } else {
+            const errorData = await response.json();
+            // displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
+            alert('発注依頼の登録に失敗しました', 'error')
           }
-
-
         }
- 
+
       } catch (error) {
         alert(`発注依頼の更新中にエラーが発生しました: ${error.message}`, 'error')
       }
@@ -236,7 +251,7 @@ function OrderDetail({ user }) {
       headerStatus === STATUS.REQUESTING || 
       headerStatus === STATUS.PARTIAL
     ) {
-
+      await updateRequest();
     } 
 };
 
@@ -262,7 +277,7 @@ function OrderDetail({ user }) {
         return prev.map( item =>
           item.detail_id === detailId
               ? {
-                ...item, // スプレッド構文：itemの中身をコピーして新しいオブジェクトを作る
+                ...item, // スプレッド構文：itemの中身をコピーして新しいオブジェクトを作る　丸ごとコピーしている！
                 [field]: value // fieldで指定されたプロパティを更新（同じキーがある場合は上書き）
               }
               : item
