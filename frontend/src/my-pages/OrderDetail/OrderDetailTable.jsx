@@ -16,7 +16,9 @@ function OrderDetailTable({
     updateDetailField,
     createEmptyRow,
     errors = {},
-    setErrors
+    setErrors,
+    isChecked,
+    setIsChecked,
 }) {
 
 
@@ -167,6 +169,12 @@ function OrderDetailTable({
     
     };
 
+      // チェックボックスの状態を変更する関数
+    // チェックしたタイミングでisCheckedがtrueになる
+    const handleCheckboxChange = (event) => {
+        setIsChecked(event.target.checked);
+    };
+
     return (
         <div className='detail-table-wrapper'>
             <div className='detail-table-header'>
@@ -201,14 +209,27 @@ function OrderDetailTable({
                                 const selectedItem = item_list.find(
                                     item => item.item_id === order.item_id
                                 );
+
                             return (
                             <tr key={order.detail_id}>
                                 
                                 {/*チェックボックス*/}
                                 {canShow_PURCHASE && (
-                                    <td className="td0"><input type="checkbox" className="check-box" /></td>
+                                    <td className="td0">
+                                        <input 
+                                            checked={isChecked}
+                                            onChange={handleCheckboxChange}
+                                            type="checkbox" 
+                                            className="check-box" 
+                                            id={"check_"+order.detail_id}
+                                        />
+                                    </td>
                                 )}
-                                <td className='td1'>{rowNo = rowNo+1}</td>
+
+                                {/*行番号*/}
+                                <td className='td1'>
+                                    {rowNo = rowNo+1}
+                                </td>
 
                                 {/*アイテムコード（型番）*/}
                                 <td className="td2">

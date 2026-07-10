@@ -70,6 +70,10 @@ function OrderDetail({ user }) {
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
 
+  
+  // useStateフックを使用してチェックボックスの状態を管理
+  const [isChecked, setIsChecked] = useState(false);
+
   //エラーのリセット
   function resetErrors() {
     setErrors({});
@@ -315,7 +319,8 @@ function OrderDetail({ user }) {
           createEmptyRow = {createEmptyRow}
           errors = {errors}
           setErrors ={setErrors}
-
+          isChecked = {isChecked}
+          setIsChecked = {setIsChecked}
         />
 
         <div className="table-footer">
