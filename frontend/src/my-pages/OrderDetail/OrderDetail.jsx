@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useOutletContext } from "react-router-dom";
-import { API_URL,STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT, ITEM_STATUS, STATUS } from "../../my-constants";
+import { API_URL,STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT, ITEM_STATUS, STATUS, ACTION } from "../../my-constants";
 import axios from 'axios';
 import MyBtn from '../../my-component/Button/MyBtn';
 
@@ -56,6 +56,7 @@ function OrderDetail({ user }) {
       maker_name: "",
       supplier_id: "",
       item_status: ITEM_STATUS.NEW_REQUEST,
+      isChecked: false,
   });
 
   const { id: locationId } = location.state || {};
@@ -70,9 +71,6 @@ function OrderDetail({ user }) {
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
 
-  
-  // useStateフックを使用してチェックボックスの状態を管理
-  const [isChecked, setIsChecked] = useState(false);
 
   //エラーのリセット
   function resetErrors() {
@@ -195,7 +193,7 @@ function OrderDetail({ user }) {
 
     // ● 発注依頼更新 ：　依頼内容を更新する
     // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
-    const updateRequest = async () => {
+    const updateRequest = async (actionMode) => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/requests/update/${id}`, {
@@ -206,7 +204,8 @@ function OrderDetail({ user }) {
           },
           body: JSON.stringify({
             header: orderHeader,
-            details: orderDetail
+            details: orderDetail,
+            actionMode : actionMode,
           })
         });
 
@@ -244,7 +243,7 @@ function OrderDetail({ user }) {
     }
 
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
-  const saveRequest = async () => {
+  const saveRequest = async (actionMode) => {
     if (!requestId) {
        // ● 発注依頼新規登録
       await createRequest();
@@ -255,7 +254,7 @@ function OrderDetail({ user }) {
       headerStatus === STATUS.REQUESTING || 
       headerStatus === STATUS.PARTIAL
     ) {
-      await updateRequest();
+      await updateRequest(actionMode);
     } 
 };
 
@@ -319,8 +318,6 @@ function OrderDetail({ user }) {
           createEmptyRow = {createEmptyRow}
           errors = {errors}
           setErrors ={setErrors}
-          isChecked = {isChecked}
-          setIsChecked = {setIsChecked}
         />
 
         <div className="table-footer">
@@ -329,7 +326,7 @@ function OrderDetail({ user }) {
             <MyBtn 
                 className="btn cancel-order-btn red-btn" 
                 text="発注を取り消す"
-                onClick={saveRequest}
+                onClick={() => saveRequest(ACTION.DELETE)}
                 // disabled = {!errors}
             />
           } 
@@ -350,7 +347,7 @@ function OrderDetail({ user }) {
             <MyBtn 
                 className="btn order-btn" 
                 text="発注する"
-                onClick={saveRequest}
+                onClick={() => saveRequest(ACTION.PURCHASE)}
                 
             />
           } 
@@ -358,7 +355,7 @@ function OrderDetail({ user }) {
             <MyBtn 
                 className="btn request-btn" 
                 text="依頼する"
-                onClick={saveRequest}
+                onClick={() => saveRequest(ACTION.REQUEST)}
             />
           } 
         </div>

@@ -10,7 +10,7 @@ from datetime import date
 from fastapi import HTTPException
 
 
-from app.constants import DEPARTMENT, STATUS, ITEM_STATUS
+from app.constants import DEPARTMENT, STATUS, ITEM_STATUS, Action
 
 import app.schemas.request as request_schema
 
@@ -430,6 +430,7 @@ def update_request_data(
         
         # リクエスト詳細を作成
         details = []
+
         for detail_data in newDetail:
             detail = request_model.RequestDetail(
                 request_id=newHeader.request_id,
@@ -456,9 +457,22 @@ def update_request_data(
             currentDetail.supplier_id=newDetailData.supplier_id
             
             #ここでアイテムステータスを変更
+            if newDetailData.isChecked :
+                currentDetail.item_status = ITEM_STATUS.COMPLETED
+            else : 
+                currentDetail.item_status = ITEM_STATUS.REQUESTING
             
+            print("😃", "❤️")
+            print(request_data.actionMode)
+        
+        db.commit()
+        db.refresh(currentData)
+    
+    updatedDetails = db.query(request_model.RequestDetail).filter(
+        request_model.RequestDetail.request_id == newHeader.request_id
+    ).all()
 
     return {
         "header": currentData,
-        "details" : details
+        "details" : updatedDetails
     }

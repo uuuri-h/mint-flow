@@ -50,6 +50,12 @@ export const DEPARTMENT = {
     MANUFACTURER: 4,
 };
 
+export const ACTION = {
+    REQUEST : "request",
+    PURCHASE : "purchase",
+    DELETE : "delete"
+}
+
 // export const SCREEN_MODE = {
 //     CREATE: "create",
 //     EDIT: "edit",

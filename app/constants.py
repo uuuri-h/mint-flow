@@ -1,4 +1,5 @@
 # app/constants/constants.py
+from enum import Enum
 
 # ===========================
 # ヘッダステータス
@@ -45,3 +46,12 @@ class DEPARTMENT:
     PURCHASE = 2
     SALES = 3
     MANUFACTURER = 4
+    
+
+# ===========================
+# アクション
+# ===========================
+class Action(str, Enum):
+    REQUEST = "request"
+    PURCHASE = "purchase"
+    DELETE = "delete"

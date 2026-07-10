@@ -17,8 +17,6 @@ function OrderDetailTable({
     createEmptyRow,
     errors = {},
     setErrors,
-    isChecked,
-    setIsChecked,
 }) {
 
 
@@ -170,9 +168,14 @@ function OrderDetailTable({
     };
 
       // チェックボックスの状態を変更する関数
-    // チェックしたタイミングでisCheckedがtrueになる
-    const handleCheckboxChange = (event) => {
-        setIsChecked(event.target.checked);
+    const handleCheckboxChange = (detailId, checked) => {
+        setOrderDetail(prev =>
+            prev.map(item =>
+                item.detail_id === detailId
+                    ? { ...item, isChecked: checked }
+                    : item
+            )
+        );
     };
 
     return (
@@ -217,11 +220,13 @@ function OrderDetailTable({
                                 {canShow_PURCHASE && (
                                     <td className="td0">
                                         <input 
-                                            checked={isChecked}
-                                            onChange={handleCheckboxChange}
+                                            // checked={isChecked}
                                             type="checkbox" 
                                             className="check-box" 
                                             id={"check_"+order.detail_id}
+                                            onChange={(e) =>
+                                                handleCheckboxChange(order.detail_id, e.target.checked)
+                                            }
                                         />
                                     </td>
                                 )}

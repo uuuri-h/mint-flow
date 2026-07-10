@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import date
-
+from app.constants import Action
 # ===RequestSchema定義===
 
 # ヘッダ登録・更新
@@ -23,12 +23,14 @@ class UpdateRequestHeaderSchema(BaseModel):
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):
+    detail_id: int
     item_id: int = Field(..., ge=1, example= 1)
     quantity: int = Field(..., ge=1, example=20)
     sales_price: float = Field(..., example=1000.00)
     cost_price: float = Field(..., example=800.00)
     supplier_id: int | None = Field(default=None, example=1)
     item_status: int = Field(..., example=1)
+    isChecked: bool = False
 
 # ヘッダ返却用
 class RequestSchema(CreateRequestHeaderSchema):
@@ -38,6 +40,7 @@ class RequestSchema(CreateRequestHeaderSchema):
 class UpdateRequestSchema(BaseModel):
     header: UpdateRequestHeaderSchema
     details: list[InsertAndUpdateRequestDetailSchema]
+    action: Action
 
 # 明細返却用
 class RequestDetailSchema(InsertAndUpdateRequestDetailSchema):
