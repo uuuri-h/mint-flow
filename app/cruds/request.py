@@ -474,10 +474,6 @@ def update_request_data(
             currentDetail.cost_price = newDetailData.cost_price
             currentDetail.supplier_id=newDetailData.supplier_id
             
-            print(newDetailData.detail_id)
-            print("🐰")
-            
-            
             #ここでアイテムステータスを変更
             if newDetailData.isChecked :
                 if request_data.action == Action.PURCHASE :

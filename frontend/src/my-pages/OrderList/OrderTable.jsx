@@ -74,10 +74,10 @@ function OrderTable({ user }) {
                     <thead>
                         <tr 
                         >
-                            {canShow(DEPARTMENT.PURCHASE) &&
+                            {/* {canShow(DEPARTMENT.PURCHASE) &&
                                 <th className='th1'></th>
                                 
-                            }
+                            } */}
                             <th className='th2'>依頼日</th>
                             <th className='th3'>依頼ID</th>
                             <th className='th4'>顧客名</th>
@@ -98,9 +98,9 @@ function OrderTable({ user }) {
                             return(
                             <tr key={order.request_id}>
                                 {/* 営業部のユーザーの場合はチェックボックスを非表示にする */}
-                                {canShow(DEPARTMENT.PURCHASE) &&
+                                {/* {canShow(DEPARTMENT.PURCHASE) &&
                                     <td className="td1"><input type="checkbox" className="check-box" /></td>
-                                }
+                                } */}
                                 <td className="td2">{order.request_date}</td>
                                 <td className="td3">{order.request_cd}</td>
                                 <td className="td4">{order.customer_name}</td>
