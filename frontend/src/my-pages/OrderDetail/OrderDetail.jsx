@@ -193,7 +193,7 @@ function OrderDetail({ user }) {
 
     // ● 発注依頼更新 ：　依頼内容を更新する
     // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
-    const updateRequest = async (actionMode) => {
+    const updateRequest = async (action) => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/requests/update/${id}`, {
@@ -202,10 +202,11 @@ function OrderDetail({ user }) {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
+          //フロントで作るJSON = FastAPIのPydanticスキーマと同じ形(フィールドの名前/データ型)
           body: JSON.stringify({
             header: orderHeader,
             details: orderDetail,
-            actionMode : actionMode,
+            action: action,
           })
         });
 
@@ -243,7 +244,7 @@ function OrderDetail({ user }) {
     }
 
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
-  const saveRequest = async (actionMode) => {
+  const saveRequest = async (action) => {
     if (!requestId) {
        // ● 発注依頼新規登録
       await createRequest();
@@ -254,7 +255,7 @@ function OrderDetail({ user }) {
       headerStatus === STATUS.REQUESTING || 
       headerStatus === STATUS.PARTIAL
     ) {
-      await updateRequest(actionMode);
+      await updateRequest(action);
     } 
 };
 

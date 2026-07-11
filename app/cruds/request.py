@@ -224,6 +224,8 @@ def get_request_header(
             requester.department_id,
             assigner.department_id,
         )
+        
+        .order_by(request_model.RequestHeader.request_id.desc())
     )
     
 
@@ -292,6 +294,8 @@ def get_request_detail(
             request_model.RequestDetail.item_status,
         )
         .where(request_model.RequestDetail.request_id == request_id)
+        .order_by(request_model.RequestDetail.detail_id)
+        
     )
 
     #  SQLの実行
@@ -447,6 +451,12 @@ def update_request_data(
         db.commit()
         db.refresh(currentData)
     else :
+        
+        #依頼アイテム数の件数
+        requestCnt=0
+        
+        #発注済の件数
+        completedCnt=0
         for newDetailData in newDetail:
             currentDetail = db.query(request_model.RequestDetail).filter(
                 request_model.RequestDetail.detail_id == newDetailData.detail_id
@@ -456,21 +466,50 @@ def update_request_data(
             currentDetail.cost_price = newDetailData.cost_price
             currentDetail.supplier_id=newDetailData.supplier_id
             
+            print(newDetailData.detail_id)
+            print("🐰")
+            
+            
             #ここでアイテムステータスを変更
             if newDetailData.isChecked :
-                currentDetail.item_status = ITEM_STATUS.COMPLETED
-            else : 
-                currentDetail.item_status = ITEM_STATUS.REQUESTING
-            
-            print("😃", "❤️")
-            print(request_data.actionMode)
-        
-        db.commit()
-        db.refresh(currentData)
+                if request_data.action == Action.PURCHASE :
+                    #更新ボタンの場合
+                        currentDetail.item_status = ITEM_STATUS.COMPLETED
+                elif request_data.action == Action.DELETE :
+                    #削除ボタンの場合
+                        currentDetail.item_status = ITEM_STATUS.REQUESTING
+                        
+            #依頼されているアイテムの総数をカウント
+            requestCnt += 1
+            #発注済の件数をカウント
+            if currentDetail.item_status == ITEM_STATUS.COMPLETED :
+                completedCnt += 1
     
-    updatedDetails = db.query(request_model.RequestDetail).filter(
-        request_model.RequestDetail.request_id == newHeader.request_id
-    ).all()
+        #　更新する詳細データを取得
+        currentData = db.query(request_model.RequestHeader).filter(
+            request_model.RequestHeader.request_id == newHeader.request_id
+        ).first()
+        print(completedCnt)
+        
+        #ヘッダーのステータスを更新する
+        if completedCnt ==  requestCnt:
+            #全てのアイテムが「発注済」の場合、ヘッダーのステータスを「発注済み」にする
+            currentData.header_status = STATUS.COMPLETED
+        elif completedCnt > 0 :
+            #一部のアイテムが「発注済」の場合、ヘッダーのステータスを「一部発注済み」にする
+            currentData.header_status = STATUS.PARTIAL
+        elif completedCnt < 0 :
+            #「発注済」のアイテムが1件もない場合、ヘッダーのステータスを「依頼中」にする
+            currentData.header_status = STATUS.REQUESTING
+        
+            
+        db.commit()
+        db.refresh(currentDetail)
+
+        updatedDetails = db.query(request_model.RequestDetail).filter(
+            request_model.RequestDetail.request_id == newHeader.request_id
+        ).all()
+    
 
     return {
         "header": currentData,

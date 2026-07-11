@@ -204,7 +204,7 @@ function OrderDetailTable({
                     <tbody>
                         {/* ここに発注データをマッピングして表示 */}
                         {orderDetail.map((order, index) => {
-                                console.log(orderDetail);
+                                
                                 const inputCostValue = canShow_PURCHASE
                                     ? order.cost_price
                                     : order.sales_price;
