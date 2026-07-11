@@ -220,9 +220,9 @@ function OrderDetailTable({
                                 {canShow_PURCHASE && (
                                     <td className="td0">
                                         <input 
-                                            // checked={isChecked}
                                             type="checkbox" 
                                             className="check-box" 
+                                            checked={order.isChecked} // Reactでチェック状態を管理: state(isChecked)とチェックボックスの表示を同期する
                                             id={"check_"+order.detail_id}
                                             onChange={(e) =>
                                                 handleCheckboxChange(order.detail_id, e.target.checked)

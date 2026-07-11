@@ -408,6 +408,7 @@ def update_request_data(
     currentData.request_comment=newHeader.request_comment
 
     if user_department_id != DEPARTMENT.PURCHASE :
+        print("🐈mewwwww")
         #アイテムのステータスが発注済の件数をカウント
         completedItemCnt = sum(
             1 for detail in newDetail
@@ -436,6 +437,13 @@ def update_request_data(
         details = []
 
         for detail_data in newDetail:
+            
+            #アイテムステータス
+            if detail_data.item_status == ITEM_STATUS.COMPLETED:
+                item_status = ITEM_STATUS.COMPLETED
+            else:
+                item_status = ITEM_STATUS.REQUESTING
+                
             detail = request_model.RequestDetail(
                 request_id=newHeader.request_id,
                 item_id=detail_data.item_id,
@@ -443,7 +451,7 @@ def update_request_data(
                 sales_price=detail_data.sales_price,
                 cost_price=detail_data.cost_price,
                 supplier_id=detail_data.supplier_id,
-                item_status=ITEM_STATUS.REQUESTING
+                item_status=item_status,
             )
             db.add(detail)
             details.append(detail)
@@ -485,31 +493,30 @@ def update_request_data(
             if currentDetail.item_status == ITEM_STATUS.COMPLETED :
                 completedCnt += 1
     
-        #　更新する詳細データを取得
-        currentData = db.query(request_model.RequestHeader).filter(
-            request_model.RequestHeader.request_id == newHeader.request_id
-        ).first()
-        print(completedCnt)
-        
-        #ヘッダーのステータスを更新する
-        if completedCnt ==  requestCnt:
-            #全てのアイテムが「発注済」の場合、ヘッダーのステータスを「発注済み」にする
-            currentData.header_status = STATUS.COMPLETED
-        elif completedCnt > 0 :
-            #一部のアイテムが「発注済」の場合、ヘッダーのステータスを「一部発注済み」にする
-            currentData.header_status = STATUS.PARTIAL
-        elif completedCnt < 0 :
-            #「発注済」のアイテムが1件もない場合、ヘッダーのステータスを「依頼中」にする
-            currentData.header_status = STATUS.REQUESTING
-        
+            #　更新する詳細データを取得
+            currentData = db.query(request_model.RequestHeader).filter(
+                request_model.RequestHeader.request_id == newHeader.request_id
+            ).first()
+            print(completedCnt)
             
-        db.commit()
-        db.refresh(currentDetail)
+            #ヘッダーのステータスを更新する
+            if completedCnt ==  requestCnt:
+                #全てのアイテムが「発注済」の場合、ヘッダーのステータスを「発注済み」にする
+                currentData.header_status = STATUS.COMPLETED
+            elif completedCnt > 0 :
+                #一部のアイテムが「発注済」の場合、ヘッダーのステータスを「一部発注済み」にする
+                currentData.header_status = STATUS.PARTIAL
+            elif completedCnt <= 0 :
+                #「発注済」のアイテムが1件もない場合、ヘッダーのステータスを「依頼中」にする
+                currentData.header_status = STATUS.REQUESTING
+            
+                
+            db.commit()
+            db.refresh(currentDetail)
 
-        updatedDetails = db.query(request_model.RequestDetail).filter(
-            request_model.RequestDetail.request_id == newHeader.request_id
-        ).all()
-    
+    updatedDetails = db.query(request_model.RequestDetail).filter(
+        request_model.RequestDetail.request_id == newHeader.request_id
+    ).all()
 
     return {
         "header": currentData,

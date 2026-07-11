@@ -12,8 +12,6 @@ function OrderDetailForms({
     user, 
     orderHeader, 
     setOrderHeader,
-    headerStatus,
-    setStatus,
     updateDetailField,
     errors = {},
     setErrors
@@ -130,9 +128,9 @@ function OrderDetailForms({
                     <div className="form-item request-status-container">
                         <p className="form-label" htmlFor="request-status">依頼ステータス:</p>
                         <div 
-                            className={`status ${STATUS_CLASS_MAP[headerStatus]}`}
+                            className={`status ${STATUS_CLASS_MAP[orderHeader.header_status]}`}
                         >
-                            {STATUS_MAP[headerStatus]}
+                            {STATUS_MAP[orderHeader.header_status]}
                         </div>
                     </div>
 

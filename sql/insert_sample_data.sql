@@ -117,16 +117,17 @@ VALUES
 (3, 5, 20, 45.00, 60.00, 2, 3);
 
 
--- ==❣️テーブル削除とリセット==
+-- ==❣️テーブルデータ削除とリセット==
 -- TRUNCATE TABLE：テーブルのデータを全件削除
 -- RESTART IDENTITY：SERIALやIDENTITYの連番を1からリセット
 -- CASCADE：外部キーで関連するテーブルも一緒に削除
 TRUNCATE TABLE
     request_comment,
     request_header,
-    item,
-    supplier,
-    customer,
-    users,
-    department
+    -- item,
+    -- supplier,
+    -- customer,
+    -- users,
+    -- department
 RESTART IDENTITY CASCADE;
+

@@ -65,7 +65,6 @@ function OrderDetail({ user }) {
   const [orderHeader, setOrderHeader] = useState(emptyHeader);
   const [orderDetail, setOrderDetail] = useState([]);
 
-  const [headerStatus, setStatus] = useState(0);
   const request_id = id
 
   const [errors, setErrors] = useState({});
@@ -77,7 +76,6 @@ function OrderDetail({ user }) {
     setErrors({});
     setErrorMessage("");
   }
-
 
   // ここでAPIから発注データを取得して状態に保存する処理を実装
   const fetchOrderDetail = async (requestIdArg = null) => {
@@ -99,9 +97,6 @@ function OrderDetail({ user }) {
 
           //発注依頼詳細をセット (テーブル)
           setOrderDetail(response.data.details);
-
-          //発注依頼ヘッダのステータス
-          setStatus(response.data.header.header_status);
 
       } catch (error) {
           console.error('発注依頼データの取得に失敗しました:', error);
@@ -134,7 +129,6 @@ function OrderDetail({ user }) {
         setOrderHeader(emptyHeader);
         setOrderDetail([]);
         setOrderDetail([createEmptyRow()]);
-        setStatus(0);
         return;
       }
       fetchOrderDetail();
@@ -245,6 +239,12 @@ function OrderDetail({ user }) {
 
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
   const saveRequest = async (action) => {
+
+    console.log({
+      requestId,
+      action,
+      a : orderHeader.header_status,
+    });
     if (!requestId) {
        // ● 発注依頼新規登録
       await createRequest();
@@ -252,8 +252,9 @@ function OrderDetail({ user }) {
     } else if (
       // ● 発注依頼更新 ：　依頼内容を更新する
       // ● 発注/発注の取り消し　：　備考、金額、数量、アイテムステータスの更新（REQUESTING/COMPLETED）
-      headerStatus === STATUS.REQUESTING || 
-      headerStatus === STATUS.PARTIAL
+      orderHeader.header_status === STATUS.REQUESTING || 
+      orderHeader.header_status === STATUS.PARTIAL ||
+      orderHeader.header_status === STATUS.COMPLETED
     ) {
       await updateRequest(action);
     } 
@@ -263,7 +264,7 @@ function OrderDetail({ user }) {
   const deleteRequest = async () => {
     if (id) {
       // ● 依頼ヘッダ削除(依頼自体の取り下げ)　：　発注済でない場合のみ可能
-      if (! headerStatus === STATUS.COMPLETED) {
+      if (! orderHeader.header_status === STATUS.COMPLETED) {
       }
     }
   }
@@ -305,8 +306,6 @@ function OrderDetail({ user }) {
           user={user}     
           orderHeader={orderHeader}
           setOrderHeader={setOrderHeader}
-          headerStatus = {headerStatus}
-          setStatus = {setStatus}
           errors = {errors}
           setErrors ={setErrors}
         />
