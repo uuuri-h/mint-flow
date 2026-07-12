@@ -30,6 +30,7 @@ from app.schemas.department import DepartmentSchema, DepartmentListSchema
 from app.schemas.request import (
     RequestCreateSchema,
     UpdateRequestSchema,
+    DeleteResultSchema,
     RequestResponseSchema,
     RequestListResponseSchema,
     ResponseSchema,
@@ -43,7 +44,7 @@ from app.cruds.department import get_dept_list
 from app.cruds.supplier import get_supplier_list
 from app.cruds.customer import get_customer_list
 from app.cruds.item import get_item_list
-from app.cruds.request import get_request_list, get_request_header, get_request_detail, create_request_data, update_request_data
+from app.cruds.request import get_request_list, get_request_header, get_request_detail, create_request_data, update_request_data, delete_request_data
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
@@ -297,29 +298,25 @@ def update_request(
     }     
 
 #依頼削除
-@app.delete("/requests/delete/{request_id}", response_model=RequestResponseSchema)
+@app.delete("/requests/delete/{request_id}", response_model=DeleteResultSchema)
 def delete_request(
-        request_data: UpdateRequestSchema,
         db: Session = Depends(get_db),
+        request_id: int = None,
         current_user = Depends(get_current_user)
         
     ):
     
     print("🐈")
-    print(request_data)
+    print(request_id)
     
-    result = update_request_data(
+    result = delete_request_data(
         db=db,
-        request_data=request_data,
-        user_department_id=current_user.department_id,
+        request_id = request_id,
+        requester_id=current_user.user_id,
     )
-    
-    header = result["header"]
-    details = result["details"]
 
     return {
-        "request_id": header.request_id,
-        "message": "更新しました"
+        "message": "削除しました"
     }    
 
 # =================================================================

@@ -3,7 +3,7 @@ from datetime import date
 from app.constants import Action
 # ===RequestSchema定義===
 
-# ヘッダ登録・更新
+# ヘッダ登録
 class CreateRequestHeaderSchema(BaseModel):
     assigner_id: int = Field(..., ge=1, example=2)
     customer_id: int = Field(..., ge=1, example=1)
@@ -14,12 +14,16 @@ class RequestResultSchema(BaseModel):
     request_id: int
     message: str
     
+
 class UpdateRequestHeaderSchema(BaseModel):
     request_id: int
     assigner_id: int
     customer_id: int
     request_comment: str | None
     delivery_date: date
+
+class DeleteResultSchema(BaseModel):
+    message: str
 
 #明細登録更新
 class InsertAndUpdateRequestDetailSchema(BaseModel):

@@ -275,23 +275,12 @@ function OrderDetail({ user }) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        //フロントで作るJSON = FastAPIのPydanticスキーマと同じ形(フィールドの名前/データ型)
-        body: JSON.stringify({
-          header: orderHeader,
-          details: orderDetail,
-          action: action,
-        })
       });
 
       if (response.ok) {
         alert('発注依頼が正常に削除されました。', 'success')
         //フォームの更新
         const data = await response.json();
-
-        setRequestId(data.request_id); // ←追加
-
-        // data.request_id を使って取得
-        await fetchOrderDetail(data.request_id);
 
         resetErrors();
           

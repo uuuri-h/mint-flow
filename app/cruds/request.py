@@ -409,20 +409,6 @@ def update_request_data(
 
     if user_department_id != DEPARTMENT.PURCHASE :
 
-        #アイテムのステータスが発注済の件数をカウント
-        # completedItemCnt = sum(
-        #     1 for detail in newDetail
-        #     if detail.item_status == ITEM_STATUS.COMPLETED
-        # )
-
-        # #ヘッダーのステータス更新　
-        # # 代入先 = 値1 if 条件 else 値2
-        # currentData.header_status = (
-        #     STATUS.COMPLETED
-        #     if completedItemCnt == len(newDetail)
-        #     else STATUS.REQUESTING
-        # )
-        
         
         #削除/更新するリクエスト詳細を取得
         deleteDetails = db.query(request_model.RequestDetail).filter(
@@ -522,4 +508,52 @@ def update_request_data(
     return {
         "header": currentData,
         "details" : updatedDetails
+    }
+    
+    
+
+# 発注依頼の取り消し（ヘッダーと明細を全て削除）
+def delete_request_data (
+    db : Session,
+    request_id : int,
+    requester_id : int
+):
+    
+    #　更新する詳細データを取得
+    deleteHeader = db.query(request_model.RequestHeader).filter(
+        request_model.RequestHeader.request_id == request_id 
+    ).first()
+    
+    #削除/更新するリクエスト詳細を取得
+    deleteDetails = db.query(request_model.RequestDetail).filter(
+        request_model.RequestDetail.request_id == request_id
+    ).all()
+    
+    
+    #.all() は見つからないとき None ではなく空リスト [] を返す。
+    # is None → 「値が None（存在しないことを表す特別な値）かどうか」だけを見る。
+    # not → 「Pythonで False と判定される値かどうか」を見る。
+    if deleteHeader is None or not deleteDetails:
+        raise HTTPException(
+            status_code=404,
+            detail="削除するデータが見つかりません"
+        )
+    
+    if deleteHeader.requester_id == requester_id {
+        
+    }
+    
+    #リクエスト詳細を削除
+    for detail in deleteDetails:
+        db.delete(detail)
+    
+    #リクエスト詳細をヘッダーを削除
+        db.delete(deleteHeader)  
+        
+    db.commit()
+    
+    result = "依頼" + deleteHeader.request_id + "を削除しました。"
+
+    return {
+        result
     }
