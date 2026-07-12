@@ -21,14 +21,14 @@ export const SidebarData = (user) => {
     },
 ];
     
-    if (user?.department_id != DEPARTMENT.PURCHASE) { // 購買部以外のユーザーに表示
-        menu.push({
-            title: "新規依頼",
-            icon: <AddIcon />,
-            link: '/order-detail',
-            order: 1
-        });
-    }
+    // if (user?.department_id != DEPARTMENT.PURCHASE) { // 購買部以外のユーザーに表示
+    //     menu.push({
+    //         title: "新規依頼",
+    //         icon: <AddIcon />,
+    //         link: '/order-detail',
+    //         order: 1
+    //     });
+    // }
 
     /*menuをorderの昇順でソート　aをbと比較*/
     menu.sort((a, b) => a.order - b.order);

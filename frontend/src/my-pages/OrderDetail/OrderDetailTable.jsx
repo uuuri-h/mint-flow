@@ -241,7 +241,10 @@ function OrderDetailTable({
                                     <FormSelect 
                                         selectedValue={order.item_id}
                                         options={itemCdOptions}
-                                        disabled={canShow_PURCHASE}
+                                        disabled={
+                                            canShow(DEPARTMENT.PURCHASE) ||
+                                            order.item_status == ITEM_STATUS.COMPLETED
+                                        }
                                         hasError={!!errors[`details.${index}.item_id`]}
                                         onChange= {(e) => {
                                             const itemId = Number(e.target.value);
@@ -269,6 +272,10 @@ function OrderDetailTable({
                                         options={itemNmOptions}
                                         disabled={canShow_PURCHASE}
                                         hasError={!!errors[`details.${index}.item_id`]}
+                                        disabled={
+                                            canShow(DEPARTMENT.PURCHASE) ||
+                                            order.item_status == ITEM_STATUS.COMPLETED
+                                        }
                                         onChange= {(e) => {
                                             const itemId = Number(e.target.value);
                                             updateDetailField(
@@ -290,6 +297,10 @@ function OrderDetailTable({
                                     <FormInput 
                                         value={order.quantity}
                                         hasError={!!errors[`details.${index}.quantity`]}
+                                        disabled={
+                                            canShow(DEPARTMENT.PURCHASE) ||
+                                            order.item_status == ITEM_STATUS.COMPLETED
+                                        }
                                         onChange= {(e) => updateDetailField(
                                                 order.detail_id, 
                                                 "quantity",
@@ -379,7 +390,7 @@ function OrderDetailTable({
                                         {ITEM_STATUS_MAP[order.item_status]}
                                     </span>
                                 </td>
-                                {canShow_PURCHASE || order.item_status != ITEM_STATUS.COMPLETED && (
+                                {!canShow_PURCHASE && order.item_status !== ITEM_STATUS.COMPLETED && (
                                 
                                     <td className="td10">
                                         <button 

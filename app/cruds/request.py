@@ -408,20 +408,20 @@ def update_request_data(
     currentData.request_comment=newHeader.request_comment
 
     if user_department_id != DEPARTMENT.PURCHASE :
-        print("🐈mewwwww")
-        #アイテムのステータスが発注済の件数をカウント
-        completedItemCnt = sum(
-            1 for detail in newDetail
-            if detail.item_status == ITEM_STATUS.COMPLETED
-        )
 
-        #ヘッダーのステータス更新　
-        # 代入先 = 値1 if 条件 else 値2
-        currentData.header_status = (
-            STATUS.COMPLETED
-            if completedItemCnt == len(newDetail)
-            else STATUS.REQUESTING
-        )
+        #アイテムのステータスが発注済の件数をカウント
+        # completedItemCnt = sum(
+        #     1 for detail in newDetail
+        #     if detail.item_status == ITEM_STATUS.COMPLETED
+        # )
+
+        # #ヘッダーのステータス更新　
+        # # 代入先 = 値1 if 条件 else 値2
+        # currentData.header_status = (
+        #     STATUS.COMPLETED
+        #     if completedItemCnt == len(newDetail)
+        #     else STATUS.REQUESTING
+        # )
         
         
         #削除/更新するリクエスト詳細を取得
@@ -456,19 +456,18 @@ def update_request_data(
             db.add(detail)
             details.append(detail)
 
-        db.commit()
-        db.refresh(currentData)
     else :
         
-        #依頼アイテム数の件数
-        requestCnt=0
-        
-        #発注済の件数
-        completedCnt=0
         for newDetailData in newDetail:
             currentDetail = db.query(request_model.RequestDetail).filter(
                 request_model.RequestDetail.detail_id == newDetailData.detail_id
             ).first()
+            
+            if currentDetail is None:
+                raise HTTPException(
+                    status_code=404,
+                    detail="発注依頼詳細が見つかりません"
+                )
 
             currentDetail.quantity = newDetailData.quantity
             currentDetail.cost_price = newDetailData.cost_price
@@ -483,36 +482,42 @@ def update_request_data(
                     #削除ボタンの場合
                         currentDetail.item_status = ITEM_STATUS.REQUESTING
                         
-            #依頼されているアイテムの総数をカウント
-            requestCnt += 1
-            #発注済の件数をカウント
-            if currentDetail.item_status == ITEM_STATUS.COMPLETED :
-                completedCnt += 1
+        
     
-            #　更新する詳細データを取得
-            currentData = db.query(request_model.RequestHeader).filter(
-                request_model.RequestHeader.request_id == newHeader.request_id
-            ).first()
-            print(completedCnt)
-            
-            #ヘッダーのステータスを更新する
-            if completedCnt ==  requestCnt:
-                #全てのアイテムが「発注済」の場合、ヘッダーのステータスを「発注済み」にする
-                currentData.header_status = STATUS.COMPLETED
-            elif completedCnt > 0 :
-                #一部のアイテムが「発注済」の場合、ヘッダーのステータスを「一部発注済み」にする
-                currentData.header_status = STATUS.PARTIAL
-            elif completedCnt <= 0 :
-                #「発注済」のアイテムが1件もない場合、ヘッダーのステータスを「依頼中」にする
-                currentData.header_status = STATUS.REQUESTING
-            
-                
-            db.commit()
-            db.refresh(currentDetail)
-
+    #---ヘッダーステータス更新---------------------------------------------------------
+    
+    #　更新する詳細データを取得
     updatedDetails = db.query(request_model.RequestDetail).filter(
         request_model.RequestDetail.request_id == newHeader.request_id
     ).all()
+    
+    requestCnt = len(updatedDetails)
+    
+    
+    #条件に合う要素の件数を数える
+    # sum(
+    #     1 for 要素 in リスト
+    #     if 条件
+    # )
+    completedCnt = sum(
+        1 for detail in updatedDetails
+        if detail.item_status == ITEM_STATUS.COMPLETED
+    )
+    
+    #ヘッダーのステータスを更新する
+    if requestCnt == 0:
+        currentData.header_status = STATUS.REQUESTING
+    elif completedCnt == requestCnt:
+        currentData.header_status = STATUS.COMPLETED
+    elif completedCnt > 0:
+        currentData.header_status = STATUS.PARTIAL
+    else:
+        currentData.header_status = STATUS.REQUESTING
+            
+                
+    db.commit()
+    db.refresh(currentData)
+
 
     return {
         "header": currentData,

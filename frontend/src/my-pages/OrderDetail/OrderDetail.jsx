@@ -260,12 +260,50 @@ function OrderDetail({ user }) {
     } 
 };
 
-// 
+  //発注依頼の削除(ヘッダーごと削除)
   const deleteRequest = async () => {
-    if (id) {
-      // ● 依頼ヘッダ削除(依頼自体の取り下げ)　：　発注済でない場合のみ可能
-      if (! orderHeader.header_status === STATUS.COMPLETED) {
+    // ● 依頼ヘッダ削除(依頼自体の取り下げ)　：　発注済でない場合のみ可能
+    if (! id || orderHeader.header_status === STATUS.COMPLETED) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/requests/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        //フロントで作るJSON = FastAPIのPydanticスキーマと同じ形(フィールドの名前/データ型)
+        body: JSON.stringify({
+          header: orderHeader,
+          details: orderDetail,
+          action: action,
+        })
+      });
+
+      if (response.ok) {
+        alert('発注依頼が正常に削除されました。', 'success')
+        //フォームの更新
+        const data = await response.json();
+
+        setRequestId(data.request_id); // ←追加
+
+        // data.request_id を使って取得
+        await fetchOrderDetail(data.request_id);
+
+        resetErrors();
+          
+      } else {
+        const errorData = await response.json();
+        // displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
+        alert('発注依頼の削除に失敗しました', 'error')
+          
       }
+
+    } catch (error) {
+    alert(`発注依頼の更新中にエラーが発生しました: ${error.message}`, 'error')
     }
   }
 
@@ -335,6 +373,7 @@ function OrderDetail({ user }) {
           {! canShow(DEPARTMENT.PURCHASE) && 
             orderHeader.header_status !== STATUS.COMPLETED  &&
             orderHeader.header_status !== STATUS.PARTIAL && 
+            orderHeader.header_status !== STATUS.NEW_REQUEST && 
             (
             <MyBtn 
                 className="btn cancel-request-btn red-btn" 

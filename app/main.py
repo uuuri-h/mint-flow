@@ -281,6 +281,29 @@ def update_request(
         current_user = Depends(get_current_user)
         
     ):
+        
+    result = update_request_data(
+        db=db,
+        request_data=request_data,
+        user_department_id=current_user.department_id,
+    )
+    
+    header = result["header"]
+    details = result["details"]
+
+    return {
+        "request_id": header.request_id,
+        "message": "更新しました"
+    }     
+
+#依頼削除
+@app.delete("/requests/delete/{request_id}", response_model=RequestResponseSchema)
+def delete_request(
+        request_data: UpdateRequestSchema,
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_user)
+        
+    ):
     
     print("🐈")
     print(request_data)
@@ -297,13 +320,7 @@ def update_request(
     return {
         "request_id": header.request_id,
         "message": "更新しました"
-    }     
-
-#依頼削除
-@app.delete("/requests/{request_cd}", response_model=RequestResponseSchema)
-def delete_request(request_cd: str):
-    # ここで依頼削除のロジックを実装
-    return RequestResponseSchema(message="依頼が正常に削除されました。")
+    }    
 
 # =================================================================
 # 　マスタ
