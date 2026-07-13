@@ -7,7 +7,7 @@ import app.models.user as user_model
 import app.models.customer as customer_model
 from datetime import date
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 
 from app.constants import DEPARTMENT, STATUS, ITEM_STATUS, Action
@@ -461,6 +461,29 @@ def update_request_data(
                     status_code=404,
                     detail="発注依頼詳細が見つかりません"
                 )
+                
+            # 購買部で「発注する」場合、チェックした行は仕入先が必須
+            for index, detail in enumerate(newDetail): #enumerate()は「番号（index）と要素を同時に取り出す」関数
+
+                # チェック済みなのに仕入先が未選択の場合はエラー
+                if detail.isChecked and detail.supplier_id is None:
+                    raise HTTPException(
+                        # 入力内容に問題があるため422を返す
+                        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                        detail=[
+                            {
+                                # エラー箇所を指定（details[index].supplier_id）
+                                # フロント側で errors["details.0.supplier_id"] のように扱える
+                                "loc": ["body", "details", index, "supplier_id"],
+
+                                # 画面に表示するエラーメッセージ
+                                "msg": "仕入先を選択してください",
+
+                                # エラー種別
+                                "type": "value_error",
+                            }
+                        ],
+                    )
 
             currentDetail.quantity = newDetailData.quantity
             currentDetail.cost_price = newDetailData.cost_price

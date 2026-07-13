@@ -30,8 +30,8 @@ class InsertAndUpdateRequestDetailSchema(BaseModel):
     detail_id: int
     item_id: int = Field(..., ge=1, example= 1)
     quantity: int = Field(..., ge=1, example=20)
-    sales_price: float = Field(..., example=1000.00)
-    cost_price: float = Field(..., example=800.00)
+    sales_price: float = Field(..., ge=1, example=1000.00)
+    cost_price: float = Field(..., ge=1, example=800.00)
     supplier_id: int | None = Field(default=None, example=1)
     item_status: int = Field(..., example=1)
     isChecked: bool = False

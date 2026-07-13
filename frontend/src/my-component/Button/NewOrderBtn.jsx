@@ -19,7 +19,7 @@ function NewOrderBtn() {
                 type="submit"
                 
             >
-                新規発注
+                新規依頼
             </button>
         </div>
     )
