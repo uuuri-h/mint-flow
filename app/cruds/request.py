@@ -382,13 +382,13 @@ def create_request_cd(db: Session) -> str:
 
 def update_request_data(
     db: Session,
-    request_data: request_schema.UpdateRequestHeaderSchema,
+    request_data: request_schema.UpdateRequestSchema,
     user_department_id: int
 ):
     newHeader = request_data.header
     newDetail = request_data.details
     
-    #　更新する詳細データを取得
+    #　# 更新対象のリクエストヘッダーを取得
     currentData = db.query(request_model.RequestHeader).filter(
         request_model.RequestHeader.request_id == newHeader.request_id
     ).first()
@@ -410,17 +410,20 @@ def update_request_data(
     if user_department_id != DEPARTMENT.PURCHASE :
 
         
-        #削除/更新するリクエスト詳細を取得
+        # 更新対象のリクエスト詳細を取得
         deleteDetails = db.query(request_model.RequestDetail).filter(
             request_model.RequestDetail.request_id == newHeader.request_id
         ).all()
         
         #リクエスト詳細を削除
         for detail in deleteDetails:
-            db.delete(detail)    
+            db.delete(detail)   
+            
+        db.flush()
         
         # リクエスト詳細を作成
         details = []
+        
 
         for detail_data in newDetail:
             
@@ -441,6 +444,10 @@ def update_request_data(
             )
             db.add(detail)
             details.append(detail)
+
+        db.flush()
+        
+        print("newDetail件数:", len(newDetail))
 
     else :
         
@@ -470,7 +477,8 @@ def update_request_data(
                         
         
     
-    #---ヘッダーステータス更新---------------------------------------------------------
+    #---ヘッダーステータス更新---------------------------------------------------------￥
+    
     
     #　更新する詳細データを取得
     updatedDetails = db.query(request_model.RequestDetail).filter(
@@ -490,6 +498,12 @@ def update_request_data(
         if detail.item_status == ITEM_STATUS.COMPLETED
     )
     
+    print("requestCnt:", requestCnt)
+    print("completedCnt:", completedCnt)
+
+    for detail in updatedDetails:
+        print(detail.detail_id, detail.item_status)
+        
     #ヘッダーのステータスを更新する
     if requestCnt == 0:
         currentData.header_status = STATUS.REQUESTING
@@ -519,12 +533,12 @@ def delete_request_data (
     requester_id : int
 ):
     
-    #　更新する詳細データを取得
+    #　削除する詳細データを取得
     deleteHeader = db.query(request_model.RequestHeader).filter(
         request_model.RequestHeader.request_id == request_id 
     ).first()
     
-    #削除/更新するリクエスト詳細を取得
+    #削除するリクエスト詳細を取得
     deleteDetails = db.query(request_model.RequestDetail).filter(
         request_model.RequestDetail.request_id == request_id
     ).all()
@@ -535,7 +549,7 @@ def delete_request_data (
     # not → 「Pythonで False と判定される値かどうか」を見る。
     if deleteHeader is None or not deleteDetails:
         raise HTTPException(
-            status_code=404,
+            status_code=403,
             detail="削除するデータが見つかりません"
         )
     
@@ -551,12 +565,12 @@ def delete_request_data (
         db.delete(detail)
     
     #リクエスト詳細をヘッダーを削除
-        db.delete(deleteHeader)  
+    db.delete(deleteHeader)  
         
     db.commit()
-    
+
     result = "依頼を削除しました。"
 
     return {
-        result
+        "message": result
     }
