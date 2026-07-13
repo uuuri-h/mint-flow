@@ -11,6 +11,8 @@ function Login() {
     const [user_cd, setuser_cd] = useState('');
     const [password, setPassword] = useState('');
 
+    // const [errors, setErrors] = useState({});
+    const [errorMessage, setErrorMessage] = useState("");
 
     //ログインボタンがクリックされたときの処理
     const handleLogin = async (e) => {
@@ -41,6 +43,7 @@ function Login() {
 
         } catch (error) {
             console.error('There was an error!', error);
+            setErrorMessage("* ユーザーIDまたはパスワードが正しくありません。")
         }
     }
 
@@ -48,6 +51,12 @@ function Login() {
         <div className="login-container">
             <h1>Mint Flow</h1>
             <h2>ログイン</h2>
+            {/* {errorMessage && (<div>{errorMessage}</div>)} */}
+            {errorMessage && (
+                <div className="error-message">
+                    {errorMessage}
+                </div>
+            )}
             <form onSubmit={handleLogin}>
                 <div className="input-group">
                     <label className="form-label">

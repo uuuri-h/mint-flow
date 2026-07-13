@@ -65,3 +65,7 @@ input {
     z-index: 10;
 }   
 
+
+.login-container .error-message {
+    padding: 13px 0 ;
+}

@@ -4,12 +4,6 @@
     overflow-y: auto; /* 縦スクロールを有効にする */
 }
 
-.error-message {
-    margin-left: 10px;
-    padding: 10px 0 ;
-    color: #dc3545;
-}
-
 .table-footer {
     display: flex;
     margin: 8 0;

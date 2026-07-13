@@ -167,3 +167,10 @@
 .item-status.completed {
     background-color: #2f9e8f;
 }
+
+.error-message {
+    margin-left: 10px;
+    padding: 10px 0 ;
+    color: #dc3545;
+}
+
