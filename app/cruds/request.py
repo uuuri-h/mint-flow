@@ -539,9 +539,12 @@ def delete_request_data (
             detail="削除するデータが見つかりません"
         )
     
-    if deleteHeader.requester_id == requester_id {
-        
-    }
+    # ログインユーザーが依頼主の場合のみ削除可能
+    if deleteHeader.requester_id != requester_id :
+        raise HTTPException(
+            status_code=404,
+            detail="このデータは削除できません。"
+        )
     
     #リクエスト詳細を削除
     for detail in deleteDetails:
@@ -552,7 +555,7 @@ def delete_request_data (
         
     db.commit()
     
-    result = "依頼" + deleteHeader.request_id + "を削除しました。"
+    result = "依頼を削除しました。"
 
     return {
         result

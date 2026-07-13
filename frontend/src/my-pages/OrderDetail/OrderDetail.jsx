@@ -77,6 +77,14 @@ function OrderDetail({ user }) {
     setErrorMessage("");
   }
 
+    //フォームとテーブルのリセット
+  function resetForms () {
+    setOrderHeader(emptyHeader);
+    setOrderDetail([]);
+    setOrderDetail([createEmptyRow()]);
+  }
+
+
   // ここでAPIから発注データを取得して状態に保存する処理を実装
   const fetchOrderDetail = async (requestIdArg = null) => {
     const idToFetch = requestIdArg ?? requestId; // 引数があればそれを使い、なければURLから取得したidを使う
@@ -121,14 +129,11 @@ function OrderDetail({ user }) {
     return errorMap;
   }
 
-
   //発注依頼ヘッダ・発注依頼詳細をセットで取得
   useEffect(() => {
       //一覧から取得したidがない＝新規の場合はフォームとテーブルをリセット
       if (! id) {
-        setOrderHeader(emptyHeader);
-        setOrderDetail([]);
-        setOrderDetail([createEmptyRow()]);
+        resetForms();
         return;
       }
       fetchOrderDetail();
@@ -263,13 +268,13 @@ function OrderDetail({ user }) {
   //発注依頼の削除(ヘッダーごと削除)
   const deleteRequest = async () => {
     // ● 依頼ヘッダ削除(依頼自体の取り下げ)　：　発注済でない場合のみ可能
-    if (! id || orderHeader.header_status === STATUS.COMPLETED) {
+    if (!requestId || orderHeader.header_status === STATUS.COMPLETED) {
       return;
     }
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/requests/delete/${id}`, {
+      const response = await fetch(`${API_URL}/requests/delete/${requestId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -279,9 +284,9 @@ function OrderDetail({ user }) {
 
       if (response.ok) {
         alert('発注依頼が正常に削除されました。', 'success')
-        //フォームの更新
-        const data = await response.json();
 
+        //フォームのリセット
+        resetForms();
         resetErrors();
           
       } else {
