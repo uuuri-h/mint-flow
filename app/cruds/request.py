@@ -519,8 +519,6 @@ def update_request_data(
         1 for detail in updatedDetails
         if detail.item_status == ITEM_STATUS.COMPLETED
     )
-    
-    for detail in updatedDetails:
         
     #ヘッダーのステータスを更新する
     if requestCnt == 0:

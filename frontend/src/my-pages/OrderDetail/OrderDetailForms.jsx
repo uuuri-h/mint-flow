@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT} from "../../my-constants";
+import { STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT, STATUS} from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
@@ -251,7 +251,12 @@ function OrderDetailForms({
                             // selectedValue={orderHeader.requester_id}
                             selectedValue={canShow_PURCHASE ? orderHeader.requester_id : orderHeader.assigner_id}
                             options={userList}
-                            disabled={canShow_PURCHASE}
+                            //発注済のアイテムがある場合、依頼先の変更は不可
+                            disabled={
+                                !canShow(DEPARTMENT.PURCHASE) &&
+                                orderHeader.header_status !== STATUS.NEW_REQUEST &&
+                                orderHeader.header_status !== STATUS.REQUESTING
+                            }
                             hasError={
                                 canShow_PURCHASE
                                     ? !!errors.requester_id
