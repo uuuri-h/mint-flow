@@ -92,7 +92,7 @@ function OrderDetail({ user }) {
       try {
         const token = localStorage.getItem("token");
           const response = await axios.get(
-              `http://localhost:8000/requests/${idToFetch}/details`,
+              `${API_URL}/requests/${idToFetch}/details`,
               {
                   headers: {
                       Authorization: `Bearer ${token}`

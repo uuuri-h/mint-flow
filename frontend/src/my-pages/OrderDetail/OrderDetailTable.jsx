@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP, DEPARTMENT, ITEM_STATUS } from "../../my-constants";
+import { API_URL, ITEM_STATUS_MAP, ITEM_STATUS_CLASS_MAP, DEPARTMENT, ITEM_STATUS } from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
@@ -40,7 +40,7 @@ function OrderDetailTable({
             try {
                 const response = await axios.get(
                     
-                    `http://localhost:8000/supplier/suppliers`
+                    `${API_URL}/supplier/suppliers`
                 );
 
                 setSupplierList(response.data.suppliers)
@@ -61,7 +61,7 @@ function OrderDetailTable({
             try {
                 const response = await axios.get(
                     
-                    `http://localhost:8000/item/items`
+                    `${API_URL}/item/items`
                 );
                 
                 setItemList(response.data.items);

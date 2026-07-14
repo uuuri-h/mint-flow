@@ -67,4 +67,4 @@ export const ACTION = {
 //     UPDATE_SUCCESS: "更新しました",
 // };
 
-export const API_URL = "http://localhost:8000";
+export const API_URL = import.meta.env.VITE_API_URL;

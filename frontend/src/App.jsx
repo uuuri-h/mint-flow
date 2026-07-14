@@ -9,6 +9,7 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import './App.css'
+import { API_URL } from "./my-constants";
 // RequestDetail.jsx
 
 
@@ -22,7 +23,7 @@ function App() {
               // ローカルストレージからトークンを取得
                 const token = localStorage.getItem('token'); 
 
-                const response = await axios.get('http://localhost:8000/users/me/', {
+                const response = await axios.get(`${API_URL}/users/me/`, {
                     headers: {
                       Authorization: `Bearer ${token}` // トークンをAuthorizationヘッダーに含める
                     }

@@ -38,7 +38,7 @@ function OrderTable({ user }) {
             try {
                 const token = localStorage.getItem("token"); 
                 const response = await axios.get(
-                    'http://localhost:8000/requests/summaries', {
+                    '${API_URL}/requests/summaries', {
                         headers : {
                             Authorization: `Bearer ${token}`,
                         }

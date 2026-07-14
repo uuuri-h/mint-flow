@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Login.css'
 import { useNavigate } from 'react-router-dom'; // 追加: useNavigateをインポート
+import { API_URL } from "../../my-constants";
 
 function Login() {
     const navigate = useNavigate(); // useNavigateフックを初期化
@@ -20,7 +21,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                'http://localhost:8000/login/',//ReactからFastAPIへ！　HTTP通信（JSONデータを送信）
+                `${API_URL}/login/`,//ReactからFastAPIへ！　HTTP通信（JSONデータを送信）
                 //JSONデータの形式でユーザーIDとパスワードを送信
                 {
                     user_cd: user_cd,

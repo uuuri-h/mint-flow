@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 // RequestDetail.jsx
-import { STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT, STATUS} from "../../my-constants";
+import { API_URL, STATUS_MAP, STATUS_CLASS_MAP, DEPARTMENT, STATUS} from "../../my-constants";
 import FormSelect from '../../my-component/FormItem/FormSelect';
 import FormInput from '../../my-component/FormItem/FormInput';
 
@@ -24,7 +24,7 @@ function OrderDetailForms({
             try {
                 const response = await axios.get(
                     
-                    `http://localhost:8000/customer/customers`
+                    `${API_URL}/customer/customers`
                 );
 
 
@@ -46,7 +46,7 @@ function OrderDetailForms({
             try {
                 const response = await axios.get(
                     
-                    `http://localhost:8000/department/departments`
+                    `${API_URL}/department/departments`
                 );
 
                 setDepartmentList(response.data.departments)
@@ -66,7 +66,7 @@ function OrderDetailForms({
             try {
                 const token = localStorage.getItem("token");
                 const response = await axios.get(
-                    `http://localhost:8000/user/users`,
+                    `${API_URL}/user/users`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
