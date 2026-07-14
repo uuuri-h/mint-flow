@@ -243,6 +243,8 @@ function OrderDetail({ user }) {
 
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
   const saveRequest = async (action) => {
+
+    //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
     if (!requestId) {
        // ● 発注依頼新規登録
       await createRequest();
@@ -277,8 +279,9 @@ function OrderDetail({ user }) {
 
       if (response.ok) {
         alert('発注依頼が正常に削除されました。', 'success')
-
+        
         //フォームのリセット
+        setRequestId('');
         resetForms();
         resetErrors();
           
