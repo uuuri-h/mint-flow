@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
+from dotenv import load_dotenv
+import os
 import jwt #JWTライブラリをインポート
 
 
@@ -171,11 +173,13 @@ def login(
         access_token=access_token,
         token_type="bearer"
     )
+    
+# .env ファイルの中身をPythonで使えるように読み込む関数
+load_dotenv()
 
-
-SECRET_KEY = "secret"
-ALGORITHM = "HS256"
-
+# .envの値を取得
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
 #JWTを作成する関数
 def create_access_token(data: dict):

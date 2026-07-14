@@ -225,15 +225,15 @@ function OrderDetail({ user }) {
           if (response.status === 422) {
             const errorData = await response.json();
             const errorMap = convertErrorData(errorData)
+            console.log(errorMap)
 
             setErrorMessage("* 入力に不備があります。" );
             setErrors(errorMap);
             return;
 
           } else {
-            const errorData = await response.json();
             // displayMessage(`発注依頼の登録に失敗しました: ${errorData.message}`, 'error');
-            alert('発注依頼の登録に失敗しました', 'error')
+            alert('発注依頼の更新に失敗しました', 'error')
           }
         }
 
@@ -244,12 +244,6 @@ function OrderDetail({ user }) {
 
   //発注依頼ヘッダ・発注依頼詳細の新規登録・更新処理
   const saveRequest = async (action) => {
-
-    console.log({
-      requestId,
-      action,
-      a : orderHeader.header_status,
-    });
     if (!requestId) {
        // ● 発注依頼新規登録
       await createRequest();

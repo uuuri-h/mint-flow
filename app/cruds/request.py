@@ -465,8 +465,9 @@ def update_request_data(
             # 購買部で「発注する」場合、チェックした行は仕入先が必須
             for index, detail in enumerate(newDetail): #enumerate()は「番号（index）と要素を同時に取り出す」関数
 
-                # チェック済みなのに仕入先が未選択の場合はエラー
-                if detail.isChecked and detail.supplier_id is None:
+                # PydanticのバリデーションはCRUDより先に実行されるため、Pydanticエラーがある場合、この業務チェックは実行されない。
+                # 仕入先が未選択の場合はエラー
+                if  detail.supplier_id is None or detail.supplier_id == 0 :
                     raise HTTPException(
                         # 入力内容に問題があるため422を返す
                         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
