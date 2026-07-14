@@ -225,7 +225,6 @@ function OrderDetail({ user }) {
           if (response.status === 422) {
             const errorData = await response.json();
             const errorMap = convertErrorData(errorData)
-            console.log(errorMap)
 
             setErrorMessage("* 入力に不備があります。" );
             setErrors(errorMap);

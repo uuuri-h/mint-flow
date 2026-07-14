@@ -446,8 +446,6 @@ def update_request_data(
             details.append(detail)
 
         db.flush()
-        
-        print("newDetail件数:", len(newDetail))
 
     else :
         
@@ -522,11 +520,7 @@ def update_request_data(
         if detail.item_status == ITEM_STATUS.COMPLETED
     )
     
-    print("requestCnt:", requestCnt)
-    print("completedCnt:", completedCnt)
-
     for detail in updatedDetails:
-        print(detail.detail_id, detail.item_status)
         
     #ヘッダーのステータスを更新する
     if requestCnt == 0:

@@ -21,7 +21,6 @@ load_dotenv()
 # データベースURL　SQLALCHEMY_DATABASE_URLという名前の設定を探す
 # : SQLALCHEMY_DATABASE_URL=postgresql://{ユーザ名}:{パスワード}@{ホスト名}:5432/{DB名}
 SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")
-# print(f"⭐️DB接続URL: {SQLALCHEMY_DATABASE_URL}") # デバッグ用に接続URLを出力
 
 #エンジンの作成
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

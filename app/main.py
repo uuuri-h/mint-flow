@@ -245,9 +245,7 @@ def get_request_comment(
         db,
         current_user,
         request_id,
-    )
-    # print(details)
-    
+    )    
     
 
     return {
@@ -309,9 +307,6 @@ def delete_request(
         current_user = Depends(get_current_user)
         
     ):
-    
-    print("🐈")
-    print(request_id)
     
     result = delete_request_data(
         db=db,

@@ -22,8 +22,6 @@ function App() {
               // ローカルストレージからトークンを取得
                 const token = localStorage.getItem('token'); 
 
-            //   console.log('取得したトークン:', token); // トークンの値を確認
-
                 const response = await axios.get('http://localhost:8000/users/me/', {
                     headers: {
                       Authorization: `Bearer ${token}` // トークンをAuthorizationヘッダーに含める
