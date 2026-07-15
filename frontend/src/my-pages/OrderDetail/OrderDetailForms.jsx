@@ -253,9 +253,11 @@ function OrderDetailForms({
                             options={userList}
                             //発注済のアイテムがある場合、依頼先の変更は不可
                             disabled={
-                                !canShow(DEPARTMENT.PURCHASE) &&
-                                orderHeader.header_status !== STATUS.NEW_REQUEST &&
-                                orderHeader.header_status !== STATUS.REQUESTING
+                                canShow(DEPARTMENT.PURCHASE) ||
+                                (
+                                    orderHeader.header_status !== STATUS.NEW_REQUEST &&
+                                    orderHeader.header_status !== STATUS.REQUESTING
+                                )
                             }
                             hasError={
                                 canShow_PURCHASE
