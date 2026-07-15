@@ -12,8 +12,6 @@ from jwt.exceptions import InvalidTokenError
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
-app = FastAPI()
-
 items = {"foo": "The Foo Wrestlers"}
 
 
@@ -56,11 +54,16 @@ from app.db import get_db
 app = FastAPI()
 
 
+#CORSの設定
+origins = [
+    "http://localhost:5173",  # フロントエンドのURLを指定 5173はViteのデフォルトポート
+    "https://mint-flow-seven.vercel.app",
+]
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173"
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -71,18 +74,6 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login/" #JWTを取得するためのエンドポイントURLを指定 
 )
 
-#CORSの設定
-origins = [
-    "http://localhost:5173",  # フロントエンドのURLを指定 5173はViteのデフォルトポート
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True, 
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # =================================================================
 # 　ユーザー　

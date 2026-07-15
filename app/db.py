@@ -20,6 +20,7 @@ load_dotenv()
 
 # データベースURL　SQLALCHEMY_DATABASE_URLという名前の設定を探す
 # : SQLALCHEMY_DATABASE_URL=postgresql://{ユーザ名}:{パスワード}@{ホスト名}:5432/{DB名}
+#FastAPI Cloudには .env はアップロードされない。
 SQLALCHEMY_DATABASE_URL = os.environ.get("SQLALCHEMY_DATABASE_URL")
 
 #エンジンの作成
