@@ -1,3 +1,5 @@
+from fastapi import FastAPI, Depends, HTTPException, status, Request
+app = FastAPI()
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 from dotenv import load_dotenv
@@ -5,7 +7,7 @@ import os
 import jwt #JWTライブラリをインポート
 
 
-from fastapi import FastAPI, Depends, HTTPException, status, Request
+
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt.exceptions import InvalidTokenError
 
@@ -49,9 +51,6 @@ from app.cruds.request import get_request_list, get_request_header, get_request_
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.db import get_db
-
-
-app = FastAPI()
 
 
 #CORSの設定
